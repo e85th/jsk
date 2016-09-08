@@ -1,0 +1,1176 @@
+2016-08-22 16:06:39.793 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Aug 22 12:00:25 EDT 2016
+version=d18ea1b4018f3a4365a693bebd75905b
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-22 16:06:39.798 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-22 16:06:39.800 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-22 16:06:39.831 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-22 16:10:40.454 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Aug 22 12:07:55 EDT 2016
+version=60c2f829e13973314b755102aca19355
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-22 16:10:40.458 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-22 16:10:40.460 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-22 16:10:40.492 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-22 16:10:40.653 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-22 16:10:40.695 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-22 19:42:03.431 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Aug 22 15:02:37 EDT 2016
+version=ccfdb8e78aa37d325664c410ba7969cb
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-22 19:42:03.435 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-22 19:42:03.437 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-22 19:42:03.468 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-22 19:42:03.628 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-22 19:42:03.647 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-23 17:48:11.391 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Tue Aug 23 13:32:34 EDT 2016
+version=c64aeeec343b5e1fa27604f8882c60a1
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-23 17:48:11.395 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-23 17:48:11.397 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-23 17:48:11.431 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-23 17:48:11.606 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-23 17:48:11.625 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-23 21:17:24.478 rihiveli.local INFO [e85th.backend.components:74] - Stopping nRepl server.
+2016-08-23 21:17:24.483 rihiveli.local INFO [e85th.backend.components:32] - Stopping HttpKit Web Server.
+2016-08-23 21:17:24.488 rihiveli.local INFO [e85th.commons.sql:24] - Stopping Hikari jdbc connection pool component.
+2016-08-23 21:17:27.811 rihiveli.local INFO [e85th.backend.components:74] - Stopping nRepl server.
+2016-08-23 21:17:27.812 rihiveli.local INFO [e85th.backend.components:32] - Stopping HttpKit Web Server.
+2016-08-23 21:17:27.816 rihiveli.local INFO [e85th.commons.sql:24] - Stopping Hikari jdbc connection pool component.
+2016-08-23 21:17:30.348 rihiveli.local INFO [e85th.backend.components:74] - Stopping nRepl server.
+2016-08-23 21:17:30.349 rihiveli.local INFO [e85th.backend.components:32] - Stopping HttpKit Web Server.
+2016-08-23 21:17:30.352 rihiveli.local INFO [e85th.commons.sql:24] - Stopping Hikari jdbc connection pool component.
+2016-08-23 21:17:30.353 rihiveli.local INFO [e85th.commons.util:132] - Setting UTC as runtime timezone.
+2016-08-23 21:17:30.358 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Tue Aug 23 13:32:34 EDT 2016
+version=c64aeeec343b5e1fa27604f8882c60a1
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-23 21:17:30.359 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-23 21:17:30.360 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-23 21:17:30.364 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-23 21:17:30.379 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-23 21:17:30.381 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-23 21:31:53.047 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Tue Aug 23 17:31:15 EDT 2016
+version=d5021315352bc0f338e6bb76579997ba
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-23 21:31:53.051 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-23 21:31:53.053 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-23 21:31:53.086 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-23 21:31:53.225 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-23 21:31:53.242 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-24 20:42:16.877 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Wed Aug 24 16:40:01 EDT 2016
+version=c33fdc4061a300543c60c22fc7914d62
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-24 20:42:16.880 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-24 20:42:16.883 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-24 20:42:16.906 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-24 20:42:17.049 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-24 20:42:17.066 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-24 21:14:01.216 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Wed Aug 24 17:13:23 EDT 2016
+version=d75f0bfdde4694b565ce7f2abdaee7f8
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-24 21:14:01.219 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-24 21:14:01.221 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-24 21:14:01.243 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-24 21:14:01.372 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-24 21:14:01.413 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-25 01:05:00.399 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Wed Aug 24 21:04:06 EDT 2016
+version=5189f1dcfaf9b7a57a47ca89cb8e2dad
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-25 01:05:00.403 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-25 01:05:00.406 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-25 01:05:00.436 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-25 01:05:00.592 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-25 01:05:00.639 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-25 15:26:47.276 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Thu Aug 25 11:26:13 EDT 2016
+version=1b0eecd9b946935ef57bf8f36ed6515d
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-25 15:26:47.280 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-25 15:26:47.283 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-25 15:26:47.318 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-25 15:26:47.460 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-25 15:26:47.502 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-25 16:18:24.562 rihiveli.local INFO [e85th.commons.util:132] - Setting UTC as runtime timezone.
+2016-08-25 16:18:24.582 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-25 16:18:24.676 rihiveli.local INFO [jsk.data.directory:49] - new-directory {:name "10677c69-8c55-4dac-9e24-d7c29ce3b460", :parent-id 1}
+2016-08-25 16:18:24.684 rihiveli.local ERROR [e85th.commons.util:29] - 3ef6b408-c15d-44bd-9ef6-a691403a4e35
+                                          java.lang.Thread.run              Thread.java:  745
+            java.util.concurrent.ThreadPoolExecutor$Worker.run  ThreadPoolExecutor.java:  617
+             java.util.concurrent.ThreadPoolExecutor.runWorker  ThreadPoolExecutor.java: 1142
+                                                           ...                               
+ clojure.tools.nrepl.middleware.interruptible-eval/run-next/fn   interruptible_eval.clj:  190
+                    cider.nrepl.middleware.test/handle-test/fn                 test.clj:  215
+                                                           ...                               
+                                   clojure.core/with-bindings*                 core.clj: 1881 (repeats 2 times)
+                                            clojure.core/apply                 core.clj:  646
+                                                           ...                               
+                 cider.nrepl.middleware.test/handle-test/fn/fn                 test.clj:  218
+                          cider.nrepl.middleware.test/test-nss                 test.clj:  173
+                           cider.nrepl.middleware.test/test-ns                 test.clj:  159
+                         cider.nrepl.middleware.test/test-vars                 test.clj:  142
+                              clojure.test/compose-fixtures/fn                 test.clj:  693
+                                  clojure.test/default-fixture                 test.clj:  686
+                           clojure.test/compose-fixtures/fn/fn                 test.clj:  693
+                                     jsk.core-test/with-system            core_test.clj:   40
+                      cider.nrepl.middleware.test/test-vars/fn                 test.clj:  146
+                                  clojure.test/default-fixture                 test.clj:  686
+                   cider.nrepl.middleware.test/test-vars/fn/fn                 test.clj:  146
+                          cider.nrepl.middleware.test/test-var                 test.clj:  130
+                       cider.nrepl.middleware.test/test-var/fn                 test.clj:  130
+                                    jsk.data.directory-test/fn       directory_test.clj:   15
+                             e85th.test.http/make-api-caller/f                 http.clj:   71
+                             e85th.test.http/make-api-caller/f                 http.clj:   67
+e85th.backend.middleware/wrap-swagger-remove-content-length/fn           middleware.clj:   63
+                       ring.middleware.cookies/wrap-cookies/fn              cookies.clj:  161
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+                             ring.middleware.cors/wrap-cors/fn                 cors.clj:  150
+            e85th.backend.middleware/wrap-api-key-in-header/fn           middleware.clj:   57
+                                   jsk.middleware/wrap-user/fn           middleware.clj:   28
+                       jsk.middleware/wrap-user-permissions/fn           middleware.clj:   22
+                   compojure.api.middleware/wrap-components/fn           middleware.clj:   61
+                                   /compojure.api.routes.Route               routes.clj:   74
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+           ring.middleware.nested-params/wrap-nested-params/fn        nested_params.clj:   86
+         ring.middleware.keyword-params/wrap-keyword-params/fn       keyword_params.clj:   35
+       ring.middleware.format-response/wrap-format-response/fn      format_response.clj:  183
+                   compojure.api.middleware/wrap-exceptions/fn           middleware.clj:   43
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  119 (repeats 4 times)
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  117
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+           ring.middleware.http-response/wrap-http-response/fn        http_response.clj:    8
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+          e85th.backend.middleware/wrap-log-request-outcome/fn           middleware.clj:   74
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                              jsk.routes/fn/fn               routes.clj:   58
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                                           ...                               
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                            jsk.data.routes/fn               routes.clj:   75
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                 compojure.core/wrap-routes/fn                 core.clj:  279
+                                   compojure.core/if-method/fn                 core.clj:   27
+                                    compojure.core/if-route/fn                 core.clj:   45
+                             compojure.core/wrap-route-info/fn                 core.clj:  126
+                       compojure.core/wrap-route-middleware/fn                 core.clj:  121
+                                 compojure.core/pre-init/fn/fn                 core.clj:  271
+                       e85th.backend.web/wrap-authenticated/fn                  web.clj:   67
+               compojure.api.coerce/body-coercer-middleware/fn               coerce.clj:   52
+                                    compojure.core/pre-init/fn                 core.clj:  268
+                                  compojure.core/make-route/fn                 core.clj:  135
+                                         jsk.data.routes/fn/fn               routes.clj:   87
+                           jsk.data.directory/eval24681/create            directory.clj:   46
+                        jsk.data.directory/eval24681/create/fn            directory.clj:   50
+                  jsk.data.directory/eval24564/validate-create            directory.clj:   22
+               jsk.data.directory/eval24564/validate-create/fn            directory.clj:   25
+             jsk.data.directory/eval24536/validate-unique-name            directory.clj:   16
+clojure.lang.ExceptionInfo: Input to validate-unique-name does not match schema: [nil (named (not (instance? java.lang.String 1)) dir-name) (named (not (integer? a-java.lang.String)) parent-id)]
+     error: [nil
+             (named (not (instance? java.lang.String 1)) dir-name)
+             (named (not (integer? a-java.lang.String)) parent-id)]
+    schema: [{:schema Any, :optional? false, :name arg0}
+             {:schema java.lang.String, :optional? false, :name dir-name}
+             {:schema (maybe Int), :optional? false, :name parent-id}]
+      type: :schema.core/error
+     value: [{:sys-config
+              {:log-file "/var/log/jsk/jsk.log",
+               :db-spec
+               {:database-name "jsk",
+                :adapter "postgresql",
+                :password "scheduler",
+                :port-number 5432,
+                :username "jsk",
+                :minimum-idle 2,
+                :server-name "localhost",
+                :maximum-pool-size 5,
+                :pool-name "db-pool"},
+               :env "test"},
+              :mailer {},
+              :sms {},
+              :db
+              {:ds-opts
+               {:database-name "jsk",
+                :adapter "postgresql",
+                :password "scheduler",
+                :port-number 5432,
+                :username "jsk",
+                :minimum-idle 2,
+                :server-name "localhost",
+                :maximum-pool-size 5,
+                :pool-name "db-pool"},
+               :datasource
+               #object[com.zaxxer.hikari.HikariDataSource 0x2573d8a "HikariDataSource (db-pool)"]}}
+             1
+             "10677c69-8c55-4dac-9e24-d7c29ce3b460"]
+
+2016-08-25 16:18:24.864 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/directory/ nil
+2016-08-25 16:18:24.876 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/directory/ nil
+2016-08-25 16:18:24.885 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/directory/ nil
+2016-08-25 19:30:50.783 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Thu Aug 25 15:29:34 EDT 2016
+version=a0491eac80ca2eddb8dd65354cf5ac51
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-25 19:30:50.787 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-25 19:30:50.790 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-25 19:30:50.822 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-25 19:30:50.969 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-25 19:30:50.987 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-25 20:30:34.911 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Thu Aug 25 16:29:56 EDT 2016
+version=d5d82951e3fce9af046b4076e0b7a243
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-25 20:30:34.914 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-25 20:30:34.917 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-25 20:30:34.938 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-25 20:30:35.066 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-25 20:30:35.104 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-26 14:40:18.886 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Fri Aug 26 10:39:24 EDT 2016
+version=378a5cc4efc1b29202feb6d2d4bd3db2
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-26 14:40:18.891 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-26 14:40:18.893 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-26 14:40:18.926 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-26 14:40:19.069 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-26 14:40:19.088 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-26 14:52:01.821 rihiveli.local INFO [jsk.main:50] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Fri Aug 26 10:50:27 EDT 2016
+version=39470b1f3fe87e083c9f8525d7b90dcc
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-26 14:52:01.826 rihiveli.local INFO [jsk.main:51] - Environment: :development
+2016-08-26 14:52:01.830 rihiveli.local WARN [jsk.main:53] - Turning schema validation on globally.
+2016-08-26 14:52:01.861 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-26 14:52:01.997 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-26 14:52:02.013 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-26 16:23:21.498 rihiveli.local INFO [e85th.commons.sql:92] - json data: clojure.lang.LazySeq@20
+2016-08-26 16:23:21.501 rihiveli.local INFO [e85th.commons.sql:67] - data is: 1
+2016-08-26 16:23:27.572 rihiveli.local INFO [e85th.commons.sql:92] - json data: clojure.lang.LazySeq@20
+2016-08-26 16:23:27.573 rihiveli.local INFO [e85th.commons.sql:67] - data is: 1
+2016-08-26 16:24:26.251 rihiveli.local INFO [e85th.commons.sql:92] - json data: [1]
+2016-08-26 16:24:26.254 rihiveli.local INFO [e85th.commons.sql:67] - data is: 1
+2016-08-26 16:54:40.302 rihiveli.local INFO [e85th.commons.sql:92] - json data: [1]
+2016-08-26 16:54:40.305 rihiveli.local INFO [e85th.commons.sql:67] - data is: 1
+2016-08-26 17:17:20.788 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 1
+2016-08-26 17:17:41.734 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 1
+2016-08-26 17:18:29.026 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x28906f84 "2016-08-26T17:18:28.992Z"], :id 12, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0xa27e3a7 "2016-08-26T17:18:28.995Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:18:29.035 rihiveli.local INFO [jsk.data.job:21] - Created new job with id {:description "job-1-description", :updated-at #object[org.joda.time.DateTime 0x28906f84 "2016-08-26T17:18:28.992Z"], :tags ("basic"), :agent-id nil, :name "job-1", :type "shell", :updated-by 1, :created-by 1, :id 12, :created-at #object[org.joda.time.DateTime 0xa27e3a7 "2016-08-26T17:18:28.995Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:19:08.555 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x6e294c00 "2016-08-26T17:19:08.546Z"], :id 13, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x1c881333 "2016-08-26T17:19:08.547Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:20:13.989 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x6e69dd99 "2016-08-26T17:20:13.981Z"], :id 14, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x38c3b4af "2016-08-26T17:20:13.982Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:20:13.991 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 14
+2016-08-26 17:20:52.668 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x730db7f3 "2016-08-26T17:20:52.660Z"], :id 15, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x2490ba88 "2016-08-26T17:20:52.660Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:20:52.670 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 15
+2016-08-26 17:20:58.279 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x29342277 "2016-08-26T17:20:58.270Z"], :id 16, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x37735f3 "2016-08-26T17:20:58.271Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:20:58.280 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 16
+2016-08-26 17:21:01.503 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x1b82720c "2016-08-26T17:21:01.502Z"], :id 17, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x5af2e650 "2016-08-26T17:21:01.502Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:21:01.504 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 17
+2016-08-26 17:21:51.188 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x23b065e8 "2016-08-26T17:21:51.171Z"], :id 18, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x27f08d0f "2016-08-26T17:21:51.181Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:21:51.192 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 18
+2016-08-26 17:22:11.869 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x5a08bf53 "2016-08-26T17:22:11.858Z"], :id 19, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x5daddd95 "2016-08-26T17:22:11.860Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:22:11.871 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 19
+2016-08-26 17:22:31.745 rihiveli.local INFO [e85th.commons.sql:67] - data is: {:description "job-1-description", :tags ("basic"), :name "job-1", :type "shell", :updated_at #object[org.joda.time.DateTime 0x2c35e791 "2016-08-26T17:22:31.737Z"], :id 20, :updated_by 1, :agent_id nil, :created_by 1, :created_at #object[org.joda.time.DateTime 0x29109ee8 "2016-08-26T17:22:31.738Z"], :props {:cmd "ls", :working-dir "/"}}
+2016-08-26 17:22:31.747 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 20
+2016-08-26 17:26:35.555 rihiveli.local INFO [jsk.main:52] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Fri Aug 26 13:23:56 EDT 2016
+version=5745289f3abe03f43f68c2bccb5896dd
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-08-26 17:26:35.559 rihiveli.local INFO [jsk.main:53] - Environment: :development
+2016-08-26 17:26:35.562 rihiveli.local WARN [jsk.main:55] - Turning schema validation on globally.
+2016-08-26 17:26:35.594 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-26 17:26:35.730 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-08-26 17:26:35.747 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-08-26 17:26:39.265 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 21
+2016-08-26 17:26:40.553 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 22
+2016-08-26 17:26:41.759 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 23
+2016-08-26 17:26:42.670 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 24
+2016-08-26 17:26:43.480 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 25
+2016-08-26 17:26:47.818 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 26
+2016-08-26 17:26:54.536 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 27
+2016-08-26 17:37:48.787 rihiveli.local INFO [e85th.commons.util:132] - Setting UTC as runtime timezone.
+2016-08-26 17:37:48.802 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-08-26 17:37:48.885 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 28
+2016-08-26 17:37:48.891 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-08-26 17:37:48.962 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/28 200
+2016-08-26 17:37:48.970 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/28 200
+2016-08-26 17:37:48.984 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/28 200
+2016-08-26 17:38:28.601 rihiveli.local INFO [jsk.data.job:21] - Created new job with id 29
+2016-08-26 17:38:28.604 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-08-26 17:38:28.614 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/29 200
+2016-08-26 17:38:28.619 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/29 200
+2016-08-26 17:38:28.627 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/29 200
+2016-09-05 22:43:04.780 rihiveli.local INFO [jsk.main:52] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Sep 05 18:42:10 EDT 2016
+version=505e67dc074b99e418db6ff26c6f06d2
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-09-05 22:43:04.784 rihiveli.local INFO [jsk.main:53] - Environment: :development
+2016-09-05 22:43:04.786 rihiveli.local WARN [jsk.main:55] - Turning schema validation on globally.
+2016-09-05 22:43:04.818 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-09-05 22:43:04.973 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-09-05 22:43:05.027 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-09-05 22:43:39.721 rihiveli.local INFO [e85th.commons.util:132] - Setting UTC as runtime timezone.
+2016-09-05 22:43:39.729 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-09-05 22:43:39.803 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-05 22:43:39.804 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "5563e21a-396f-4a8d-b6cb-113f92898a33", :description "job description", :is-enabled true, :agent-id nil, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :tags ["shell-job"]}, :body-params {:name "5563e21a-396f-4a8d-b6cb-113f92898a33", :description "job description", :is-enabled true, :agent-id nil, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "205", "content-type" "application/json"}, :server-port 80, :content-length 205, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x5820d5e "java.io.ByteArrayInputStream@5820d5e"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-05 22:43:39.883 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-05 22:43:39.897 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-05 22:43:39.904 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-05 22:44:57.353 rihiveli.local ERROR [e85th.commons.util:29] - 8cef0b45-3cfb-432b-9e12-3ccbf0fbfd83
+                                                     java.lang.Thread.run                       Thread.java:  745
+                       java.util.concurrent.ThreadPoolExecutor$Worker.run           ThreadPoolExecutor.java:  617
+                        java.util.concurrent.ThreadPoolExecutor.runWorker           ThreadPoolExecutor.java: 1142
+                                                                      ...                                        
+            clojure.tools.nrepl.middleware.interruptible-eval/run-next/fn            interruptible_eval.clj:  190
+                               cider.nrepl.middleware.test/handle-test/fn                          test.clj:  215
+                                                                      ...                                        
+                                              clojure.core/with-bindings*                          core.clj: 1881 (repeats 2 times)
+                                                       clojure.core/apply                          core.clj:  646
+                                                                      ...                                        
+                            cider.nrepl.middleware.test/handle-test/fn/fn                          test.clj:  218
+                                     cider.nrepl.middleware.test/test-nss                          test.clj:  173
+                                      cider.nrepl.middleware.test/test-ns                          test.clj:  159
+                                    cider.nrepl.middleware.test/test-vars                          test.clj:  142
+                                         clojure.test/compose-fixtures/fn                          test.clj:  693
+                                             clojure.test/default-fixture                          test.clj:  686
+                                      clojure.test/compose-fixtures/fn/fn                          test.clj:  693
+                                                jsk.core-test/with-system                     core_test.clj:   42
+                                 cider.nrepl.middleware.test/test-vars/fn                          test.clj:  146
+                                             clojure.test/default-fixture                          test.clj:  686
+                              cider.nrepl.middleware.test/test-vars/fn/fn                          test.clj:  146
+                                     cider.nrepl.middleware.test/test-var                          test.clj:  130
+                                  cider.nrepl.middleware.test/test-var/fn                          test.clj:  130
+                                                     jsk.data.job-test/fn                      job_test.clj:   21
+                                        e85th.test.http/make-api-caller/f                          http.clj:   71
+                                        e85th.test.http/make-api-caller/f                          http.clj:   67
+           e85th.backend.middleware/wrap-swagger-remove-content-length/fn                    middleware.clj:   63
+                                  ring.middleware.cookies/wrap-cookies/fn                       cookies.clj:  161
+                                    ring.middleware.params/wrap-params/fn                        params.clj:   64
+                                        ring.middleware.cors/wrap-cors/fn                          cors.clj:  150
+                       e85th.backend.middleware/wrap-api-key-in-header/fn                    middleware.clj:   57
+                                              jsk.middleware/wrap-user/fn                    middleware.clj:   28
+                                  jsk.middleware/wrap-user-permissions/fn                    middleware.clj:   22
+                              compojure.api.middleware/wrap-components/fn                    middleware.clj:   61
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                 compojure.api.middleware/wrap-options/fn                    middleware.clj:   74
+                                    ring.middleware.params/wrap-params/fn                        params.clj:   64
+                      ring.middleware.nested-params/wrap-nested-params/fn                 nested_params.clj:   86
+                    ring.middleware.keyword-params/wrap-keyword-params/fn                keyword_params.clj:   35
+                  ring.middleware.format-response/wrap-format-response/fn               format_response.clj:  183
+                              compojure.api.middleware/wrap-exceptions/fn                    middleware.clj:   43
+                      ring.middleware.format-params/wrap-format-params/fn                 format_params.clj:  119 (repeats 4 times)
+                      ring.middleware.format-params/wrap-format-params/fn                 format_params.clj:  117
+                                 compojure.api.middleware/wrap-options/fn                    middleware.clj:   74
+                             ring.swagger.middleware/wrap-swagger-data/fn                    middleware.clj:   33
+                      ring.middleware.http-response/wrap-http-response/fn                 http_response.clj:    8
+                             ring.swagger.middleware/wrap-swagger-data/fn                    middleware.clj:   33
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                     e85th.backend.middleware/wrap-log-request-outcome/fn                    middleware.clj:   74
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                             compojure.core/if-context/fn                          core.clj:  220
+                                                         jsk.routes/fn/fn                        routes.clj:   58
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                 compojure.core/routes/fn                          core.clj:  156
+                                                       clojure.core/apply                          core.clj:  648
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                                      ...                                        
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                             compojure.core/if-context/fn                          core.clj:  220
+                                                       jsk.data.routes/fn                        routes.clj:  141
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                 compojure.core/routes/fn                          core.clj:  156
+                                                       clojure.core/apply                          core.clj:  648
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                            compojure.core/wrap-routes/fn                          core.clj:  279
+                                              compojure.core/if-method/fn                          core.clj:   27
+                                               compojure.core/if-route/fn                          core.clj:   45
+                                        compojure.core/wrap-route-info/fn                          core.clj:  126
+                                  compojure.core/wrap-route-middleware/fn                          core.clj:  121
+                                            compojure.core/pre-init/fn/fn                          core.clj:  271
+                                  e85th.backend.web/wrap-authenticated/fn                           web.clj:   67
+                          compojure.api.coerce/body-coercer-middleware/fn                        coerce.clj:   52
+                                               compojure.core/pre-init/fn                          core.clj:  268
+                                             compojure.core/make-route/fn                          core.clj:  135
+                                                    jsk.data.routes/fn/fn                        routes.clj:  153
+                                            jsk.data.job/eval18942/create                           job.clj:   17
+                                         jsk.data.job/eval18942/create/fn                           job.clj:   21
+                                                jsk.data.db/fn/insert-job                            db.clj:  180
+                                             jsk.data.db/fn/insert-job/fn                            db.clj:  182
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  587
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  618
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  602
+                                          jsk.data.db/fn/insert-job/fn/fn                            db.clj:  183
+                                               jsk.data.db/fn/insert-node                            db.clj:  161
+                                            jsk.data.db/fn/insert-node/fn                            db.clj:  164
+                                             e85th.commons.sql/fn/insert!                           sql.clj:   86
+                                          e85th.commons.sql/fn/insert!/fn                           sql.clj:   94
+                                             e85th.commons.sql/fn/insert!                           sql.clj:   86
+                                          e85th.commons.sql/fn/insert!/fn                           sql.clj:   90
+                                                clojure.java.jdbc/insert!                          jdbc.clj: 1150
+                                           clojure.java.jdbc/insert-rows!                          jdbc.clj: 1111
+                                          clojure.java.jdbc/insert-helper                          jdbc.clj: 1018
+                                    clojure.java.jdbc/multi-insert-helper                          jdbc.clj: 1010
+                                                       clojure.core/doall                          core.clj: 3039
+                                                       clojure.core/dorun                          core.clj: 3024
+                                                         clojure.core/seq                          core.clj:  137
+                                                                      ...                                        
+                                                      clojure.core/map/fn                          core.clj: 2644
+                                 clojure.java.jdbc/multi-insert-helper/fn                          jdbc.clj: 1010
+                             clojure.java.jdbc/db-do-prepared-return-keys                          jdbc.clj:  792
+                     clojure.java.jdbc/db-do-execute-prepared-return-keys                          jdbc.clj:  756
+clojure.java.jdbc/db-do-execute-prepared-return-keys/exec-and-return-keys                          jdbc.clj:  742
+        com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate  HikariProxyPreparedStatement.java     
+              com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate       ProxyPreparedStatement.java:   61
+                    org.postgresql.jdbc.PgPreparedStatement.executeUpdate          PgPreparedStatement.java:  133
+                 org.postgresql.jdbc.PgPreparedStatement.executeWithFlags          PgPreparedStatement.java:  161
+                                  org.postgresql.jdbc.PgStatement.execute                  PgStatement.java:  424
+                         org.postgresql.core.v3.QueryExecutorImpl.execute            QueryExecutorImpl.java:  200
+                  org.postgresql.core.v3.QueryExecutorImpl.processResults            QueryExecutorImpl.java: 2003
+            org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse            QueryExecutorImpl.java: 2284
+org.postgresql.util.PSQLException: ERROR: null value in column "node_type_id" violates not-null constraint
+                                     Detail: Failing row contains (2, null, 8e759734-c7b2-436a-b723-2a122e31642b, job description, t, ["shell-job"], 2016-09-05 22:44:57.33986, 1, 2016-09-05 22:44:57.314, 1).
+              SQLState: "23502"
+             errorCode: 0
+    serverErrorMessage: #object[org.postgresql.util.ServerErrorMessage 0x6d765e07 "ERROR: null value in column \"node_type_id\" violates not-null constraint\n  Detail: Failing row contains (2, null, 8e759734-c7b2-436a-b723-2a122e31642b, job description, t, [\"shell-job\"], 2016-09-05 22:44:57.33986, 1, 2016-09-05 22:44:57.314, 1)."]
+
+2016-09-05 22:44:57.419 rihiveli.local ERROR [e85th.backend.middleware:96] - req {:cookies {}, :remote-addr "localhost", :params {:name "8e759734-c7b2-436a-b723-2a122e31642b", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :tags ["shell-job"]}, :body-params {:name "8e759734-c7b2-436a-b723-2a122e31642b", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "189", "content-type" "application/json"}, :server-port 80, :content-length 189, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x4f89e4e4 "java.io.ByteArrayInputStream@4f89e4e4"], :scheme :http, :request-method :post}, message: ERROR: null value in column "node_type_id" violates not-null constraint
+  Detail: Failing row contains (2, null, 8e759734-c7b2-436a-b723-2a122e31642b, job description, t, ["shell-job"], 2016-09-05 22:44:57.33986, 1, 2016-09-05 22:44:57.314, 1).
+2016-09-05 22:44:57.438 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-05 22:44:57.448 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-05 22:44:57.454 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-05 22:54:15.146 rihiveli.local INFO [e85th.backend.components:74] - Stopping nRepl server.
+2016-09-05 22:54:15.151 rihiveli.local INFO [e85th.backend.components:32] - Stopping HttpKit Web Server.
+2016-09-05 22:54:15.155 rihiveli.local INFO [e85th.commons.sql:24] - Stopping Hikari jdbc connection pool component.
+2016-09-05 22:55:37.475 rihiveli.local INFO [jsk.main:52] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Sep 05 18:55:04 EDT 2016
+version=4c2f389d18131a84e2ba594521b06cbe
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-09-05 22:55:37.481 rihiveli.local INFO [jsk.main:53] - Environment: :development
+2016-09-05 22:55:37.484 rihiveli.local WARN [jsk.main:55] - Turning schema validation on globally.
+2016-09-05 22:55:37.517 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-09-05 22:55:37.657 rihiveli.local INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-09-05 22:55:37.698 rihiveli.local INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2016-09-05 22:55:50.476 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 1
+2016-09-05 22:56:02.575 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 2
+2016-09-05 22:56:07.201 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 3
+2016-09-05 22:56:08.083 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 4
+2016-09-05 23:22:37.314 rihiveli.local INFO [e85th.commons.util:132] - Setting UTC as runtime timezone.
+2016-09-05 23:22:37.326 rihiveli.local INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-09-05 23:22:37.427 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 5
+2016-09-05 23:22:37.435 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-05 23:22:37.504 rihiveli.local ERROR [e85th.commons.util:29] - cb34f389-67ad-4e2c-bd7f-e4dc1fb0cdac
+                                          java.lang.Thread.run              Thread.java:  745
+            java.util.concurrent.ThreadPoolExecutor$Worker.run  ThreadPoolExecutor.java:  617
+             java.util.concurrent.ThreadPoolExecutor.runWorker  ThreadPoolExecutor.java: 1142
+                                                           ...                               
+ clojure.tools.nrepl.middleware.interruptible-eval/run-next/fn   interruptible_eval.clj:  190
+                    cider.nrepl.middleware.test/handle-test/fn                 test.clj:  215
+                                                           ...                               
+                                   clojure.core/with-bindings*                 core.clj: 1881 (repeats 2 times)
+                                            clojure.core/apply                 core.clj:  646
+                                                           ...                               
+                 cider.nrepl.middleware.test/handle-test/fn/fn                 test.clj:  218
+                          cider.nrepl.middleware.test/test-nss                 test.clj:  173
+                           cider.nrepl.middleware.test/test-ns                 test.clj:  159
+                         cider.nrepl.middleware.test/test-vars                 test.clj:  142
+                              clojure.test/compose-fixtures/fn                 test.clj:  693
+                                  clojure.test/default-fixture                 test.clj:  686
+                           clojure.test/compose-fixtures/fn/fn                 test.clj:  693
+                                     jsk.core-test/with-system            core_test.clj:   42
+                      cider.nrepl.middleware.test/test-vars/fn                 test.clj:  146
+                                  clojure.test/default-fixture                 test.clj:  686
+                   cider.nrepl.middleware.test/test-vars/fn/fn                 test.clj:  146
+                          cider.nrepl.middleware.test/test-var                 test.clj:  130
+                       cider.nrepl.middleware.test/test-var/fn                 test.clj:  130
+                                          jsk.data.job-test/fn             job_test.clj:   29
+                             e85th.test.http/make-api-caller/f                 http.clj:   71
+                             e85th.test.http/make-api-caller/f                 http.clj:   67
+e85th.backend.middleware/wrap-swagger-remove-content-length/fn           middleware.clj:   63
+                       ring.middleware.cookies/wrap-cookies/fn              cookies.clj:  161
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+                             ring.middleware.cors/wrap-cors/fn                 cors.clj:  150
+            e85th.backend.middleware/wrap-api-key-in-header/fn           middleware.clj:   57
+                                   jsk.middleware/wrap-user/fn           middleware.clj:   28
+                       jsk.middleware/wrap-user-permissions/fn           middleware.clj:   22
+                   compojure.api.middleware/wrap-components/fn           middleware.clj:   61
+                                   /compojure.api.routes.Route               routes.clj:   74
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+           ring.middleware.nested-params/wrap-nested-params/fn        nested_params.clj:   86
+         ring.middleware.keyword-params/wrap-keyword-params/fn       keyword_params.clj:   35
+       ring.middleware.format-response/wrap-format-response/fn      format_response.clj:  183
+                   compojure.api.middleware/wrap-exceptions/fn           middleware.clj:   43
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  119 (repeats 4 times)
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  117
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+           ring.middleware.http-response/wrap-http-response/fn        http_response.clj:    8
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+          e85th.backend.middleware/wrap-log-request-outcome/fn           middleware.clj:   74
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                              jsk.routes/fn/fn               routes.clj:   58
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                                           ...                               
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                            jsk.data.routes/fn               routes.clj:  141
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                 compojure.core/wrap-routes/fn                 core.clj:  279
+                                   compojure.core/if-method/fn                 core.clj:   27
+                                    compojure.core/if-route/fn                 core.clj:   45
+                             compojure.core/wrap-route-info/fn                 core.clj:  126
+                       compojure.core/wrap-route-middleware/fn                 core.clj:  121
+                                 compojure.core/pre-init/fn/fn                 core.clj:  271
+                       e85th.backend.web/wrap-authenticated/fn                  web.clj:   67
+               compojure.api.coerce/body-coercer-middleware/fn               coerce.clj:   52
+                                    compojure.core/pre-init/fn                 core.clj:  268
+                                  compojure.core/make-route/fn                 core.clj:  135
+                                         jsk.data.routes/fn/fn               routes.clj:  161
+                                  jsk.data.job/eval20876/amend                  job.clj:   25
+                               jsk.data.job/eval20876/amend/fn                  job.clj:   28
+                              jsk.data.db/eval24472/update-job                   db.clj:  205
+                           jsk.data.db/eval24472/update-job/fn                   db.clj:  207
+                             clojure.java.jdbc/db-transaction*                 jdbc.clj:  587
+                             clojure.java.jdbc/db-transaction*                 jdbc.clj:  618
+                             clojure.java.jdbc/db-transaction*                 jdbc.clj:  602
+                        jsk.data.db/eval24472/update-job/fn/fn                   db.clj:  211
+                                  e85th.commons.sql/fn/update!                  sql.clj:  148
+clojure.lang.ExceptionInfo: Input to update! does not match schema: [nil nil (named (not (map? [])) row) nil]
+     error: [nil nil (named (not (map? [])) row) nil]
+    schema: [{:schema Any, :optional? false, :name db}
+             {:schema Keyword, :optional? false, :name table}
+             {:schema {Keyword Any}, :optional? false, :name row}
+             {:schema Any, :optional? false, :name where-clause}]
+      type: :schema.core/error
+     value: [{:ds-opts
+              {:database-name "jsk",
+               :adapter "postgresql",
+               :password "scheduler",
+               :port-number 5432,
+               :username "jsk",
+               :minimum-idle 2,
+               :server-name "localhost",
+               :maximum-pool-size 5,
+               :pool-name "db-pool"},
+              :datasource
+              #object[com.zaxxer.hikari.HikariDataSource 0x3f502dca "HikariDataSource (db-pool)"]}
+             :job
+             []
+             ["id = ?" 5]]
+
+2016-09-05 23:22:37.578 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/5 200
+2016-09-05 23:22:37.599 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/5 200
+2016-09-06 00:41:45.710 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 00:41:45.713 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "68a853a8-50cb-426e-987f-574156d6cdc6", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior-id 1, :tags ["shell-job"]}, :body-params {:name "68a853a8-50cb-426e-987f-574156d6cdc6", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior-id 1, :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "221", "content-type" "application/json"}, :server-port 80, :content-length 221, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x48256642 "java.io.ByteArrayInputStream@48256642"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil)), :behavior-id disallowed-key}, error: {:agent-id (not (integer? nil)), :behavior-id disallowed-key}
+2016-09-06 00:41:45.730 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 00:41:45.739 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 00:41:45.745 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 00:42:17.158 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 00:42:17.159 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "33670404-f863-40eb-b708-5c90cf4673c2", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :body-params {:name "33670404-f863-40eb-b708-5c90cf4673c2", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "227", "content-type" "application/json"}, :server-port 80, :content-length 227, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x2fa6e2eb "java.io.ByteArrayInputStream@2fa6e2eb"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-06 00:42:17.173 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 00:42:17.182 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 00:42:17.187 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 00:42:36.807 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 00:42:36.808 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "7c441e1f-ce07-4697-84b0-59f177ebf592", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :body-params {:name "7c441e1f-ce07-4697-84b0-59f177ebf592", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "227", "content-type" "application/json"}, :server-port 80, :content-length 227, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x6929bd2 "java.io.ByteArrayInputStream@6929bd2"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-06 00:42:36.822 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 00:42:36.830 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 00:42:36.835 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 00:42:42.925 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 00:42:42.926 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "aa87e96c-e6ee-4205-a361-c0f4847b0c52", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :body-params {:name "aa87e96c-e6ee-4205-a361-c0f4847b0c52", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "227", "content-type" "application/json"}, :server-port 80, :content-length 227, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x2955d353 "java.io.ByteArrayInputStream@2955d353"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-06 00:42:42.945 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 00:42:42.954 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 00:42:42.958 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 00:42:48.691 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 00:42:48.693 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "c605d6fc-779b-440f-be1f-1c1246f1c096", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :body-params {:name "c605d6fc-779b-440f-be1f-1c1246f1c096", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior "standard", :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "227", "content-type" "application/json"}, :server-port 80, :content-length 227, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x4efcd7af "java.io.ByteArrayInputStream@4efcd7af"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-06 00:42:48.712 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 00:42:48.721 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 00:42:48.726 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 01:04:06.121 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 6
+2016-09-06 01:04:51.586 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 7
+2016-09-06 01:04:53.927 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 8
+2016-09-06 01:04:56.504 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 9
+2016-09-06 01:06:23.970 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 10
+2016-09-06 01:06:49.118 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 11
+2016-09-06 01:07:37.503 rihiveli.local INFO [e85th.backend.middleware:83] - :post /api/v1/job 400
+2016-09-06 01:07:37.504 rihiveli.local WARN [e85th.backend.middleware:84] - req {:cookies {}, :remote-addr "localhost", :params {:name "389f40e4-a11a-46fc-95a9-923e311f2e8b", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior-id 1, :tags ["shell-job"]}, :body-params {:name "389f40e4-a11a-46fc-95a9-923e311f2e8b", :description "job description", :is-enabled true, :type "shell", :props {:working-dir "/home/jsk", :command "ls -lht"}, :agent-id nil, :behavior-id 1, :tags ["shell-job"]}, :headers {"host" "localhost", "content-length" "221", "content-type" "application/json"}, :server-port 80, :content-length 221, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/job", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x1060a7fa "java.io.ByteArrayInputStream@1060a7fa"], :scheme :http, :request-method :post}, message: Request validation failed: {:agent-id (not (integer? nil))}, error: {:agent-id (not (integer? nil))}
+2016-09-06 01:07:37.523 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/ nil
+2016-09-06 01:07:37.532 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/ nil
+2016-09-06 01:07:37.537 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/ nil
+2016-09-06 01:08:11.926 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 12
+2016-09-06 01:08:11.931 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-06 01:08:11.954 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/12 200
+2016-09-06 01:08:11.959 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/12 200
+2016-09-06 01:08:11.976 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/12 200
+2016-09-06 01:09:07.923 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 13
+2016-09-06 01:09:07.926 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-06 01:09:07.938 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/13 200
+2016-09-06 01:09:07.942 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/13 200
+2016-09-06 01:09:07.957 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/13 200
+2016-09-06 01:09:11.317 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 14
+2016-09-06 01:09:11.319 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-06 01:09:11.328 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/14 200
+2016-09-06 01:09:11.332 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/14 200
+2016-09-06 01:09:11.340 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/14 200
+2016-09-06 01:09:14.133 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 15
+2016-09-06 01:09:14.135 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-06 01:09:14.142 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/15 200
+2016-09-06 01:09:14.146 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/15 200
+2016-09-06 01:09:14.154 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/15 200
+2016-09-06 01:11:07.451 rihiveli.local INFO [jsk.data.job:22] - Created new job with id 16
+2016-09-06 01:11:07.454 rihiveli.local INFO [e85th.backend.middleware:75] - :post /api/v1/job 201
+2016-09-06 01:11:07.462 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/job/16 200
+2016-09-06 01:11:07.466 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/job/16 200
+2016-09-06 01:11:07.475 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/job/16 200
+2016-09-06 01:11:28.785 rihiveli.local ERROR [e85th.commons.util:29] - 33beaeab-fca2-417c-b6ae-27d8fcb72048
+                                                     java.lang.Thread.run                       Thread.java:  745
+                       java.util.concurrent.ThreadPoolExecutor$Worker.run           ThreadPoolExecutor.java:  617
+                        java.util.concurrent.ThreadPoolExecutor.runWorker           ThreadPoolExecutor.java: 1142
+                                                                      ...                                        
+            clojure.tools.nrepl.middleware.interruptible-eval/run-next/fn            interruptible_eval.clj:  190
+                               cider.nrepl.middleware.test/handle-test/fn                          test.clj:  215
+                                                                      ...                                        
+                                              clojure.core/with-bindings*                          core.clj: 1881 (repeats 2 times)
+                                                       clojure.core/apply                          core.clj:  646
+                                                                      ...                                        
+                            cider.nrepl.middleware.test/handle-test/fn/fn                          test.clj:  218
+                                     cider.nrepl.middleware.test/test-nss                          test.clj:  173
+                                      cider.nrepl.middleware.test/test-ns                          test.clj:  159
+                                    cider.nrepl.middleware.test/test-vars                          test.clj:  142
+                                         clojure.test/compose-fixtures/fn                          test.clj:  693
+                                             clojure.test/default-fixture                          test.clj:  686
+                                      clojure.test/compose-fixtures/fn/fn                          test.clj:  693
+                                                jsk.core-test/with-system                     core_test.clj:   42
+                                 cider.nrepl.middleware.test/test-vars/fn                          test.clj:  146
+                                             clojure.test/default-fixture                          test.clj:  686
+                              cider.nrepl.middleware.test/test-vars/fn/fn                          test.clj:  146
+                                     cider.nrepl.middleware.test/test-var                          test.clj:  130
+                                  cider.nrepl.middleware.test/test-var/fn                          test.clj:  130
+                                                jsk.data.workflow-test/fn                 workflow_test.clj:   19
+                                        e85th.test.http/make-api-caller/f                          http.clj:   71
+                                        e85th.test.http/make-api-caller/f                          http.clj:   67
+           e85th.backend.middleware/wrap-swagger-remove-content-length/fn                    middleware.clj:   63
+                                  ring.middleware.cookies/wrap-cookies/fn                       cookies.clj:  161
+                                    ring.middleware.params/wrap-params/fn                        params.clj:   64
+                                        ring.middleware.cors/wrap-cors/fn                          cors.clj:  150
+                       e85th.backend.middleware/wrap-api-key-in-header/fn                    middleware.clj:   57
+                                              jsk.middleware/wrap-user/fn                    middleware.clj:   28
+                                  jsk.middleware/wrap-user-permissions/fn                    middleware.clj:   22
+                              compojure.api.middleware/wrap-components/fn                    middleware.clj:   61
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                 compojure.api.middleware/wrap-options/fn                    middleware.clj:   74
+                                    ring.middleware.params/wrap-params/fn                        params.clj:   64
+                      ring.middleware.nested-params/wrap-nested-params/fn                 nested_params.clj:   86
+                    ring.middleware.keyword-params/wrap-keyword-params/fn                keyword_params.clj:   35
+                  ring.middleware.format-response/wrap-format-response/fn               format_response.clj:  183
+                              compojure.api.middleware/wrap-exceptions/fn                    middleware.clj:   43
+                      ring.middleware.format-params/wrap-format-params/fn                 format_params.clj:  119 (repeats 4 times)
+                      ring.middleware.format-params/wrap-format-params/fn                 format_params.clj:  117
+                                 compojure.api.middleware/wrap-options/fn                    middleware.clj:   74
+                             ring.swagger.middleware/wrap-swagger-data/fn                    middleware.clj:   33
+                      ring.middleware.http-response/wrap-http-response/fn                 http_response.clj:    8
+                             ring.swagger.middleware/wrap-swagger-data/fn                    middleware.clj:   33
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                     e85th.backend.middleware/wrap-log-request-outcome/fn                    middleware.clj:   74
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                             compojure.core/if-context/fn                          core.clj:  220
+                                                         jsk.routes/fn/fn                        routes.clj:   58
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                 compojure.core/routes/fn                          core.clj:  156
+                                                       clojure.core/apply                          core.clj:  648
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                                      ...                                        
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                                  clojure.core/partial/fn                          core.clj: 2515
+                                                compojure.api.core/handle                          core.clj:    8
+                                                        clojure.core/some                          core.clj: 2592
+                                             compojure.api.core/handle/fn                          core.clj:    8
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                             compojure.core/if-context/fn                          core.clj:  220
+                                                       jsk.data.routes/fn                        routes.clj:  172
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                                 compojure.core/routes/fn                          core.clj:  156
+                                                       clojure.core/apply                          core.clj:  648
+                                                                      ...                                        
+                                                   compojure.core/routing                          core.clj:  148
+                                                   compojure.core/routing                          core.clj:  151
+                                                        clojure.core/some                          core.clj: 2592
+                                                compojure.core/routing/fn                          core.clj:  151
+                                              /compojure.api.routes.Route                        routes.clj:   74
+                                            compojure.core/wrap-routes/fn                          core.clj:  279
+                                              compojure.core/if-method/fn                          core.clj:   27
+                                               compojure.core/if-route/fn                          core.clj:   45
+                                        compojure.core/wrap-route-info/fn                          core.clj:  126
+                                  compojure.core/wrap-route-middleware/fn                          core.clj:  121
+                                            compojure.core/pre-init/fn/fn                          core.clj:  271
+                                  e85th.backend.web/wrap-authenticated/fn                           web.clj:   67
+                          compojure.api.coerce/body-coercer-middleware/fn                        coerce.clj:   52
+                                               compojure.core/pre-init/fn                          core.clj:  268
+                                             compojure.core/make-route/fn                          core.clj:  135
+                                                    jsk.data.routes/fn/fn                        routes.clj:  184
+                                              jsk.data.workflow/fn/create                      workflow.clj:   17
+                                           jsk.data.workflow/fn/create/fn                      workflow.clj:   20
+                                    jsk.data.db/eval51081/insert-workflow                            db.clj:  245
+                                 jsk.data.db/eval51081/insert-workflow/fn                            db.clj:  247
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  587
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  618
+                                        clojure.java.jdbc/db-transaction*                          jdbc.clj:  602
+                              jsk.data.db/eval51081/insert-workflow/fn/fn                            db.clj:  249
+                                             e85th.commons.sql/fn/insert!                           sql.clj:   86
+                                          e85th.commons.sql/fn/insert!/fn                           sql.clj:   94
+                                             e85th.commons.sql/fn/insert!                           sql.clj:   86
+                                          e85th.commons.sql/fn/insert!/fn                           sql.clj:   90
+                                                clojure.java.jdbc/insert!                          jdbc.clj: 1150
+                                           clojure.java.jdbc/insert-rows!                          jdbc.clj: 1111
+                                          clojure.java.jdbc/insert-helper                          jdbc.clj: 1018
+                                    clojure.java.jdbc/multi-insert-helper                          jdbc.clj: 1010
+                                                       clojure.core/doall                          core.clj: 3039
+                                                       clojure.core/dorun                          core.clj: 3024
+                                                         clojure.core/seq                          core.clj:  137
+                                                                      ...                                        
+                                                      clojure.core/map/fn                          core.clj: 2644
+                                 clojure.java.jdbc/multi-insert-helper/fn                          jdbc.clj: 1010
+                             clojure.java.jdbc/db-do-prepared-return-keys                          jdbc.clj:  792
+                     clojure.java.jdbc/db-do-execute-prepared-return-keys                          jdbc.clj:  756
+clojure.java.jdbc/db-do-execute-prepared-return-keys/exec-and-return-keys                          jdbc.clj:  742
+        com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate  HikariProxyPreparedStatement.java     
+              com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate       ProxyPreparedStatement.java:   61
+                    org.postgresql.jdbc.PgPreparedStatement.executeUpdate          PgPreparedStatement.java:  133
+                 org.postgresql.jdbc.PgPreparedStatement.executeWithFlags          PgPreparedStatement.java:  161
+                                  org.postgresql.jdbc.PgStatement.execute                  PgStatement.java:  424
+                         org.postgresql.core.v3.QueryExecutorImpl.execute            QueryExecutorImpl.java:  200
+                  org.postgresql.core.v3.QueryExecutorImpl.processResults            QueryExecutorImpl.java: 2003
+            org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse            QueryExecutorImpl.java: 2284
+org.postgresql.util.PSQLException: ERROR: column "created_by" of relation "workflow" does not exist
+                                     Position: 33
+              SQLState: "42703"
+             errorCode: 0
+    serverErrorMessage: #object[org.postgresql.util.ServerErrorMessage 0x7b3010b7 "ERROR: column \"created_by\" of relation \"workflow\" does not exist\n  Position: 33"]
+
+2016-09-06 01:11:28.825 rihiveli.local ERROR [e85th.backend.middleware:96] - req {:cookies {}, :remote-addr "localhost", :params {:name "4e00b089-1086-44a5-86a3-d38991ffe362", :description "workflow description", :is-enabled true, :tags ["shell-workflow"]}, :body-params {:name "4e00b089-1086-44a5-86a3-d38991ffe362", :description "workflow description", :is-enabled true, :tags ["shell-workflow"]}, :headers {"host" "localhost", "content-length" "128", "content-type" "application/json"}, :server-port 80, :content-length 128, :form-params {}, :query-params {}, :content-type "application/json", :uri "/api/v1/workflow", :server-name "localhost", :query-string nil, :body #object[java.io.ByteArrayInputStream 0x36647153 "java.io.ByteArrayInputStream@36647153"], :scheme :http, :request-method :post}, message: ERROR: column "created_by" of relation "workflow" does not exist
+  Position: 33
+2016-09-06 01:11:28.837 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/workflow/ nil
+2016-09-06 01:11:28.846 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/workflow/ nil
+2016-09-06 01:11:28.851 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/workflow/ nil
+2016-09-06 01:18:23.381 rihiveli.local INFO [jsk.data.workflow:21] - Created new workflow with id 3
+2016-09-06 01:18:23.387 rihiveli.local ERROR [e85th.commons.util:29] - a9c478a8-08f9-411c-897f-67be6f7e57c5
+                                          java.lang.Thread.run              Thread.java:  745
+            java.util.concurrent.ThreadPoolExecutor$Worker.run  ThreadPoolExecutor.java:  617
+             java.util.concurrent.ThreadPoolExecutor.runWorker  ThreadPoolExecutor.java: 1142
+                                                           ...                               
+ clojure.tools.nrepl.middleware.interruptible-eval/run-next/fn   interruptible_eval.clj:  190
+                    cider.nrepl.middleware.test/handle-test/fn                 test.clj:  215
+                                                           ...                               
+                                   clojure.core/with-bindings*                 core.clj: 1881 (repeats 2 times)
+                                            clojure.core/apply                 core.clj:  646
+                                                           ...                               
+                 cider.nrepl.middleware.test/handle-test/fn/fn                 test.clj:  218
+                          cider.nrepl.middleware.test/test-nss                 test.clj:  173
+                           cider.nrepl.middleware.test/test-ns                 test.clj:  159
+                         cider.nrepl.middleware.test/test-vars                 test.clj:  142
+                              clojure.test/compose-fixtures/fn                 test.clj:  693
+                                  clojure.test/default-fixture                 test.clj:  686
+                           clojure.test/compose-fixtures/fn/fn                 test.clj:  693
+                                     jsk.core-test/with-system            core_test.clj:   42
+                      cider.nrepl.middleware.test/test-vars/fn                 test.clj:  146
+                                  clojure.test/default-fixture                 test.clj:  686
+                   cider.nrepl.middleware.test/test-vars/fn/fn                 test.clj:  146
+                          cider.nrepl.middleware.test/test-var                 test.clj:  130
+                       cider.nrepl.middleware.test/test-var/fn                 test.clj:  130
+                                     jsk.data.workflow-test/fn        workflow_test.clj:   19
+                             e85th.test.http/make-api-caller/f                 http.clj:   71
+                             e85th.test.http/make-api-caller/f                 http.clj:   67
+e85th.backend.middleware/wrap-swagger-remove-content-length/fn           middleware.clj:   63
+                       ring.middleware.cookies/wrap-cookies/fn              cookies.clj:  161
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+                             ring.middleware.cors/wrap-cors/fn                 cors.clj:  150
+            e85th.backend.middleware/wrap-api-key-in-header/fn           middleware.clj:   57
+                                   jsk.middleware/wrap-user/fn           middleware.clj:   28
+                       jsk.middleware/wrap-user-permissions/fn           middleware.clj:   22
+                   compojure.api.middleware/wrap-components/fn           middleware.clj:   61
+                                   /compojure.api.routes.Route               routes.clj:   74
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                         ring.middleware.params/wrap-params/fn               params.clj:   64
+           ring.middleware.nested-params/wrap-nested-params/fn        nested_params.clj:   86
+         ring.middleware.keyword-params/wrap-keyword-params/fn       keyword_params.clj:   35
+       ring.middleware.format-response/wrap-format-response/fn      format_response.clj:  183
+                   compojure.api.middleware/wrap-exceptions/fn           middleware.clj:   43
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  119 (repeats 4 times)
+           ring.middleware.format-params/wrap-format-params/fn        format_params.clj:  117
+                      compojure.api.middleware/wrap-options/fn           middleware.clj:   74
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+           ring.middleware.http-response/wrap-http-response/fn        http_response.clj:    8
+                  ring.swagger.middleware/wrap-swagger-data/fn           middleware.clj:   33
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+          e85th.backend.middleware/wrap-log-request-outcome/fn           middleware.clj:   74
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                              jsk.routes/fn/fn               routes.clj:   58
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                                           ...                               
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                       clojure.core/partial/fn                 core.clj: 2515
+                                     compojure.api.core/handle                 core.clj:    8
+                                             clojure.core/some                 core.clj: 2592
+                                  compojure.api.core/handle/fn                 core.clj:    8
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                  compojure.core/if-context/fn                 core.clj:  220
+                                            jsk.data.routes/fn               routes.clj:  172
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                      compojure.core/routes/fn                 core.clj:  156
+                                            clojure.core/apply                 core.clj:  648
+                                                           ...                               
+                                        compojure.core/routing                 core.clj:  148
+                                        compojure.core/routing                 core.clj:  151
+                                             clojure.core/some                 core.clj: 2592
+                                     compojure.core/routing/fn                 core.clj:  151
+                                   /compojure.api.routes.Route               routes.clj:   74
+                                 compojure.core/wrap-routes/fn                 core.clj:  279
+                                   compojure.core/if-method/fn                 core.clj:   27
+                                    compojure.core/if-route/fn                 core.clj:   45
+                             compojure.core/wrap-route-info/fn                 core.clj:  126
+                       compojure.core/wrap-route-middleware/fn                 core.clj:  121
+                                 compojure.core/pre-init/fn/fn                 core.clj:  271
+                       e85th.backend.web/wrap-authenticated/fn                  web.clj:   67
+               compojure.api.coerce/body-coercer-middleware/fn               coerce.clj:   52
+                                    compojure.core/pre-init/fn                 core.clj:  268
+                                  compojure.core/make-route/fn                 core.clj:  135
+                                         jsk.data.routes/fn/fn               routes.clj:  184
+                                   jsk.data.workflow/fn/create             workflow.clj:   17
+                                jsk.data.workflow/fn/create/fn             workflow.clj:   22
+                               jsk.data.workflow/fn/find-by-id             workflow.clj:    9
+clojure.lang.ExceptionInfo: Output of find-by-id does not match schema: {:node-id missing-required-key}
+     error: {:node-id missing-required-key}
+    schema: (maybe
+             {:id Int,
+              :node-id Int,
+              :name Str,
+              :description (maybe Str),
+              :is-enabled Bool,
+              :tags [Str]})
+      type: :schema.core/error
+     value: {:id 3,
+             :name "1cb04172-fb39-410c-8f14-bac7d10eefd1",
+             :description "workflow description",
+             :tags ("shell-workflow"),
+             :is-enabled true}
+
+2016-09-06 01:18:23.421 rihiveli.local INFO [e85th.backend.middleware:75] - :put /api/v1/workflow/ nil
+2016-09-06 01:18:23.430 rihiveli.local INFO [e85th.backend.middleware:75] - :get /api/v1/workflow/ nil
+2016-09-06 01:18:23.435 rihiveli.local INFO [e85th.backend.middleware:75] - :delete /api/v1/workflow/ nil
+2016-09-08 15:31:21.509 rrcs-198-179-74-14.nyc.biz.rr.com INFO [jsk.main:52] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Thu Sep 08 11:30:33 EDT 2016
+version=21b8df4a3d85da54fa79ff16f26a3180
+revision=HEAD\n
+groupId=e85th
+artifactId=jsk
+
+2016-09-08 15:31:21.514 rrcs-198-179-74-14.nyc.biz.rr.com INFO [jsk.main:53] - Environment: :development
+2016-09-08 15:31:21.519 rrcs-198-179-74-14.nyc.biz.rr.com WARN [jsk.main:55] - Turning schema validation on globally.
+2016-09-08 15:31:21.545 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
+2016-09-08 15:31:21.744 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.backend.components:27] - Starting HttpKit Web Server
+2016-09-08 15:31:21.788 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
