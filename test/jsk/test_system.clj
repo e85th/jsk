@@ -2,10 +2,10 @@
   (:require [com.stuartsierra.component :as component]
             [jsk.common.conf :as conf]
             [e85th.commons.util :as u]
-            [e85th.commons.sql :as sql]
             [e85th.commons.email :as email]
             [e85th.commons.sms :as sms]
             [e85th.commons.components :as commons-comp]
+            [e85th.commons.datomic :as datomic]
             [schema.core :as s]
             [taoensso.timbre :as log]))
 
@@ -23,7 +23,7 @@
   (let [base [:sys-config sys-config
               :mailer (email/new-nil-email-sender)
               :sms (sms/new-nil-sms-sender)
-              :db (sql/new-connection-pool (conf/db-spec sys-config))]]
+              :db (datomic/new-datomic-db (conf/datomic-uri sys-config))]]
     (add-server-components sys-config base)))
 
 (s/defn make

@@ -3,7 +3,6 @@
             [jsk.common.conf :as conf]
             [jsk.common.util :as util]
             ;; load up the protocols
-            [jsk.common.pg]
             [e85th.commons.util :as u]
             [jsk.system :as system]
             [com.stuartsierra.component :as component]

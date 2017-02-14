@@ -22,34 +22,34 @@
   (is (thrown? Exception (schedule/validate-cron-expr nil))))
 
 (deftest ^:integration crud-test
-  (let [{schedule-id :id} (crud/create-schedule)]
+  (let [{schedule-id :db/id} (crud/create-schedule)]
     ;; -- update
-    (let [update-data {:name (u/uuid) :cron-expr "0 0 12 ? * THU"}
+    (let [update-data {:schedule/name (u/uuid) :schedule/cron-expr "0 0 12 ? * THU"}
           updated-schedule (crud/update-schedule update-data schedule-id)]
-      (is (= (select-keys updated-schedule [:id :name :cron-expr])
-             (assoc update-data :id schedule-id))))
+      (is (= (select-keys updated-schedule [:db/id :schedule/name :schedule/cron-expr])
+             (assoc update-data :db/id schedule-id))))
 
     (crud/get-schedule schedule-id)
     (crud/delete-schedule schedule-id)))
 
 (deftest ^:integration create-fails-with-bad-data
-  (let [data {:cron-expr "invalid-expr" :name (u/uuid) :description nil}
+  (let [data {:schedule/cron-expr "invalid-expr" :schedule/name (u/uuid)}
         {:keys [errors]} (crud/create-schedule 422 data)]
     (is (seq errors))))
 
 (deftest ^:integration update-fails-with-bad-data
-  (let [{schedule-id :id} (crud/create-schedule)
-        {:keys [errors]} (crud/update-schedule 422 {:cron-expr "invalid-expr"} schedule-id)]
+  (let [{schedule-id :db/id :as schedule} (crud/create-schedule)
+        {:keys [errors]} (crud/update-schedule 422 (assoc schedule :schedule/cron-expr "invalid-expr") schedule-id)]
     (is (seq errors))))
 
-(deftest ^:integration schedule-workflow-assoc-test
-  (let [{schedule-id :id} (crud/create-schedule)
-        {workflow-id :id} (crud/create-workflow)
-        sched-wf-assoc (crud/create-schedule-workflow-assoc schedule-id workflow-id)]
-    (crud/delete-schedule-workflow-assoc (:id sched-wf-assoc))))
+;; (deftest ^:integration schedule-workflow-assoc-test
+;;   (let [{schedule-id :id} (crud/create-schedule)
+;;         {workflow-id :id} (crud/create-workflow)
+;;         sched-wf-assoc (crud/create-schedule-workflow-assoc schedule-id workflow-id)]
+;;     (crud/delete-schedule-workflow-assoc (:id sched-wf-assoc))))
 
-(deftest ^:integration schedule-job-assoc-test
-  (let [{schedule-id :id} (crud/create-schedule)
-        {job-id :id} (crud/create-job)
-        sched-job-assoc (crud/create-schedule-job-assoc schedule-id job-id)]
-    (crud/delete-schedule-job-assoc (:id sched-job-assoc))))
+;; (deftest ^:integration schedule-job-assoc-test
+;;   (let [{schedule-id :id} (crud/create-schedule)
+;;         {job-id :id} (crud/create-job)
+;;         sched-job-assoc (crud/create-schedule-job-assoc schedule-id job-id)]
+;;     (crud/delete-schedule-job-assoc (:id sched-job-assoc))))

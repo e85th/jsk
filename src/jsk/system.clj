@@ -5,7 +5,7 @@
             [e85th.commons.aws.ses :as ses]
             [e85th.commons.aws.sns :as sns]
             [e85th.commons.email :as email]
-            [e85th.commons.sql :as sql]
+            [e85th.commons.datomic :as datomic]
             [schema.core :as s]
             [jsk.routes :as routes]
             [jsk.common.conf :as conf]))
@@ -28,7 +28,7 @@
   (let [base [:sys-config sys-config
               :mailer (ses/new-ses-email-sender)
               :sms (sns/new-sms-sender)
-              :db (sql/new-connection-pool (conf/db-spec sys-config))]
+              :db (datomic/new-datomic-db (conf/datomic-uri sys-config))]
         f (get {:server add-server-components
                 :standalone add-server-components}
                operation-mode

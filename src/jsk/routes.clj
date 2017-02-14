@@ -28,15 +28,6 @@
       [false "Not authorized."])))
 
 (defroutes system-routes
-  (context "/v1/coercion-test" [] :tags ["test"]
-    (POST "/" []
-      :body-params [int-field :- s/Int num-field :- s/Num bool-field :- s/Bool date-field :- org.joda.time.DateTime]
-      (http-response/ok {:int-field int-field :num-field num-field :bool-field bool-field :date-field date-field}))
-
-    (GET "/" []
-      :query-params [int-field :- s/Int num-field :- s/Num bool-field :- s/Bool date-field :- org.joda.time.DateTime]
-      (http-response/ok {:int-field int-field :num-field num-field :bool-field bool-field :date-field date-field})))
-
   (context "" [] :tags ["system"]
     (GET "/version" []
       :summary "Gets the current version"
@@ -45,6 +36,12 @@
       :summary "Echo current request."
       (http-response/ok (backend-web/raw-request +compojure-api-request+)))))
 
+(defn exception-handler
+  [f]
+  (backend-mw/wrap-api-exception-handling
+   f
+   (constantly nil)))
+
 (defapi all-api-routes
   {:coercion (constantly backend-mw/coercion-matchers)
    :exceptions {:handlers {:compojure.api.exception/default backend-mw/error-actions}}
@@ -52,17 +49,20 @@
              :spec "/swagger.json"
              :data {:info {:title "JSK APIs"}}}}
 
+
+
   ;; using var quote #' to facilitate changing route definitions during development
   (compojure-api/middleware
-   [backend-mw/wrap-log-request-outcome]
+   [exception-handler]
    (context "/api" []
        #'system-routes
        #'data/agent-routes
        #'data/alert-routes
-       #'data/directory-routes
+       #'data/schedule-routes
+       #'data/tag-routes
        #'data/job-routes
-       #'data/workflow-routes
-       #'data/schedule-routes))
+       ;#'data/workflow-routes
+       ))
 
   (compojure-api/undocumented
    (route/files "/" )

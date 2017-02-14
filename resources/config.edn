@@ -5,18 +5,7 @@
  :log-file #profile {:dev "./log/jsk.log"
                      :default "/var/log/jsk/jsk.log"}
 
- :db-spec {:maximum-pool-size  #profile {:dev 2 :default 5}
-           :minimum-idle       2
-           :pool-name          "db-pool"
-           :database-name      "jsk"
-           :adapter            "postgresql"
-           :port-number        5432
-           :server-name        #profile {:dev ^:ref [:envs :dev :db :server-name]
-                                         :stg ^:ref [:envs :stg :db :server-name]
-                                         :tst ^:ref [:envs :tst :db :server-name]
-                                         :prd ^:ref [:envs :prd :db :server-name]}
-           :username           "jsk"
-           :password           #profile {:dev ^:ref [:secrets :db :dev :db-pass]
-                                         :stg ^:ref [:secrets :db :stg :db-pass]
-                                         :tst ^:ref [:secrets :db :tst :db-pass]
-                                         :prd ^:ref [:secrets :db :prd :db-pass]}}}
+ :datomic-uri #profile{:dev "datomic:free://localhost:4334/jsk-dev"
+                       :stg "datomic:free://localhost:4334/jsk-stg"
+                       :tst "datomic:mem://localhost:4334/jsk-test"
+                       :prd "datomic:free://localhost:4334/jsk"}}

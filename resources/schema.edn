@@ -1,0 +1,237 @@
+[
+ {:db/id "jsk"
+  :db/ident :db.part/jsk}
+  [:db/add :db.part/db :db.install/partition "jsk"]
+ ;; Channel Type enumerations
+ ;{:db/ident :channel-type/email}
+ ;{:db/ident :channel-type/mobile}
+
+ ;; Permission
+ {:db/id #db/id[:db.part/db]
+  :db/ident :permission/name
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Permission name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :permission/desc
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Permission description."}
+
+ ;; Role
+ {:db/id #db/id[:db.part/db]
+  :db/ident :role/name
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Role name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :role/desc
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Roles description."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :role/permissions
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Role permissions."}
+
+ ;; Channel
+ {:db/id #db/id[:db.part/db]
+  :db/ident :channel/identifier
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Channel identifier ie foo@gmail.com, +1212345678"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :channel/type
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Channel type, ie e-mail, mobile"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :channel/token
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Token used for channel verification."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :channel/token-expiration
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Channel token's expiration."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :channel/verified-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Channel verification datetime."}
+
+ ;; User
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/first-name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "User's first name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/last-name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "User's last name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/password-hash
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "User's hashed password."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/channels
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true ;; retracting user retracts channels
+  :db/doc "A user's channels: email, mobile, etc."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/roles
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "A set of user roles."}
+
+ ;; Tag
+ {:db/id #db/id[:db.part/db]
+  :db/ident :tag/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/doc "Tag name."}
+
+ ;; Agent
+ {:db/id #db/id[:db.part/db]
+  :db/ident :agent/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/doc "Agent name."}
+
+ ;; Alert
+ {:db/id #db/id[:db.part/db]
+  :db/ident :alert/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/doc "Alert name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :alert/desc
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Alert description."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :alert/channels
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Alert notification channels"}
+
+ ;; Schedule
+ {:db/id #db/id[:db.part/db]
+  :db/ident :schedule/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/doc "Schedule name."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :schedule/desc
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Schedule description."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :schedule/cron-expr
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Cron Expression"}
+
+ ;; Job
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/value
+  :db/doc "Job name"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/desc
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job desc"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/behavior
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job behavior."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/type
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job type. ie shell"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/enabled?
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job enabled?"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/props
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job properties as edn string."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/context-key
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job context key. Used with looping to pass values between jobs."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/max-retries
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Max retries when job fails."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/max-concurrent
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Max concurrent instances of job."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/timeout-ms
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Timeout in milliseconds"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/schedules
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Job's schedules."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :job/tags
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Job's tags."}
+
+ ]

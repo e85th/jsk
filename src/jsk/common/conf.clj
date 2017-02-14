@@ -24,9 +24,9 @@
          (assoc :env (name env-name))))))
 
 
-(s/defn db-spec :- {s/Keyword s/Any}
+(s/defn datomic-uri :- s/Str
   [sys-config]
-  (get-in sys-config [:db-spec]))
+  (get-in sys-config [:datomic-uri]))
 
 (s/defn log-file :- s/Str
   [sys-config]

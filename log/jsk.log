@@ -1174,3 +1174,18 @@ artifactId=jsk
 2016-09-08 15:31:21.545 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.commons.sql:18] - Starting Hikari jdbc connection pool component.
 2016-09-08 15:31:21.744 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.backend.components:27] - Starting HttpKit Web Server
 2016-09-08 15:31:21.788 rrcs-198-179-74-14.nyc.biz.rr.com INFO [e85th.backend.components:67] - Starting nRepl server on 0.0.0.0:8001
+2017-02-13 14:17:29.490 kali INFO [jsk.main:51] - 
+
+------------------------------------------------------------------------
+- Build Info                                                           -
+------------------------------------------------------------------------
+#Leiningen
+#Mon Feb 13 07:53:01 EST 2017
+version=894bc8ce0be336e728f3bf3d34eb50cb  -
+revision=57e7c96d0b7cb75ac8d014b76b7cb1634ec9d5ef\n
+groupId=e85th
+artifactId=jsk
+
+2017-02-13 14:17:29.492 kali INFO [jsk.main:52] - Environment: :development
+2017-02-13 14:17:29.495 kali WARN [jsk.main:54] - Turning schema validation on globally.
+2017-02-13 14:17:29.514 kali INFO [e85th.commons.datomic:11] - Starting Datomic component.

@@ -24,5 +24,5 @@
 (defn wrap-user
   [handler resources]
   (fn [request]
-    (let [request (assoc request :identity {:id 1 :permissions #{} :roles #{}})]
+    (let [request (assoc request :identity {:db/id 1 :permissions #{} :roles #{}})]
       (handler request))))

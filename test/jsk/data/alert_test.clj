@@ -12,29 +12,29 @@
 
   ;; -- create
   (let [alert-name (u/uuid)
-        [status response] (test/api-call :post base-end-point {:name alert-name
-                                                               :description "Some alert description"})
-        alert-id (:id response)
+        [status response] (test/api-call :post base-end-point {:alert/name alert-name
+                                                               :alert/desc "Some alert description"})
+        alert-id (:db/id response)
         alert-end-point (str base-end-point "/" alert-id)]
     (is (= 201 status))
-    (is (= alert-name (:name response)))
+    (is (= alert-name (:alert/name response)))
 
     ;; -- update
     (let [new-name (u/uuid)
           new-desc "Updated desc"
-          [status response] (test/api-call :put alert-end-point {:name new-name
-                                                                 :description new-desc})]
+          [status response] (test/api-call :put alert-end-point {:alert/name new-name
+                                                                 :alert/desc new-desc})]
       (is (= 200 status))
-      (is (= alert-id (:id response)))
-      (is (= new-desc (:description response)))
-      (is (= new-name (:name response))))
+      (is (= alert-id (:db/id response)))
+      (is (= new-desc (:alert/desc response)))
+      (is (= new-name (:alert/name response))))
 
     ;; -- get
     (let [[status response] (test/api-call :get alert-end-point)]
       (is (= 200 status))
-      (is (= alert-id (:id response))))
+      (is (= alert-id (:db/id response))))
 
     ;; -- delete
     (let [[status response] (test/api-call :delete alert-end-point)]
       (is (= 200 status))
-      (is (= alert-id (:id response))))))
+      (is (= alert-id (:db/id response))))))

@@ -9,13 +9,12 @@
 (use-fixtures :once test/with-system)
 
 (deftest ^:integration crud-test
-  (let [{job-id :id} (crud/create-job)]
+  (let [{job-id :db/id :as job} (crud/create-job)]
 
     ;; -- update
-    (let [update-data {:name (u/uuid) :is-enabled false}
+    (let [update-data (assoc job :job/name (u/uuid) :job/enabled? false)
           job (crud/update-job 200 update-data job-id)]
-      (is (= (assoc update-data :id job-id)
-             (select-keys job [:id :is-enabled :name]))))
+      (is (= update-data job)))
 
     (crud/get-job job-id)
     (crud/delete-job job-id)))

@@ -16,11 +16,11 @@
      response))
   ([]
    (let [schedule-name (u/uuid)
-         data {:name schedule-name
-               :description "Schedule description"
-               :cron-expr "0 0 12 ? * WED"}
+         data {:schedule/name schedule-name
+               :schedule/desc "Schedule description"
+               :schedule/cron-expr "0 0 12 ? * WED"}
          schedule (create-schedule 201 data)]
-     (is (= schedule-name (:name schedule)))
+     (is (= schedule-name (:schedule/name schedule)))
      schedule)))
 
 (defn update-schedule
@@ -40,7 +40,7 @@
      response))
   ([schedule-id]
    (let [schedule (get-schedule 200 schedule-id)]
-     (is (= schedule-id (:id schedule))))))
+     (is (= schedule-id (:db/id schedule))))))
 
 (defn delete-schedule
   ([expected-status schedule-id]
@@ -50,7 +50,7 @@
      response))
   ([schedule-id]
    (let [schedule (delete-schedule 200 schedule-id)]
-     (is (= schedule-id (:id schedule))))))
+     (is (= schedule-id (:db/id schedule))))))
 
 
 ;; -- job schedule
@@ -142,9 +142,6 @@
 ;; -- job
 (def job-base-endpoint "/api/v1/job")
 
-(def default-job-settings
-  {:agent-id nil :behavior-id m/standard-job-behavior-id :timeout 0 :max-concurrent 1 :max-retries 1})
-
 (defn create-job
   "Creates a job."
   ([expected-status data]
@@ -152,15 +149,17 @@
      (is (= expected-status status))
      response))
   ([]
-   (let [data {:name (u/uuid)
-               :description "job description"
-               :is-enabled true
-               :type "shell"
-               :props {:working-dir "/home/jsk" :command "ls -lht"}
-               :tags ["shell-job"]}
+   (let [data {:job/name (u/uuid)
+               :job/desc "job description"
+               :job/enabled? true
+               :job/type :shell
+               :job/props {:working-dir "/home/jsk" :command "ls -lht"}
+               :job/behavior :standard
+               :job/max-retries 0
+               :job/max-concurrent 1
+               :job/timeout-ms 0}
          job (create-job 201 data)]
      (is (= data (select-keys job (keys data))))
-     (is (= default-job-settings (select-keys job (keys default-job-settings))))
      job)))
 
 (defn update-job
@@ -180,7 +179,7 @@
      response))
   ([job-id]
    (let [job (get-job 200 job-id)]
-     (is (= job-id (:id job))))))
+     (is (= job-id (:db/id job))))))
 
 (defn delete-job
   ([expected-status job-id]
@@ -190,4 +189,4 @@
      response))
   ([job-id]
    (let [job (delete-job 200 job-id)]
-     (is (= job-id (:id job))))))
+     (is (= job-id (:db/id job))))))
