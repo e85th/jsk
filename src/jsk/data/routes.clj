@@ -92,6 +92,22 @@
       :auth [user]
       (http-response/created nil (alert/create res alert (:db/id user))))
 
+    (POST "/actions/assoc-channels" []
+          :summary "Associates channels to a alert. Returns the new set of associated channels ."
+          :return m/AlertChannels
+          :body [data m/AlertChannels]
+          :auth [user]
+          (http-response/ok
+           (alert/assoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-channels" []
+          :summary "Dissociates channels from a alert. Returns the new set of associated channels."
+          :return m/AlertChannels
+          :body [data m/AlertChannels]
+          :auth [user]
+          (http-response/ok
+           (alert/dissoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
+
     (PUT "/:id" []
       :return m/Alert
       :path-params [id :- s/Int]
@@ -141,34 +157,6 @@
       (schedule/rm res id (:db/id user))
       (http-response/ok found))))
 
-;;     (POST "/actions/create-job-assoc" []
-;;       :return m/JobScheduleInfo
-;;       :body [sched-assoc m/ScheduleJobAssoc]
-;;       :auth [user]
-;;       (http-response/ok (schedule/create-job-assoc res sched-assoc (:id user))))
-
-;;     (POST "/actions/remove-job-assoc" []
-;;       :return m/JobScheduleInfo
-;;       :body [{:keys [id]} {:id s/Int}]
-;;       :auth [user]
-;;       :exists [found (schedule/find-job-schedule-by-id res id)]
-;;       (schedule/remove-job-assoc res id (:id user))
-;;       (http-response/ok found))
-
-;;     (POST "/actions/create-workflow-assoc" []
-;;       :return m/WorkflowScheduleInfo
-;;       :body [sched-assoc m/ScheduleWorkflowAssoc]
-;;       :auth [user]
-;;       (http-response/ok (schedule/create-workflow-assoc res sched-assoc (:id user))))
-
-;;     (POST "/actions/remove-workflow-assoc" []
-;;       :return m/WorkflowScheduleInfo
-;;       :body [{:keys [id]} {:id s/Int}]
-;;       :auth [user]
-;;       :exists [found (schedule/find-workflow-schedule-by-id res id)]
-;;       (schedule/remove-workflow-assoc res id (:id user))
-;;       (http-response/ok found))))
-
 (defroutes job-routes
   (context "/v1/job" [] :tags ["job"]
     :components [res]
@@ -184,6 +172,22 @@
       :body [job m/Job]
       :auth [user]
       (http-response/created nil (job/create res job (:db/id user))))
+
+    (POST "/actions/assoc-schedules" []
+      :summary "Associates schedules to a job. Returns the new set of associated schedules ."
+      :return m/JobSchedules
+      :body [data m/JobSchedules]
+      :auth [user]
+      (http-response/ok
+       (job/assoc-schedules res (:job/id data) (:schedule/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-schedules" []
+      :summary "Dissociates schedules from a job. Returns the new set of associated schedules."
+      :return m/JobSchedules
+      :body [data m/JobSchedules]
+      :auth [user]
+      (http-response/ok
+       (job/dissoc-schedules res (:job/id data) (:schedule/ids data) (:db/id user))))
 
     (PUT "/:id" []
       :return m/Job
@@ -201,33 +205,49 @@
       (job/rm res id (:db/id user))
       (http-response/ok found))))
 
-;; (defroutes workflow-routes
-;;   (context "/v1/workflow" [] :tags ["workflow"]
-;;     :components [res]
-;;     (GET "/:id" []
-;;       :return m/Workflow
-;;       :path-params [id :- s/Int]
-;;       :exists [found (workflow/find-by-id res id)]
-;;       (http-response/ok found))
+(defroutes workflow-routes
+  (context "/v1/workflow" [] :tags ["workflow"]
+    :components [res]
+    (GET "/:id" []
+      :return m/Workflow
+      :path-params [id :- s/Int]
+      :exists [found (workflow/find-by-id res id)]
+      (http-response/ok found))
 
-;;     (POST "/" []
-;;       :return m/Workflow
-;;       :body [workflow-info m/WorkflowCreate]
-;;       :auth [user]
-;;       (http-response/created nil (workflow/create res workflow-info (:id user))))
+    (POST "/" []
+      :return m/Workflow
+      :body [wf m/Workflow]
+      :auth [user]
+      (http-response/created nil (workflow/create res wf (:db/id user))))
 
-;;     (PUT "/:id" []
-;;       :return m/Workflow
-;;       :path-params [id :- s/Int]
-;;       :body [workflow-info m/WorkflowAmend]
-;;       :exists [_ (workflow/find-by-id res id)]
-;;       :auth [user]
-;;       (http-response/ok (workflow/amend res id workflow-info (:id user))))
+    (POST "/actions/assoc-schedules" []
+      :summary "Associates schedules to a workflow. Returns the new set of associated schedules ."
+      :return m/WorkflowSchedules
+      :body [data m/WorkflowSchedules]
+      :auth [user]
+      (http-response/ok
+       (workflow/assoc-schedules res (:workflow/id data) (:schedule/ids data) (:db/id user))))
 
-;;     (DELETE "/:id" []
-;;       :return m/Workflow
-;;       :path-params [id :- s/Int]
-;;       :exists [found (workflow/find-by-id res id)]
-;;       :auth [user]
-;;       (workflow/delete res id (:id user))
-;;       (http-response/ok found))))
+    (POST "/actions/dissoc-schedules" []
+      :summary "Dissociates schedules from a workflow. Returns the new set of associated schedules."
+      :return m/WorkflowSchedules
+      :body [data m/WorkflowSchedules]
+      :auth [user]
+      (http-response/ok
+       (workflow/dissoc-schedules res (:workflow/id data) (:schedule/ids data) (:db/id user))))
+
+    (PUT "/:id" []
+      :return m/Workflow
+      :path-params [id :- s/Int]
+      :body [wf m/Workflow]
+      :auth [user]
+      :exists [_ (workflow/find-by-id res id)]
+      (http-response/ok (workflow/modify res id wf (:db/id user))))
+
+    (DELETE "/:id" []
+      :return m/Workflow
+      :path-params [id :- s/Int]
+      :exists [found (workflow/find-by-id res id)]
+      :auth [user]
+      (workflow/rm res id (:db/id user))
+      (http-response/ok found))))

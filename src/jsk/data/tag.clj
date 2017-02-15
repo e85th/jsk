@@ -33,3 +33,17 @@
   "Delete an tag."
   [{:keys [db]} tag-id :- s/Int user-id :- s/Int]
   @(d/transact (:cn db) [[:db/retractEntity tag-id]]))
+
+
+(s/defn find-tag-ids :- [s/Int]
+  [{:keys [db]} tag-names :- [s/Str]]
+  (db/find-tag-ids db tag-names))
+
+(s/defn ensure-tags :- [s/Int]
+  "Makes sure all tag names exist. Answers with the ids of all tags."
+  [{:keys [db] :as res} tag-names :- [s/Str]]
+  (let [facts (for [x tag-names]
+                {:tag/name x})]
+    (->> @(d/transact (:cn db) facts)
+         :tempids
+         vals)))

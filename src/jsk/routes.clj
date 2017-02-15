@@ -61,7 +61,7 @@
        #'data/schedule-routes
        #'data/tag-routes
        #'data/job-routes
-       ;#'data/workflow-routes
+       #'data/workflow-routes
        ))
 
   (compojure-api/undocumented

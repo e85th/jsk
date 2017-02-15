@@ -53,44 +53,6 @@
      (is (= schedule-id (:db/id schedule))))))
 
 
-;; -- job schedule
-
-(defn create-schedule-job-assoc
-  [schedule-id job-id]
-  (let [endpoint (str schedule-base-endpoint "/actions/create-job-assoc")
-        data {:schedule-id schedule-id :job-id job-id}
-        [status sched-job] (test/api-call :post endpoint data)]
-    (is (= 200 status))
-    (is (= data (select-keys sched-job [:schedule-id :job-id])))
-    sched-job))
-
-(defn delete-schedule-job-assoc
-  [id]
-  (let [endpoint (str schedule-base-endpoint "/actions/remove-job-assoc")
-        data {:id id}
-        [status sched-job] (test/api-call :post endpoint data)]
-    (is (= 200 status))
-    (is (= id (:id sched-job)))))
-
-
-;; -- workflow schedule
-
-(defn create-schedule-workflow-assoc
-  [schedule-id workflow-id]
-  (let [endpoint (str schedule-base-endpoint "/actions/create-workflow-assoc")
-        data {:schedule-id schedule-id :workflow-id workflow-id}
-        [status sched-wf] (test/api-call :post endpoint data)]
-    (is (= 200 status))
-    (is (= data (select-keys sched-wf [:schedule-id :workflow-id])))
-    sched-wf))
-
-(defn delete-schedule-workflow-assoc
-  [id]
-  (let [endpoint (str schedule-base-endpoint "/actions/remove-workflow-assoc")
-        data {:id id}
-        [status sched-wf] (test/api-call :post endpoint data)]
-    (is (= 200 status))
-    (is (= id (:id sched-wf)))))
 
 ;; -- workflow
 (def workflow-base-endpoint "/api/v1/workflow")
@@ -102,10 +64,9 @@
      (is (= expected-status status))
      response))
   ([]
-   (let [data {:name (u/uuid)
-               :description "workflow description"
-               :is-enabled true
-               :tags ["shell-workflow"]}
+   (let [data {:workflow/name (u/uuid)
+               :workflow/desc "workflow description"
+               :workflow/enabled? true}
          workflow (create-workflow 201 data)]
      (is (= data (select-keys workflow (keys data))))
      workflow)))
@@ -127,7 +88,7 @@
      response))
   ([workflow-id]
    (let [workflow (get-workflow 200 workflow-id)]
-     (is (= workflow-id (:id workflow))))))
+     (is (= workflow-id (:db/id workflow))))))
 
 (defn delete-workflow
   ([expected-status workflow-id]
@@ -137,7 +98,7 @@
      response))
   ([workflow-id]
    (let [workflow (delete-workflow 200 workflow-id)]
-     (is (= workflow-id (:id workflow))))))
+     (is (= workflow-id (:db/id workflow))))))
 
 ;; -- job
 (def job-base-endpoint "/api/v1/job")
@@ -190,3 +151,26 @@
   ([job-id]
    (let [job (delete-job 200 job-id)]
      (is (= job-id (:db/id job))))))
+
+;; -- job schedule
+
+(defn assoc-job-schedule
+  [job-id schedule-id]
+  (let [endpoint (str job-base-endpoint "/actions/assoc-schedules")
+        data {:job/id job-id :schedule/ids [schedule-id]}
+        [status job-sched] (test/api-call :post endpoint data)
+        {schedule-ids :schedule/ids} job-sched]
+    (is (= 200 status))
+    (is ((set schedule-ids) schedule-id))
+    job-sched))
+
+
+(defn dissoc-job-schedule
+  [job-id schedule-id]
+  (let [endpoint (str job-base-endpoint "/actions/dissoc-schedules")
+        data {:job/id job-id :schedule/ids [schedule-id]}
+        [status job-sched] (test/api-call :post endpoint data)
+        {schedule-ids :schedule/ids} job-sched]
+    (is (= 200 status))
+    (is (nil? ((set schedule-ids) schedule-id)))
+    job-sched))

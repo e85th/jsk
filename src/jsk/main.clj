@@ -13,6 +13,9 @@
 
 (def allowed-modes #{:standalone})
 
+(defonce ^{:doc "This only exists to get a reference to the running system for remote debugging"}
+  system nil)
+
 (def cli-options
   [[nil "--mode MODE" "Mode to run in. One off: standalone"
     :parse-fn keyword
@@ -72,7 +75,7 @@
       errors (u/exit 1 (str "Errors parsing command:\n" (string/join \newline errors))))
 
     (log/infof "jsk started with options: %s." options)
-    (let [system (component/start (make-system env))]
-      (u/add-shutdown-hook (partial component/stop system))
-
-      (run-standalone system))))
+    (let [sys (component/start (make-system env))]
+      (u/add-shutdown-hook (partial component/stop sys))
+      (reset! system sys)
+      (run-standalone sys))))

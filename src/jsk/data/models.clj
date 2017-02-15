@@ -74,6 +74,10 @@
    :alert/name s/Str
    (s/optional-key :alert/desc) s/Str})
 
+(s/defschema AlertChannels
+  {:alert/id s/Int
+   :channel/ids [s/Int]})
+
 ;; -- Schedule
 (s/defschema Schedule
   {(s/optional-key :db/id) s/Int
@@ -100,16 +104,25 @@
    :job/max-retries s/Int
    :job/max-concurrent s/Int
    :job/timeout-ms s/Int
-   (s/optional-key :job/tags) [s/Str]})
+   (s/optional-key :job/schedules) [s/Int]
+   (s/optional-key :job/tags) [s/Int]})
 
 ;; -- Workflow
 (s/defschema Workflow
-  {:id s/Int
-   :name s/Str
-   :description (s/maybe s/Str)
-   :is-enabled s/Bool
-   :tags [s/Str]})
+  {(s/optional-key :db/id) s/Int
+   :workflow/name s/Str
+   :workflow/desc (s/maybe s/Str)
+   :workflow/enabled? s/Bool
+   (s/optional-key :workflow/schedules) [s/Int]
+   (s/optional-key :workflow/tags) [s/Str]})
 
+(s/defschema JobSchedules
+  {:job/id s/Int
+   :schedule/ids [s/Int]})
+
+(s/defschema WorkflowSchedules
+  {:workflow/id s/Int
+   :schedule/ids [s/Int]})
 
 (s/defschema Variable
   {:id s/Int
@@ -117,14 +130,6 @@
    :name s/Str
    :value s/Str
    :is-env s/Bool})
-
-(s/defschema ScheduleJobAssoc
-  {:schedule-id s/Int
-   :job-id s/Int})
-
-(s/defschema ScheduleJobDissoc
-  {:schedule-id s/Int
-   :job-id s/Int})
 
 (s/defschema JobScheduleInfo
   {:id s/Int

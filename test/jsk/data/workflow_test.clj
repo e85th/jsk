@@ -10,12 +10,11 @@
 (deftest ^:integration crud-test
 
   ;; -- create
-  (let [{workflow-id :id} (crud/create-workflow)]
+  (let [{workflow-id :db/id :as wf} (crud/create-workflow)]
     ;; -- update
-    (let [update-data {:name  (u/uuid) :is-enabled false}
-          workflow (crud/update-workflow 200 update-data workflow-id)]
-      (is (= (assoc update-data :id workflow-id)
-             (select-keys workflow [:id :is-enabled :name]))))
+    (let [update-data (assoc wf :workflow/name (u/uuid) :workflow/enabled? false)
+          wf (crud/update-workflow 200 update-data workflow-id)]
+      (is (= update-data wf)))
 
     (crud/get-workflow workflow-id)
     (crud/delete-workflow workflow-id)))

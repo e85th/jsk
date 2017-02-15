@@ -12,8 +12,11 @@
 (s/defn find-by-id :- (s/maybe m/Job)
   "Finds an job by id."
   [{:keys [db]} job-id :- s/Int]
-  (some-> (datomic/get-entity-with-attr db job-id :job/name)
-          (update-in [:job/props] edn/read-string)))
+  (let [extract-ids (partial map :db/id)]
+    (some-> (datomic/get-entity-with-attr db job-id :job/name)
+            (update-in [:job/props] edn/read-string)
+            (update-in [:job/schedules] extract-ids)
+            (update-in [:job/tags] extract-ids))))
 
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
   find-by-id! (ex/wrap-not-found find-by-id))
@@ -29,9 +32,7 @@
   (let [job-id (d/tempid :db.part/jsk)
         facts [(-> job
                    (assoc :db/id job-id)
-                   (dissoc :job/tags);; causes an error, tempid something
                    (encode-job-props))]
-        _ (log/infof "facts: %s" facts)
         {:keys [db-after tempids]} @(d/transact (:cn db) facts)]
     (find-by-id res (d/resolve-tempid db-after tempids job-id))))
 
@@ -48,19 +49,30 @@
   [{:keys [db]} job-id :- s/Int user-id :- s/Int]
   @(d/transact (:cn db) [[:db/retractEntity job-id]]))
 
+(s/defn assoc-schedules :- m/JobSchedules
+  [{:keys [db] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
+  @(d/transact (:cn db) [{:db/id job-id :job/schedules schedule-ids}])
+  {:job/id job-id
+   :schedule/ids (:job/schedules (find-by-id! res job-id))})
 
-(s/defn add-schedules
-  [{:keys [db]} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/add job-id :job/schedules schedule-ids]]))
+(s/defn dissoc-schedules :- m/JobSchedules
+  [{:keys [db] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
+  (let [facts (for [s schedule-ids]
+                [:db/retract job-id :job/schedules s])]
+    @(d/transact (:cn db) facts)
+    {:job/id job-id
+     :schedule/ids (:job/schedules (find-by-id! res job-id))}))
 
-(s/defn rm-schedules
-  [{:keys [db]} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retract job-id :job/schedules schedule-ids]]))
+(s/defn assoc-tags
+  [{:keys [db] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
+  @(d/transact (:cn db) [{:db/id job-id :job/tags tag-ids}])
+  {:job/id job-id
+   :tag/ids (:job/tags (find-by-id! res job-id))})
 
-(s/defn add-tags
-  [{:keys [db]} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/add job-id :job/tags tag-ids]]))
-
-(s/defn rm-tags
-  [{:keys [db]} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retract job-id :job/tags tag-ids]]))
+(s/defn dissoc-tags
+  [{:keys [db] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
+  (let [facts (for [t tag-ids]
+                [:db/retract job-id :job/tags t])]
+    @(d/transact (:cn db) facts))
+  {:job/id job-id
+   :tag/ids (:job/tags (find-by-id! res job-id))} )

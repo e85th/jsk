@@ -47,3 +47,6 @@
 
 
 (use-fixtures :once with-system)
+
+(comment
+  (init!) )

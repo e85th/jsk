@@ -35,10 +35,14 @@
   @(d/transact (:cn db) [[:db/retractEntity alert-id]]))
 
 
-(s/defn add-channels
-  [{:keys [db]} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/add alert-id :alert/channels channel-ids]]))
+(s/defn assoc-channels :- m/AlertChannels
+  [{:keys [db] :as res} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
+  @(d/transact (:cn db) [{:db/id alert-id :alert/channels channel-ids}])
+  {:alert/id alert-id
+   :channel/ids (:alert/channels (find-by-id! res alert-id))})
 
-(s/defn rm-channels
+(s/defn dissoc-channels :- m/AlertChannels
   [{:keys [db]} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retract alert-id :alert/channels channel-ids]]))
+  (let [facts (for [c channel-ids]
+                [:db/retract alert-id :alert/channels c])]
+    @(d/transact (:cn db) facts)))

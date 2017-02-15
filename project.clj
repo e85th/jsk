@@ -59,6 +59,7 @@
              :profiles/test {}
              :project/dev   {:dependencies [[reloaded.repl "0.2.2"]
                                             [e85th/test "0.1.2"]
+                                            [expectations "2.2.0-alpha1"]
                                             [org.clojure/tools.namespace "0.2.11"]
                                             [org.clojure/tools.nrepl "0.2.12"]
                                             [ring/ring-mock "0.3.0"]]

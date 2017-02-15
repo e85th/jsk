@@ -42,14 +42,9 @@
         {:keys [errors]} (crud/update-schedule 422 (assoc schedule :schedule/cron-expr "invalid-expr") schedule-id)]
     (is (seq errors))))
 
+
 ;; (deftest ^:integration schedule-workflow-assoc-test
 ;;   (let [{schedule-id :id} (crud/create-schedule)
 ;;         {workflow-id :id} (crud/create-workflow)
 ;;         sched-wf-assoc (crud/create-schedule-workflow-assoc schedule-id workflow-id)]
 ;;     (crud/delete-schedule-workflow-assoc (:id sched-wf-assoc))))
-
-;; (deftest ^:integration schedule-job-assoc-test
-;;   (let [{schedule-id :id} (crud/create-schedule)
-;;         {job-id :id} (crud/create-job)
-;;         sched-job-assoc (crud/create-schedule-job-assoc schedule-id job-id)]
-;;     (crud/delete-schedule-job-assoc (:id sched-job-assoc))))
