@@ -10,6 +10,7 @@
             [jsk.data.db :as db]
             [clj-time.core :as t]
             [e85th.backend.core.firebase :as firebase]
+            [e85th.backend.core.google-oauth :as google-oauth]
             [e85th.commons.token :as token]
             [e85th.commons.email :as email]
             [e85th.commons.util :as u]
@@ -176,13 +177,13 @@
   [{:keys [token-factory]} user :- m/User]
   (assert token-factory)
   (token/data->token token-factory
-                     (select-keys user [:db/id :user/first-name :user/last-name])))
+                     (select-keys user (keys m/TokenUser))))
 
 (s/defn user-id->token :- s/Str
   [res user-id :- s/Int]
   (user->token res (find-user-by-id! res user-id)))
 
-(s/defn token->user :- m/User
+(s/defn token->user :- m/TokenUser
   "Inverse of user->token. Otherwise throws an AuthExceptionInfo."
   [{:keys [token-factory]} token :- s/Str]
   (assert token-factory)
@@ -204,7 +205,7 @@
 (s/defn user->auth-response :- m/AuthResponse
   [res user :- m/User]
   {:user user
-   :roles (find-roles-by-user-id res (:id user))
+   :roles (find-roles-by-user-id res (:db/id user))
    :token (user->token res user)})
 
 (s/defn user-id->auth-response :- m/AuthResponse
@@ -248,9 +249,19 @@
 
     (assert email "We don't handle anonymous logins a la firebase.")
 
-    (if-let [{:keys [user-id]} (find-email-channel res email)]
-      (user->auth-response res (find-user-by-identifier res email))
+    (if-let [user (find-user-by-identifier res email)]
+      (user->auth-response res user)
       (throw (ex/new-auth-exception :user/no-such-user "No such user.")))))
+
+(defmethod authenticate :with-google
+  [res {:keys [with-google]}]
+  (let [jwt (:token with-google)
+        {:keys [email]} (google-oauth/verify-token jwt)]
+    (let [{:keys [email]} (google-oauth/verify-token jwt)]
+      (assert email "We don't handle anonymous logins.")
+      (if-let [user (find-user-by-identifier res email)]
+        (user->auth-response res user)
+        (throw (ex/new-auth-exception :user/no-such-user "No such user."))))))
 
 (defmethod authenticate :with-token
   [res {:keys [with-token]}]

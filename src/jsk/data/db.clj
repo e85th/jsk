@@ -15,13 +15,13 @@
 
 (s/defn find-channel-by-type :- (s/maybe m/Channel)
   [db channel-type :- s/Keyword identifier :- s/Str]
-  (d/q '[:find (pull ?eid [*] ...)
-         :in $ ?type ?id
-         :where [?eid :channel/identifier ?id]
-         [?eid :channel/type ?type]]
-       (-> db :cn d/db)
-       channel-type
-       identifier))
+  (ffirst (d/q '[:find (pull ?eid [*] ...)
+                 :in $ ?type ?id
+                 :where [?eid :channel/identifier ?id]
+                 [?eid :channel/type ?type]]
+               (-> db :cn d/db)
+               channel-type
+               identifier)))
 
 (s/defn find-user-id-by-identifier :- (s/maybe s/Int)
   [db identifier :- s/Str]

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta id="google-signin-client-id" name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+
+    <script>
+
+    </script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+    <script id="jsk-js" src="/js/jsk-ui.js?v=${version}" type="text/javascript"></script>
+
+    <script>
+   function onLoad() {
+      console.log("auth2 onload");
+      gapi.load('auth2', function() {
+        console.log("auth2 inited");
+        gapi.auth2.init();
+      })};
+    </script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad"></script>
+  </head>
+  <body>
+    <input id="api-host" type="hidden">
+    <input id="login-url" type="hidden">
+    <input id="init-component" type="hidden" name="init-component" value="main">
+    <div id="app">
+    </div>
+  </body>
+</html>

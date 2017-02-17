@@ -6,6 +6,78 @@
  ;{:db/ident :channel-type/email}
  ;{:db/ident :channel-type/mobile}
 
+ ;; Admin Google OAuth Settings
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.auth.google/client-id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Google OAuth Client ID"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.auth.google/allowed-domain
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Google OAuth Allowed Domain"}
+
+ ;; Admin SMTP Settings
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.smtp/host
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "SMTP Host"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.smtp/port
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "SMTP Port"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.smtp/security
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "SMTP Security, :none, :tls, :ssl"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.smtp/username
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "SMTP Username"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.smtp/password
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "SMTP Password"}
+
+ ;; Admin Slack Settings
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.slack/token
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Slack API Token"}
+
+ ;; Admin Site Name
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.site/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Site name"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.site/url
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Site uri"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :setting.site/admin-email
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Email address for help requests"}
+
  ;; Permission
  {:db/id #db/id[:db.part/db]
   :db/ident :permission/name

@@ -4,8 +4,10 @@
             [jsk.common.util :as util]
             ;; load up the protocols
             [e85th.commons.util :as u]
+            [e85th.backend.core.google-oauth :as google-oauth]
             [jsk.system :as system]
             [com.stuartsierra.component :as component]
+            [jsk.data.settings :as settings]
             [schema.core :as s]
             [clojure.string :as string]
             [taoensso.timbre :as log])
@@ -53,9 +55,9 @@
      (u/init-logging (-> sys-config conf/log-file (u/log-file-with-suffix log-suffix)))
      (log/info (util/build-properties-with-header))
      (log/infof "Environment: %s" env-name)
-
      (log/warn "Turning schema validation on globally.")
      (s/set-fn-validation! true) ;; globally turn on all validations
+
      (system/new-system sys-config operation-mode))))
 
 (defn run-standalone
@@ -78,4 +80,5 @@
     (let [sys (component/start (make-system env))]
       (u/add-shutdown-hook (partial component/stop sys))
       (reset! system sys)
+      (google-oauth/init! (settings/find-google-auth-client-id system))
       (run-standalone sys))))

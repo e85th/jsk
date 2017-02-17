@@ -5,6 +5,10 @@
  :log-file #profile {:dev "./log/jsk.log"
                      :default "/var/log/jsk/jsk.log"}
 
+ :settings {:smtp ^:ref [:secrets :settings :smtp]
+            :site ^:ref [:secrets :settings :site]
+            :auth {:google ^:ref [:secrets :settings :auth :google]}}
+
  :datomic-uri #profile{:dev "datomic:free://localhost:4334/jsk-dev"
                        :stg "datomic:free://localhost:4334/jsk-stg"
                        :tst "datomic:mem://localhost:4334/jsk-test"

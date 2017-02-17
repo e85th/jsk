@@ -49,6 +49,11 @@
    (s/optional-key :user/roles) [Role]
    s/Keyword s/Any})
 
+(s/defschema TokenUser
+  {:db/id s/Int
+   :user/first-name s/Str
+   :user/last-name s/Str})
+
 (s/defschema UserAllFields
   (assoc User :user/password-hash s/Str))
 
@@ -150,3 +155,27 @@
    :workflow-id s/Int
    :schedule-id s/Int
    :schedule-name s/Str})
+
+
+(s/defschema GoogleAuthSettings
+  {(s/optional-key :db/id) s/Int
+   :setting.auth.google/client-id s/Str
+   :setting.auth.google/allowed-domain s/Str})
+
+(s/defschema SmtpSettings
+  {(s/optional-key :db/id) s/Int
+   :setting.smtp/host s/Str
+   :setting.smtp/port s/Int
+   :setting.smtp/security s/Keyword
+   :setting.smtp/username s/Str
+   :setting.smtp/password s/Str})
+
+(s/defschema SlackSettings
+  {(s/optional-key :db/id) s/Int
+   :setting.slack/token s/Str})
+
+(s/defschema SiteSettings
+  {(s/optional-key :db/id) s/Int
+   :setting.site/name s/Str
+   :setting.site/url s/Str
+   :setting.site/admin-email s/Str})

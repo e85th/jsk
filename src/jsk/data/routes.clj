@@ -7,8 +7,10 @@
             [jsk.data.tag :as tag]
             [jsk.data.job :as job]
             [jsk.data.workflow :as workflow]
+            [jsk.data.user :as user]
             [compojure.api.sweet :refer [defroutes context POST GET PUT DELETE]]
             [e85th.backend.web]
+            [e85th.backend.core.models :as cm]
             [schema.core :as s]
             [taoensso.timbre :as log]))
 
@@ -251,3 +253,13 @@
       :auth [user]
       (workflow/rm res id (:db/id user))
       (http-response/ok found))))
+
+
+(defroutes user-routes
+  (context "/v1/users" [] :tags ["users"]
+    :components [res]
+    (POST "/actions/authenticate" []
+      :summary "Authentication based on firebase, nonce or password."
+      :return m/AuthResponse
+      :body [user-auth cm/UserAuthRequest]
+      (http-response/ok (user/authenticate res user-auth)))))
