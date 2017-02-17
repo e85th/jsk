@@ -12,6 +12,7 @@
             [jsk.events :as e]
             [jsk.views :as v]
             [jsk.login.views :as login-views]
+            [jsk.login.events :as login-events]
             [jsk.routes]
             [e85th.ui.rf.fx]
             [e85th.ui.util :as u]
@@ -21,7 +22,7 @@
 (defn ^:export google-sign-in
   [g-user]
   (let [{:keys [token]} (google-oauth/google-user->map g-user)]
-    (rf/dispatch [e/google-auth token])))
+    (rf/dispatch [login-events/google-auth token])))
 
 (defn verify-login
   []
@@ -30,18 +31,15 @@
     (u/set-window-location! (data/login-url))
     (rf/dispatch [e/set-current-view :jsk/login])))
 
-(defn ensure-google-login
-  [ensure-login login-url]
-  (google-oauth/current-user-listen (fn [u]
-                                        ;(log/infof "current-user-info: %s" u)
-                                    (if-not u
-                                      (rf/dispatch [e/set-current-view :login])
-                                      (ensure-login u)))))
 
+(def name->component
+  {"main" [v/main-panel]
+   "login" [login-views/login-panel]})
 
 (defn mount-root!
-  []
-  (reagent/render [v/main-panel]  (u/element-by-id "app")))
+  [nm]
+  (reagent/render (get name->component nm [:h2 "JSK: Unknown component"])
+                  (u/element-by-id "app")))
 
 (defn enable-dev-settings
   []
@@ -57,9 +55,11 @@
 
   (when ^boolean js/goog.DEBUG
     (enable-dev-settings))
-  (when-not (= "login" (u/element-value "init-component"))
-    (websockets/init!)
-    (mount-root!)
-    (verify-login)))
+
+  (let [nm (u/element-value "init-component")]
+    (mount-root! nm)
+    (when-not (= "login" nm)
+      (websockets/init!)
+      (verify-login))))
 
 (set! (.-onload js/window) init)

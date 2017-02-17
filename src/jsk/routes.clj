@@ -3,7 +3,6 @@
             [compojure.api.sweet :as compojure-api]
             [ring.util.http-response :as http-response]
             [jsk.common.util :as util]
-            [jsk.middleware :as middleware]
             [jsk.websockets :as websockets]
             [jsk.data.routes :as data]
             [ring.middleware.params :as ring-params]
@@ -12,6 +11,7 @@
             [e85th.backend.web :as web]
             [e85th.commons.util :as u]
             [e85th.backend.middleware :as backend-mw]
+            [jsk.data.user :as user]
             [jsk.ui.core :as ui]
             [jsk.common.conf :as conf]
             [taoensso.timbre :as log]
@@ -21,7 +21,7 @@
 (defmethod web/authorized? :standard route-authorization
   [{:keys [user permission auth-fn request]}]
   (assert user "user should always be available.")
-  (let [permission-set (:permissions user)
+  (let [permission-set (:user/permissions user)
         permission? (if permission
                       (some? (permission-set permission))
                       true)
@@ -31,13 +31,12 @@
       [false "Not authorized."])))
 
 
-(defn handle-successful-login
-  [res {:keys [user roles token] :as user-info} request]
-  (let [server-name (web/request-server-name request)
-        host (web/request-host request)
-        cookie-opts {:domain server-name  :path "/" :max-age (* 60 60 24 1) :secure true}]
-    (-> (http-response/see-other host)
-        (web/set-cookie conf/jsk-token-name token cookie-opts))))
+(defn wrap-user-auth
+  [handler res]
+  (fn [{buddy-user :identity :as req}]
+    (let [req (cond-> req
+                buddy-user (update-in [:identity] merge (user/find-user-auth res (:db/id buddy-user))))]
+      (handler req))))
 
 (defroutes system-routes
   (context "" [] :tags ["system"]
@@ -58,7 +57,7 @@
   [f]
   (backend-mw/wrap-site-exception-handling
    f
-   "/"
+   "/login"
    (constantly nil)))
 
 (defroutes system-routes
@@ -73,14 +72,12 @@
   (context "" [] :tags ["ui"]
     :components [res]
     (GET "/login" []
-         (web/html-response (ui/login-page res))
-         ;; render login page
-         )
+      (web/html-response (ui/login-page res)))
 
     (GET "/" []
-         (if (ui/authed? res +compojure-api-request+)
-           (web/html-response (ui/main-page res))
-           (http-response/see-other "/login")))))
+      (if (ui/authed? res +compojure-api-request+)
+        (web/html-response (ui/main-page res))
+        (http-response/see-other "/login")))))
 
 (defapi all-api-routes
   {:coercion (constantly backend-mw/coercion-matchers)
@@ -107,13 +104,8 @@
           (http-response/ok (web/raw-request +compojure-api-request+)))
         #'websockets/ws-routes)))
 
-  (compojure-api/middleware
-   [ui-exception-handler]
-   (compojure-api/undocumented
-
-    #'ui-routes))
-
   (compojure-api/undocumented
+   #'ui-routes
    (route/files "/" )
    (route/resources "/")
 
@@ -126,8 +118,7 @@
   (-> all-api-routes
       (backend-mw/wrap-cookie-value-in-components :res conf/jsk-token-name :bearer)
       (compojure.api.middleware/wrap-components {:res app-resources})
-      (middleware/wrap-user-permissions app-resources)
-      (middleware/wrap-user app-resources)
+      (wrap-user-auth app-resources)
       backend-mw/wrap-api-key-in-header
       backend-mw/wrap-cors
       ring-params/wrap-params

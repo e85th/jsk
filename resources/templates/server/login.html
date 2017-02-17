@@ -3,9 +3,14 @@
   <head>
     <meta id="google-signin-client-id" name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
     <script>
-function onSignIn(googleUser) {
-  jsk.main.google_sign_in(googleUser);
+function onGoogleSignIn(googleUser) {
+  //jsk.main.google_sign_in(googleUser);
 }
+     function onSignIn(){
+       console.log("onregsignin");
+          //jsk.main.sign_in();
+       }
+
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
@@ -14,15 +19,22 @@ function signOut() {
 }
     </script>
     <script src="https://apis.google.com/js/platform.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script id="jsk-js" src="/js/jsk-ui.js?v=${version}" type="text/javascript"></script>
   </head>
   <body>
     <h3>JSK Login</h3>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>
     <p>
     <a href="#" onclick="signOut();">Sign out</a>
     </p>
-
     <input id="api-host" type="hidden">
     <input id="login-url" type="hidden">
     <input id="init-component" type="hidden" name="init-component" value="main">

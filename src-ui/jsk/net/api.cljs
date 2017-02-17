@@ -34,14 +34,18 @@
          normalize (comp ensure-handler-fn)]
      (rpc/call (normalize req)))))
 
-(s/defn authenticate
+(s/defn ^:private authenticate
+  [body ok err]
+  (new-request :post "/v1/users/actions/authenticate" body ok err))
+
+(s/defn authenticate-with-google
   "Generates a request map that can be executed by call!"
   [token :- s/Str ok err]
-  (new-request :post "/v1/users/actions/authenticate" {:with-firebase {:token token}} ok err))
+  (authenticate {:with-google {:token token}} ok err))
 
-(def authenticate! (comp call! authenticate))
 
-(s/defn google-authenticate
-  "Generates a request map that can be executed by call!"
-  [token :- s/Str ok err]
-  (new-request :post "/v1/users/actions/authenticate" {:with-google {:token token}} ok err))
+(s/defn authenticate-with-password
+  [email :- s/Str pass :- s/Str ok err]
+  (authenticate {:with-password {:email email
+                                 :password pass}}
+                ok err))

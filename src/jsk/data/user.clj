@@ -60,8 +60,8 @@
 
 (s/defn find-user-all-fields-by-identifier :- (s/maybe m/User)
   [res identifier :- s/Str]
-  (->> (find-user-id-by-identifier res identifier)
-       (find-user-all-fields-by-id res)))
+  (some->> (find-user-id-by-identifier res identifier)
+           (find-user-all-fields-by-id res)))
 
 (def find-user-all-fields-by-identifier! (ex/wrap-not-found find-user-all-fields-by-identifier))
 

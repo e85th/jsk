@@ -12,27 +12,11 @@
 
 (defsnippet login-view "templates/ui/login.html" [:.login-window]
   []
-  )
+  {[:.email] (k/substitute [inputs/std-text subs/email e/email-changed])
+   [:.password] (k/substitute [inputs/std-password subs/password e/password-changed])
+   [:.login-btn] (k/substitute [inputs/button subs/login-busy? e/email-pass-auth "Login"])})
 
-(defn on-success
-  [x]
-  (log/infof "Omg x"))
-
-(defn on-fail
-  []
-  (log/infof "Omg fail x"))
 
 (defn login-panel
   []
-  (reagent/create-class
-   {:display-name "login-panel"
-    :reagent-render login-view
-    :component-did-mount (fn []
-                           (log/infof "do render of signin2")
-                           (js/gapi.signin2.render "g-signin2" #js {"scope" "profile email"
-                                                                    "width" 240
-                                                                    "height" 50
-                                                                    "longtitle" true
-                                                                    "theme" "dark"
-                                                                    "onsuccess" on-success
-                                                                    "onfailure" on-fail}))}))
+  [login-view])

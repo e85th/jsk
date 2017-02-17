@@ -70,7 +70,6 @@
 (s/defn authed?
   "Answers true if authenticated authorized by looking up the user in the db."
   [res request]
-  (log/infof "cookies: %s" (:cookies request))
   (try
     (some->> (web/cookie-value request conf/jsk-token-name)
              (user/token->user res)
