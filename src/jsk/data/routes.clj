@@ -52,15 +52,15 @@
     (GET "/:id" []
       :return m/Agent
       :path-params [id :- s/Int]
-      :exists [found (agent/find-by-id res id)]
       :auth [user]
+      :exists [found (agent/find-by-id res id)]
       (http-response/ok found))
 
     (POST "/" []
       :return m/Agent
       :body [agent m/Agent]
       :auth [user]
-      (http-response/created nil (agent/create res agent (:db/id user))))
+      (http-response/created nil (agent/create res agent 1 #_(:db/id user))))
 
     (PUT "/:id" []
       :return m/Agent
@@ -68,14 +68,14 @@
       :body [agent m/Agent]
       :exists [_ (agent/find-by-id res id)]
       :auth [user]
-      (http-response/ok (agent/modify res id agent (:db/id user))))
+      (http-response/ok (agent/modify res id agent 1 #_(:db/id user))))
 
     (DELETE "/:id" []
       :return m/Agent
       :path-params [id :- s/Int]
       :exists [found (agent/find-by-id res id)]
       :auth [user]
-      (agent/rm res id (:db/id user))
+      (agent/rm res id 1 #_(:db/id user))
       (http-response/ok found))))
 
 (defroutes alert-routes

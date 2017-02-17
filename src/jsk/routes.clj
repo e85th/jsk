@@ -9,8 +9,10 @@
             [ring.middleware.cookies :as ring-cookies]
             [compojure.route :as route]
             [e85th.backend.web :as web]
+            [e85th.commons.token :as token]
             [e85th.commons.util :as u]
             [e85th.backend.middleware :as backend-mw]
+            [buddy.auth.middleware :as buddy-auth-mw]
             [jsk.data.user :as user]
             [jsk.ui.core :as ui]
             [jsk.common.conf :as conf]
@@ -21,14 +23,9 @@
 (defmethod web/authorized? :standard route-authorization
   [{:keys [user permission auth-fn request]}]
   (assert user "user should always be available.")
-  (let [permission-set (:user/permissions user)
-        permission? (if permission
-                      (some? (permission-set permission))
-                      true)
-        additional-auth? (if auth-fn (auth-fn) true)]
-    (if (and permission? additional-auth?)
-      [true "Allowed"]
-      [false "Not authorized."])))
+  (if user ;; just checking if logged in
+    [true "Allowed"]
+    [false "Not authorized."]))
 
 
 (defn wrap-user-auth
@@ -114,11 +111,11 @@
      (http-response/not-found {:error "Unknown jsk resource."}))))
 
 (defn make-handler
-  [app-resources]
+  [{:keys [token-factory] :as app}]
   (-> all-api-routes
-      (backend-mw/wrap-cookie-value-in-components :res conf/jsk-token-name :bearer)
-      (compojure.api.middleware/wrap-components {:res app-resources})
-      (wrap-user-auth app-resources)
+      (wrap-user-auth app)
+      (compojure.api.middleware/wrap-components {:res app})
+      (buddy-auth-mw/wrap-authentication (token/backend token-factory))
       backend-mw/wrap-api-key-in-header
       backend-mw/wrap-cors
       ring-params/wrap-params
