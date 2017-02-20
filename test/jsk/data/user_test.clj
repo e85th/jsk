@@ -36,29 +36,30 @@
            (user/find-user-by-identifier res "john@example.com")))))
 
 
-(def cn (create-empty-in-memory-db))
+;; (def cn (create-empty-in-memory-db))
 
-(def res {:db {:cn cn}})
+;; (def res {:db {:cn cn}})
 
-(def channels [{:channel/type :email
-                :channel/identifier "john@example.com"}])
-(def u-entity {:user/first-name "John"
-               :user/last-name "Doe"
-               :user/channels channels
-               :user/password "foo"})
+;; (def channels [{:channel/type :email
+;;                 :channel/identifier "john@example.com"}])
+;; (def u-entity {:user/first-name "John"
+;;                :user/last-name "Doe"
+;;                :user/channels channels
+;;                :user/password "foo"})
 
-(def u (user/create-new-user res u-entity 1))
+;; (def u (user/create-new-user res u-entity 1))
 
-(user/find-user-auth res (:db/id u))
+;; (user/find-user-auth res (:db/id u))
 
 
 ;; (user/find-channel-by-id res 277076930200555),
 
 ;; (user/find-channels-by-identifier res "john@example.com")
 
-(user/find-user-by-identifier! res "john@example.com")
+;;(user/find-user-by-identifier! res "john@example.com")
 
-(user/rm-user res (:db/id u) 1)
+;;(user/rm-user res (:db/id u) 1)
+
 
 ;; (user/find-channel-by-type res :email "john@example.com")
 

@@ -6,6 +6,7 @@
             [jsk.data.alert :as alert]
             [jsk.data.tag :as tag]
             [jsk.data.job :as job]
+            [jsk.data.job-types :as job-types]
             [jsk.data.workflow :as workflow]
             [jsk.data.user :as user]
             [compojure.api.sweet :refer [defroutes context POST GET PUT DELETE]]
@@ -15,8 +16,13 @@
             [taoensso.timbre :as log]))
 
 (defroutes tag-routes
-  (context "/v1/tag" [] :tags ["tag"]
+  (context "/v1/tags" [] :tags ["tag"]
     :components [res]
+    (GET "/" []
+      :return [m/Tag]
+      :auth [user]
+      (http-response/ok (tag/find-all res)))
+
     (GET "/:id" []
       :return m/Tag
       :path-params [id :- s/Int]
@@ -47,8 +53,13 @@
        (http-response/ok found))))
 
 (defroutes agent-routes
-  (context "/v1/agent" [] :tags ["agent"]
+  (context "/v1/agents" [] :tags ["agent"]
     :components [res]
+    (GET "/" []
+      :return [m/Agent]
+      :auth [user]
+      (http-response/ok (agent/find-all res)))
+
     (GET "/:id" []
       :return m/Agent
       :path-params [id :- s/Int]
@@ -60,7 +71,7 @@
       :return m/Agent
       :body [agent m/Agent]
       :auth [user]
-      (http-response/created nil (agent/create res agent 1 #_(:db/id user))))
+      (http-response/created nil (agent/create res agent (:db/id user))))
 
     (PUT "/:id" []
       :return m/Agent
@@ -68,7 +79,7 @@
       :body [agent m/Agent]
       :exists [_ (agent/find-by-id res id)]
       :auth [user]
-      (http-response/ok (agent/modify res id agent 1 #_(:db/id user))))
+      (http-response/ok (agent/modify res id agent (:db/id user))))
 
     (DELETE "/:id" []
       :return m/Agent
@@ -79,8 +90,14 @@
       (http-response/ok found))))
 
 (defroutes alert-routes
-  (context "/v1/alert" [] :tags ["alert"]
+  (context "/v1/alerts" [] :tags ["alert"]
     :components [res]
+
+    (GET "/" []
+      :return [m/Alert]
+      :auth [user]
+      (http-response/ok (alert/find-all res)))
+
     (GET "/:id" []
       :return m/Alert
       :path-params [id :- s/Int]
@@ -95,20 +112,20 @@
       (http-response/created nil (alert/create res alert (:db/id user))))
 
     (POST "/actions/assoc-channels" []
-          :summary "Associates channels to a alert. Returns the new set of associated channels ."
-          :return m/AlertChannels
-          :body [data m/AlertChannels]
-          :auth [user]
-          (http-response/ok
-           (alert/assoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
+      :summary "Associates channels to a alert. Returns the new set of associated channels ."
+      :return m/AlertChannels
+      :body [data m/AlertChannels]
+      :auth [user]
+      (http-response/ok
+       (alert/assoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
 
     (POST "/actions/dissoc-channels" []
-          :summary "Dissociates channels from a alert. Returns the new set of associated channels."
-          :return m/AlertChannels
-          :body [data m/AlertChannels]
-          :auth [user]
-          (http-response/ok
-           (alert/dissoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
+      :summary "Dissociates channels from a alert. Returns the new set of associated channels."
+      :return m/AlertChannels
+      :body [data m/AlertChannels]
+      :auth [user]
+      (http-response/ok
+       (alert/dissoc-channels res (:alert/id data) (:channel/ids data) (:db/id user))))
 
     (PUT "/:id" []
       :return m/Alert
@@ -128,8 +145,14 @@
 
 
 (defroutes schedule-routes
-  (context "/v1/schedule" [] :tags ["schedule"]
+  (context "/v1/schedules" [] :tags ["schedule"]
     :components [res]
+
+    (GET "/" []
+      :return [m/Schedule]
+      :auth [user]
+      (http-response/ok (schedule/find-all res)))
+
     (GET "/:id" []
       :return m/Schedule
       :path-params [id :- s/Int]
@@ -160,8 +183,14 @@
       (http-response/ok found))))
 
 (defroutes job-routes
-  (context "/v1/job" [] :tags ["job"]
+  (context "/v1/jobs" [] :tags ["job"]
     :components [res]
+
+    (GET "/" []
+      :return [m/Job]
+      :auth [user]
+      (http-response/ok (job/find-all res)))
+
     (GET "/:id" []
       :return m/Job
       :path-params [id :- s/Int]
@@ -207,9 +236,23 @@
       (job/rm res id (:db/id user))
       (http-response/ok found))))
 
-(defroutes workflow-routes
-  (context "/v1/workflow" [] :tags ["workflow"]
+(defroutes job-type-routes
+  (context "/v1/job-types" [] :tags ["job-types"]
     :components [res]
+    (GET "/" []
+      :return m/JobTypeSchema
+      :auth [user]
+      (http-response/ok (job-types/find-all res)))))
+
+(defroutes workflow-routes
+  (context "/v1/workflows" [] :tags ["workflow"]
+    :components [res]
+
+    (GET "/" []
+      :return [m/Workflow]
+      :auth [user]
+      (http-response/ok (workflow/find-all res)))
+
     (GET "/:id" []
       :return m/Workflow
       :path-params [id :- s/Int]
@@ -254,10 +297,15 @@
       (workflow/rm res id (:db/id user))
       (http-response/ok found))))
 
-
 (defroutes user-routes
   (context "/v1/users" [] :tags ["users"]
     :components [res]
+    (GET "/" []
+      :summary "Return information about the current user."
+      :return [m/User]
+      :auth [user]
+      (http-response/ok (user/find-user-by-id! res (:db/id user))))
+
     (POST "/actions/authenticate" []
       :summary "Authentication based on firebase, nonce or password."
       :return m/AuthResponse

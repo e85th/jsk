@@ -9,4 +9,4 @@
             [e85th.ui.util :as u]
             [re-frame.core :as rf]))
 
-(def-db-change set-current-view m/current-view)
+(def-db-change set-main-view m/main-view)

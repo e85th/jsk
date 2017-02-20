@@ -30,6 +30,14 @@
              (assoc update-data :db/id schedule-id))))
 
     (crud/get-schedule schedule-id)
+
+    ;; -- get all
+    (let [[status schedules] (test/api-call :get crud/schedule-base-endpoint)]
+      (is (= 200 status))
+      (is (pos? (count schedules)))
+      (is (every? :schedule/name schedules)))
+
+
     (crud/delete-schedule schedule-id)))
 
 (deftest ^:integration create-fails-with-bad-data

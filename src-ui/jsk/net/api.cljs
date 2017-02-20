@@ -16,7 +16,7 @@
    (new-request method url {} ok err))
   ([method url params ok err]
    (-> (rpc/new-re-frame-request method (full-url url) params ok err)
-       rpc/with-transit-format
+       rpc/with-edn-format
        (rpc/with-bearer-auth (data/jsk-token)))))
 
 (s/defn call!
@@ -34,7 +34,7 @@
          normalize (comp ensure-handler-fn)]
      (rpc/call (normalize req)))))
 
-(s/defn ^:private authenticate
+(defn- authenticate
   [body ok err]
   (new-request :post "/v1/users/actions/authenticate" body ok err))
 
@@ -49,3 +49,57 @@
   (authenticate {:with-password {:email email
                                  :password pass}}
                 ok err))
+
+(s/defn save*
+  "Does either a post or put."
+  [base-url id-kw data ok err]
+  (let [entity-id (id-kw data)
+        [method url] (if entity-id
+                       [:put (str base-url "/" entity-id)]
+                       [:post base-url])]
+    (new-request method url data ok err)))
+
+;; -- Agents
+(s/defn fetch-agent-list
+  [ok err]
+  (new-request :get "/v1/agents" ok err))
+
+(s/defn save-agent
+  [agent ok err]
+  (save* "/v1/agents" :db/id agent ok err))
+
+(s/defn fetch-agent
+  [agent-id ok err]
+  (new-request :get  (str "/v1/agents/" agent-id) ok err))
+
+
+;; -- Schedules
+(s/defn fetch-schedule-list
+  [ok err]
+  (new-request :get "/v1/schedules" ok err))
+
+(s/defn save-schedule
+  [schedule ok err]
+  (save* "/v1/schedules" :db/id schedule ok err))
+
+(s/defn fetch-schedule
+  [schedule-id ok err]
+  (new-request :get  (str "/v1/schedules/" schedule-id) ok err))
+
+;; -- Jobs
+(s/defn fetch-job-list
+  [ok err]
+  (new-request :get "/v1/jobs" ok err))
+
+(s/defn save-job
+  [job ok err]
+  (save* "/v1/jobs" :db/id job ok err))
+
+(s/defn fetch-job
+  [job-id ok err]
+  (new-request :get  (str "/v1/jobs/" job-id) ok err))
+
+
+(s/defn fetch-job-types
+  [ok err]
+  (new-request :get "/v1/job-types" ok err))

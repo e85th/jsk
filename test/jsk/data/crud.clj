@@ -6,7 +6,7 @@
             [jsk.data.models :as m]
             [e85th.commons.ex :as ex]))
 
-(def schedule-base-endpoint "/api/v1/schedule")
+(def schedule-base-endpoint "/api/v1/schedules")
 
 (defn create-schedule
   "Create and return the schedule data."
@@ -55,7 +55,7 @@
 
 
 ;; -- workflow
-(def workflow-base-endpoint "/api/v1/workflow")
+(def workflow-base-endpoint "/api/v1/workflows")
 
 (defn create-workflow
   "Creates a workflow."
@@ -101,7 +101,7 @@
      (is (= workflow-id (:db/id workflow))))))
 
 ;; -- job
-(def job-base-endpoint "/api/v1/job")
+(def job-base-endpoint "/api/v1/jobs")
 
 (defn create-job
   "Creates a job."

@@ -112,6 +112,16 @@
    (s/optional-key :job/schedules) [s/Int]
    (s/optional-key :job/tags) [s/Int]})
 
+(s/defschema JobField
+  {:job.field/name s/Str
+   :job.field/desc s/Str
+   :job.field/key s/Keyword
+   :job.field/type s/Keyword
+   :job.field/required? s/Bool})
+
+(s/defschema JobTypeSchema
+  {s/Keyword [JobField]})
+
 ;; -- Workflow
 (s/defschema Workflow
   {(s/optional-key :db/id) s/Int

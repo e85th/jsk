@@ -74,6 +74,8 @@
     (some->> (web/cookie-value request conf/jsk-token-name)
              (user/token->user res)
              some?)
+    (catch AuthExceptionInfo ex
+      (log/info (str ex)))
     (catch Exception ex
       (log/error ex)
       false)))

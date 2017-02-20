@@ -72,6 +72,9 @@
       (web/html-response (ui/login-page res)))
 
     (GET "/" []
+       (http-response/see-other "/jsk"))
+
+    (GET "/jsk*" []
       (if (ui/authed? res +compojure-api-request+)
         (web/html-response (ui/main-page res))
         (http-response/see-other "/login")))))
@@ -93,6 +96,7 @@
        #'data/schedule-routes
        #'data/tag-routes
        #'data/job-routes
+       #'data/job-type-routes
        #'data/workflow-routes
        #'data/user-routes
        (compojure-api/undocumented

@@ -3,9 +3,9 @@
   <head>
     <meta id="google-signin-client-id" name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
     <script>
-function onGoogleSignIn(googleUser) {
-  //jsk.main.google_sign_in(googleUser);
-}
+     function onGoogleSignIn(googleUser) {
+       //jsk.main.google_sign_in(googleUser);
+     }
      function onSignIn(){
        console.log("onregsignin");
           //jsk.main.sign_in();
@@ -15,10 +15,29 @@ function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
     console.log('User signed out.');
-  });
-}
+  })};
+
+var auth2;
+
+var initClient = function() {
+    gapi.load('auth2', function(){
+        auth2 = gapi.auth2.init({});
+        // Attach the click handler to the sign-in button
+        auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
+    });
+};
+
+var onSuccess = function(user) {
+    console.log('Signed in as ' + user.getBasicProfile().getName());
+    jsk.main.google_sign_in(user);
+ };
+
+var onFailure = function(error) {
+    console.log(error);
+};
+
     </script>
-    <script src="https://apis.google.com/js/platform.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=initClient"></script>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -31,7 +50,7 @@ function signOut() {
   </head>
   <body>
     <h3>JSK Login</h3>
-    <div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>
+    <button id="signin-button">Google Signin</button>
     <p>
     <a href="#" onclick="signOut();">Sign out</a>
     </p>

@@ -7,6 +7,11 @@
             [e85th.commons.datomic :as datomic]
             [e85th.commons.ex :as ex]))
 
+
+(s/defn find-all :- [m/Workflow]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :workflow/name))
+
 (s/defn find-by-id :- (s/maybe m/Workflow)
   "Finds an workflow by id."
   [{:keys [db]} workflow-id :- s/Int]

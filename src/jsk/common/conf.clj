@@ -34,13 +34,13 @@
   [sys-config]
   (get-in sys-config [:log-file]))
 
-(s/defn auth-secret
+(s/defn auth-secret :- s/Str
   [sys-config]
-  (get-in sys-config [:auth :secret] (u/uuid)))
+  (get-in sys-config [:jsk-token :secret]))
 
 (s/defn auth-token-ttl-minutes
   [sys-config]
-  (get-in sys-config [:auth :ttl] 600))
+  (get-in sys-config [:jsk-token :ttl] 600))
 
 (s/defn ^:dev-only google-auth-settings
   [sys-config]

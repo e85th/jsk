@@ -33,6 +33,10 @@
   (when (contains? sched :schedule/cron-expr)
     (validate-cron-expr cron-expr)))
 
+(s/defn find-all :- [m/Schedule]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :schedule/name))
+
 (s/defn find-by-id :- (s/maybe m/Schedule)
   "Finds an schedule by id."
   [{:keys [db]} schedule-id :- s/Int]

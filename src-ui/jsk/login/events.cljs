@@ -47,7 +47,7 @@
 (def-event-fx google-auth
   [_ [_ token]]
   (log/infof "auth called with token: %s" token)
-  {:http-xhrio (api/authenticate token auth-ok [rpc-err auth-err])})
+  {:http-xhrio (api/authenticate-with-google token auth-ok [rpc-err auth-err])})
 
 (def-event-fx email-pass-auth
   [{:keys [db]} _]

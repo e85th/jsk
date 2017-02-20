@@ -20,6 +20,11 @@
 (def password-required-ex ::password-required-ex)
 (def channel-auth-failed-ex ::channel-auth-failed-ex)
 
+
+(s/defn find-all :- [m/User]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :user/name))
+
 (s/defn find-user-all-fields-by-id :- (s/maybe m/UserAllFields)
   "Finds a user entity with the specified id. Raises an exception when not found."
   [{:keys [db]} id :- s/Int]

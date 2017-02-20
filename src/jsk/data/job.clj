@@ -9,22 +9,33 @@
             [e85th.commons.ex :as ex]))
 
 
-(s/defn find-by-id :- (s/maybe m/Job)
-  "Finds an job by id."
-  [{:keys [db]} job-id :- s/Int]
-  (let [extract-ids (partial map :db/id)]
-    (some-> (datomic/get-entity-with-attr db job-id :job/name)
-            (update-in [:job/props] edn/read-string)
-            (update-in [:job/schedules] extract-ids)
-            (update-in [:job/tags] extract-ids))))
-
-(def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
-  find-by-id! (ex/wrap-not-found find-by-id))
 
 (defn encode-job-props
   [job]
   (cond-> job
     (contains? job :job/props) (update-in [:job/props] pr-str)))
+
+(defn as-job
+  "Converts data retrieved from the database to fit Job schema."
+  [job-data]
+  (let [extract-ids (partial map :db/id)]
+    (some-> job-data
+            (update-in [:job/props] edn/read-string)
+            (update-in [:job/schedules] extract-ids)
+            (update-in [:job/tags] extract-ids))))
+
+(s/defn find-all :- [m/Job]
+  [{:keys [db]}]
+  (->> (datomic/get-all-entities-with-attr db :job/name)
+       (map as-job)))
+
+(s/defn find-by-id :- (s/maybe m/Job)
+  "Finds an job by id."
+  [{:keys [db]} job-id :- s/Int]
+  (as-job (datomic/get-entity-with-attr db job-id :job/name)))
+
+(def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
+  find-by-id! (ex/wrap-not-found find-by-id))
 
 (s/defn create :- m/Job
   "Creates a new job."

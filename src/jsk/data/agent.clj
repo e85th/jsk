@@ -7,6 +7,10 @@
             [e85th.commons.datomic :as datomic]
             [e85th.commons.ex :as ex]))
 
+(s/defn find-all :- [m/Agent]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :agent/name))
+
 (s/defn find-by-id :- (s/maybe m/Agent)
   "Finds an agent by id."
   [{:keys [db]} agent-id :- s/Int]

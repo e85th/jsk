@@ -7,6 +7,10 @@
             [e85th.commons.datomic :as datomic]
             [e85th.commons.ex :as ex]))
 
+(s/defn find-all :- [m/Tag]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :tag/name))
+
 (s/defn find-by-id :- (s/maybe m/Tag)
   "Finds an tag by id."
   [{:keys [db]} tag-id :- s/Int]

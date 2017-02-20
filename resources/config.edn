@@ -7,7 +7,9 @@
 
  :settings {:smtp ^:ref [:secrets :settings :smtp]
             :site ^:ref [:secrets :settings :site]
-            :auth {:google ^:ref [:secrets :settings :auth :google]}}
+            :auth {:google ^:ref [:secrets :settings :auth :google]
+                   }}
+ :jsk-token ^:ref [:secrets :jsk-token]
 
  :datomic-uri #profile{:dev "datomic:free://localhost:4334/jsk-dev"
                        :stg "datomic:free://localhost:4334/jsk-stg"

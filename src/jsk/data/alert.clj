@@ -7,6 +7,10 @@
             [e85th.commons.datomic :as datomic]
             [e85th.commons.ex :as ex]))
 
+(s/defn find-all :- [m/Alert]
+  [{:keys [db]}]
+  (datomic/get-all-entities-with-attr db :alert/name))
+
 (s/defn find-by-id :- (s/maybe m/Alert)
   "Finds an alert by id."
   [{:keys [db]} alert-id :- s/Int]

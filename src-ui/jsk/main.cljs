@@ -29,7 +29,7 @@
   (log/info "verify-login " (data/jsk-token-set?))
   (when-not (data/jsk-token-set?)
     (u/set-window-location! (data/login-url))
-    (rf/dispatch [e/set-current-view :jsk/login])))
+    (rf/dispatch [e/set-main-view :jsk/login])))
 
 
 (def name->component

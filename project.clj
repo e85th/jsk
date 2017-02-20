@@ -74,8 +74,7 @@
                                            :optimizations :none
                                            :pretty-print true
                                            :parallel-build true
-                                           :closure-defines {goog.DEBUG true}}}
-}}
+                                           :closure-defines {goog.DEBUG true}}}}}
   :plugins [[com.jakemccrary/lein-test-refresh "0.10.0"]
             [codox "0.8.13"]
             [lein-cljsbuild "1.1.4"]

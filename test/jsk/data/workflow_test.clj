@@ -17,4 +17,11 @@
       (is (= update-data wf)))
 
     (crud/get-workflow workflow-id)
+
+    ;; -- get all
+    (let [[status workflows] (test/api-call :get crud/workflow-base-endpoint)]
+      (is (= 200 status))
+      (is (pos? (count workflows)))
+      (is (every? :workflow/name workflows)))
+
     (crud/delete-workflow workflow-id)))
