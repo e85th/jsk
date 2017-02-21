@@ -8,3 +8,9 @@
 (def current-cron-expr [::current :schedule/cron-expr])
 
 (def busy? [::busy?])
+
+
+(def new-schedule
+  {:schedule/name ""
+   :schedule/desc ""
+   :schedule/cron-expr ""})

@@ -5,6 +5,7 @@
             [taoensso.timbre :as log]
             [datomic.api :as d]
             [e85th.commons.datomic :as datomic]
+            [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex]))
 
 (s/defn find-all :- [m/Alert]
@@ -21,32 +22,40 @@
 
 (s/defn create :- m/Alert
   "Creates a new alert."
-  [{:keys [db] :as res} alert :- m/Alert user-id :- s/Int]
-  (let [alert-id (d/tempid :db.part/jsk)
-        facts [(assoc alert :db/id alert-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)]
-    (find-by-id res (d/resolve-tempid db-after tempids alert-id))))
+  [{:keys [db publisher] :as res} alert :- m/Alert user-id :- s/Int]
+  (let [temp-id (d/tempid :db.part/jsk)
+        facts [(assoc alert :db/id temp-id)]
+        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+        alert-id (d/resolve-tempid db-after tempids temp-id)]
+    (mq/publish publisher [:jsk.alert/created alert-id])
+    (find-by-id res alert-id)))
 
 (s/defn modify :- m/Alert
   "Updates and returns the new record."
-  [{:keys [db] :as res} alert-id :- s/Int alert :- m/Alert user-id :- s/Int]
+  [{:keys [db publisher] :as res} alert-id :- s/Int alert :- m/Alert user-id :- s/Int]
   @(d/transact (:cn db) [(assoc alert :db/id alert-id)])
+  (mq/publish publisher [:jsk.alert/modified alert-id])
   (find-by-id! res alert-id))
 
 (s/defn rm
   "Delete an alert."
-  [{:keys [db]} alert-id :- s/Int user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retractEntity alert-id]]))
+  [{:keys [db publisher]} alert-id :- s/Int user-id :- s/Int]
+  @(d/transact (:cn db) [[:db/retractEntity alert-id]])
+  (mq/publish publisher [:jsk.alert/deleted alert-id]))
 
 
 (s/defn assoc-channels :- m/AlertChannels
-  [{:keys [db] :as res} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id alert-id :alert/channels channel-ids}])
+  (mq/publish publisher [:jsk.alert/modified alert-id])
   {:alert/id alert-id
    :channel/ids (:alert/channels (find-by-id! res alert-id))})
 
 (s/defn dissoc-channels :- m/AlertChannels
-  [{:keys [db]} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} alert-id :- s/Int channel-ids :- [s/Int] user-id :- s/Int]
   (let [facts (for [c channel-ids]
                 [:db/retract alert-id :alert/channels c])]
-    @(d/transact (:cn db) facts)))
+    @(d/transact (:cn db) facts)
+    (mq/publish publisher [:jsk.alert/modified alert-id])
+    {:alert/id alert-id
+     :channel/ids (:alert/channels (find-by-id! res alert-id))}))

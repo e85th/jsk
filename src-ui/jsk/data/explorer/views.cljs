@@ -11,10 +11,19 @@
             [jsk.data.job.events :as job-events]
             [jsk.routes :as routes]))
 
+;; FIXME: this should be done with a event
+(defn update-history
+  [handler]
+  (let [url (routes/url-for handler)
+        res (js/window.history.pushState nil nil url)]
+    (log/infof "update-history url: %s res: %s" url res)))
+
+
 (defsnippet explorer* "templates/ui/data/explorer/explorer.html" [:.jsk-explorer]
   [main-content]
-  {[:#jsk-explorer-executables] (k/content [job-views/job-list])
-   [:#jsk-explorer-schedules] (k/content [schedule-views/schedule-list])
+  {;[:#jsk-explorer-executables-tab] (k/listen :on-click #(update-history :jsk.explorer/job-list))
+   [:#jsk-explorer-executables] (k/content [job-views/job-list])
+   [:#jsk-explorer-schedules] (k/content [schedule-views/schedule-list-with-actions])
    [:#jsk-explorer-agents] (k/content [agent-views/agent-list])
    [:.jsk-explorer-main] (k/content main-content)})
 
@@ -24,10 +33,20 @@
 
 (defmulti explorer-panels :handler)
 
+
 ;; -- Agents
-(defmethod explorer-panels :jsk.explorer/agent-list [_] [:h4 "Agents"])
-(defmethod explorer-panels :jsk.explorer/job-list [_] [:h4 "Jobs"])
-(defmethod explorer-panels :jsk.explorer/schedule-list [_] [:h4 "Schedules"])
+(defmethod explorer-panels :jsk.explorer/agent-list
+  [route]
+  (update-history route)
+  [:h4 "Agents"])
+(defmethod explorer-panels :jsk.explorer/job-list
+  [route]
+  (update-history route)
+  [:h4 "Jobs"])
+(defmethod explorer-panels :jsk.explorer/schedule-list
+  [route]
+  (update-history route)
+  [:h4 "Schedules"])
 
 (defmethod explorer-panels :jsk.explorer/agent [route]
   [agent-views/agent-editor (route->id route)])

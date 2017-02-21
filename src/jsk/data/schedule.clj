@@ -5,6 +5,7 @@
             [taoensso.timbre :as log]
             [datomic.api :as d]
             [e85th.commons.datomic :as datomic]
+            [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex])
   (:import [org.quartz CronExpression]))
 
@@ -48,24 +49,29 @@
 ;; -- create, update, delete
 (s/defn create :- m/Schedule
   "Creates a new schedule."
-  [{:keys [db] :as res} schedule :- m/Schedule user-id :- s/Int]
+  [{:keys [db publisher] :as res} schedule :- m/Schedule user-id :- s/Int]
   (validate-create schedule)
-  (let [schedule-id (d/tempid :db.part/jsk)
-        facts [(assoc schedule :db/id schedule-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)]
-    (find-by-id res (d/resolve-tempid db-after tempids schedule-id))))
+  (let [temp-id (d/tempid :db.part/jsk)
+        facts [(assoc schedule :db/id temp-id)]
+        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+        schedule-id (d/resolve-tempid db-after tempids temp-id)]
+    (mq/publish publisher [:jsk.schedule/created schedule-id])
+    (find-by-id res schedule-id)))
 
 (s/defn modify :- m/Schedule
   "Updates and returns the new record."
-  [{:keys [db] :as res} schedule-id :- s/Int schedule :- m/Schedule user-id :- s/Int]
+  [{:keys [db publisher] :as res} schedule-id :- s/Int schedule :- m/Schedule user-id :- s/Int]
   (validate-modify schedule)
   @(d/transact (:cn db) [(assoc schedule :db/id schedule-id)])
+  (mq/publish publisher [:jsk.schedule/modified schedule-id])
   (find-by-id! res schedule-id))
 
 (s/defn rm
   "Delete an schedule."
-  [{:keys [db]} schedule-id :- s/Int user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retractEntity schedule-id]]))
+  [{:keys [db publisher]} schedule-id :- s/Int user-id :- s/Int]
+  @(d/transact (:cn db) [[:db/retractEntity schedule-id]])
+  (mq/publish publisher [:jsk.schedule/deleted schedule-id]))
+
 
 ;; ;;-- job schedule
 ;; (s/defn find-job-schedule-by-id :- (s/maybe m/JobScheduleInfo)

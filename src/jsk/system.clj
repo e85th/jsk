@@ -13,6 +13,7 @@
             [schema.core :as s]
             [jsk.common.util :as util]
             [jsk.routes :as routes]
+            [jsk.publisher :as publisher]
             [jsk.common.conf :as conf]))
 
 
@@ -20,7 +21,11 @@
 (s/defn add-server-components
   "Adds server components "
   [sys-config component-vector]
-  (let [component-vector (conj component-vector :ws (backend-ws/new-sente-websocket (sente-http-kit/get-sch-adapter) websockets/req->user-id))]
+  (let [publisher (publisher/new-web-server-publisher)
+        ws (backend-ws/new-sente-websocket (sente-http-kit/get-sch-adapter) websockets/req->user-id)
+        component-vector (into component-vector
+                               [:ws ws
+                                :publisher (component/using publisher [:ws])])]
     (conj component-vector
           ;; app will have all dependent resources
           :app (-> component-vector commons-comp/component-keys commons-comp/new-app)

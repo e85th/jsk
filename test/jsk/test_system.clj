@@ -9,6 +9,7 @@
             [e85th.backend.websockets :as backend-ws]
             [e85th.commons.token :as token]
             [schema.core :as s]
+            [e85th.commons.mq :as mq]
             [taoensso.timbre :as log]))
 
 (s/defn add-server-components
@@ -26,6 +27,7 @@
               :mailer (email/new-nil-email-sender)
               :sms (sms/new-nil-sms-sender)
               :ws (backend-ws/new-nil-websocket)
+              :publisher (mq/new-nil-message-publisher)
               :token-factory (token/new-sha256-token-factory (conf/auth-secret sys-config)
                                                              (conf/auth-token-ttl-minutes sys-config))
               :db (datomic/new-datomic-db (conf/datomic-uri sys-config))]]

@@ -14,6 +14,8 @@
             "explorer/" {"" :jsk/explorer}
             "agents/" {"" :jsk.explorer/agent-list
                        [:id "/"] :jsk.explorer/agent}
+            "alerts/" {"" :jsk.explorer/alert-list
+                       [:id "/"] :jsk.explorer/alert}
             "jobs/" {"" :jsk.explorer/job-list
                        [:id "/"] :jsk.explorer/job}
             "schedules/" {"" :jsk.explorer/schedule-list

@@ -5,6 +5,7 @@
             [taoensso.timbre :as log]
             [datomic.api :as d]
             [e85th.commons.datomic :as datomic]
+            [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex]))
 
 (s/defn find-all :- [m/Tag]
@@ -21,22 +22,26 @@
 
 (s/defn create :- m/Tag
   "Creates a new tag."
-  [{:keys [db] :as res} tag :- m/Tag user-id :- s/Int]
-  (let [tag-id (d/tempid :db.part/jsk)
-        facts [(assoc tag :db/id tag-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)]
-    (find-by-id res (d/resolve-tempid db-after tempids tag-id))))
+  [{:keys [db publisher] :as res} tag :- m/Tag user-id :- s/Int]
+  (let [temp-id (d/tempid :db.part/jsk)
+        facts [(assoc tag :db/id temp-id)]
+        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+        tag-id (d/resolve-tempid db-after tempids temp-id)]
+    (mq/publish publisher [:jsk.tag/created tag-id])
+    (find-by-id res tag-id)))
 
 (s/defn modify :- m/Tag
   "Updates and returns the new record."
-  [{:keys [db] :as res} tag-id :- s/Int tag :- m/Tag user-id :- s/Int]
+  [{:keys [db publisher] :as res} tag-id :- s/Int tag :- m/Tag user-id :- s/Int]
   @(d/transact (:cn db) [(assoc tag :db/id tag-id)])
+  (mq/publish publisher [:jsk.tag/modified tag-id])
   (find-by-id! res tag-id))
 
 (s/defn rm
   "Delete an tag."
-  [{:keys [db]} tag-id :- s/Int user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retractEntity tag-id]]))
+  [{:keys [db publisher]} tag-id :- s/Int user-id :- s/Int]
+  @(d/transact (:cn db) [[:db/retractEntity tag-id]])
+  (mq/publish publisher [:jsk.tag/deleted tag-id]))
 
 
 (s/defn find-tag-ids :- [s/Int]
@@ -45,9 +50,11 @@
 
 (s/defn ensure-tags :- [s/Int]
   "Makes sure all tag names exist. Answers with the ids of all tags."
-  [{:keys [db] :as res} tag-names :- [s/Str]]
+  [{:keys [db publisher] :as res} tag-names :- [s/Str]]
   (let [facts (for [x tag-names]
-                {:tag/name x})]
-    (->> @(d/transact (:cn db) facts)
-         :tempids
-         vals)))
+                {:tag/name x})
+        tag-ids (->> @(d/transact (:cn db) facts)
+                     :tempids
+                     vals)]
+    (mq/publish publisher [:jsk.tag/ensured-tags tag-ids])
+    tag-ids))

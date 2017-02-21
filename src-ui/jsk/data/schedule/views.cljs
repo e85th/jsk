@@ -8,6 +8,10 @@
             [jsk.data.schedule.subs :as subs]
             [jsk.routes :as routes]))
 
+(defsnippet schedule-actions* "templates/ui/data/schedule/list.html" [:.jsk-schedule-action-bar]
+  []
+  {[:.jsk-new-schedule-action] (k/listen :on-click #(rf/dispatch [e/new-schedule]))})
+
 
 (defsnippet schedule-item* "templates/ui/data/schedule/list.html" [:.jsk-schedule-list [:.jsk-schedule-item first-child]]
   [{:keys [db/id schedule/name]}]
@@ -27,6 +31,11 @@
     (fn []
       [schedule-list* @schedules])))
 
+(defn schedule-list-with-actions
+  []
+  [:div
+   [schedule-actions*]
+   [schedule-list]])
 
 (defsnippet schedule-view* "templates/ui/data/schedule/edit.html" [:.jsk-schedule-edit]
   []

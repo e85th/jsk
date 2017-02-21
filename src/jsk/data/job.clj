@@ -6,9 +6,8 @@
             [datomic.api :as d]
             [e85th.commons.datomic :as datomic]
             [clojure.edn :as edn]
+            [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex]))
-
-
 
 (defn encode-job-props
   [job]
@@ -39,51 +38,59 @@
 
 (s/defn create :- m/Job
   "Creates a new job."
-  [{:keys [db] :as res} job :- m/Job user-id :- s/Int]
-  (let [job-id (d/tempid :db.part/jsk)
+  [{:keys [db publisher] :as res} job :- m/Job user-id :- s/Int]
+  (let [temp-id (d/tempid :db.part/jsk)
         facts [(-> job
-                   (assoc :db/id job-id)
+                   (assoc :db/id temp-id)
                    (encode-job-props))]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)]
-    (find-by-id res (d/resolve-tempid db-after tempids job-id))))
+        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+        job-id (d/resolve-tempid db-after tempids temp-id)]
+    (mq/publish publisher [:jsk.job/created job-id])
+    (find-by-id res job-id)))
 
 (s/defn modify :- m/Job
   "Updates and returns the new record."
-  [{:keys [db] :as res} job-id :- s/Int job :- m/Job user-id :- s/Int]
+  [{:keys [db publisher] :as res} job-id :- s/Int job :- m/Job user-id :- s/Int]
   @(d/transact (:cn db) [(-> job
                              (assoc :db/id job-id)
                              (encode-job-props))])
+  (mq/publish publisher [:jsk.job/modified job-id])
   (find-by-id! res job-id))
 
 (s/defn rm
   "Delete an job."
-  [{:keys [db]} job-id :- s/Int user-id :- s/Int]
-  @(d/transact (:cn db) [[:db/retractEntity job-id]]))
+  [{:keys [db publisher]} job-id :- s/Int user-id :- s/Int]
+  @(d/transact (:cn db) [[:db/retractEntity job-id]])
+  (mq/publish publisher [:jsk.job/deleted job-id]))
 
 (s/defn assoc-schedules :- m/JobSchedules
-  [{:keys [db] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id job-id :job/schedules schedule-ids}])
+  (mq/publish publisher [:jsk.job/modified job-id])
   {:job/id job-id
    :schedule/ids (:job/schedules (find-by-id! res job-id))})
 
 (s/defn dissoc-schedules :- m/JobSchedules
-  [{:keys [db] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
   (let [facts (for [s schedule-ids]
                 [:db/retract job-id :job/schedules s])]
     @(d/transact (:cn db) facts)
+    (mq/publish publisher [:jsk.job/modified job-id])
     {:job/id job-id
      :schedule/ids (:job/schedules (find-by-id! res job-id))}))
 
 (s/defn assoc-tags
-  [{:keys [db] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id job-id :job/tags tag-ids}])
+  (mq/publish publisher [:jsk.job/modified job-id])
   {:job/id job-id
    :tag/ids (:job/tags (find-by-id! res job-id))})
 
 (s/defn dissoc-tags
-  [{:keys [db] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
+  [{:keys [db publisher] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
   (let [facts (for [t tag-ids]
                 [:db/retract job-id :job/tags t])]
     @(d/transact (:cn db) facts))
+  (mq/publish publisher [:jsk.job/modified job-id])
   {:job/id job-id
    :tag/ids (:job/tags (find-by-id! res job-id))} )
