@@ -36,7 +36,7 @@
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
   find-by-id! (ex/wrap-not-found find-by-id))
 
-(s/defn create :- m/Job
+(s/defn create :- s/Int
   "Creates a new job."
   [{:keys [db publisher] :as res} job :- m/Job user-id :- s/Int]
   (let [temp-id (d/tempid :db.part/jsk)
@@ -46,16 +46,15 @@
         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
         job-id (d/resolve-tempid db-after tempids temp-id)]
     (mq/publish publisher [:jsk.job/created job-id])
-    (find-by-id res job-id)))
+    job-id))
 
-(s/defn modify :- m/Job
-  "Updates and returns the new record."
+(s/defn modify
+  "Updates the record."
   [{:keys [db publisher] :as res} job-id :- s/Int job :- m/Job user-id :- s/Int]
   @(d/transact (:cn db) [(-> job
                              (assoc :db/id job-id)
                              (encode-job-props))])
-  (mq/publish publisher [:jsk.job/modified job-id])
-  (find-by-id! res job-id))
+  (mq/publish publisher [:jsk.job/modified job-id]))
 
 (s/defn rm
   "Delete an job."

@@ -8,7 +8,6 @@
             [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex]))
 
-
 (s/defn find-all :- [m/Workflow]
   [{:keys [db]}]
   (datomic/get-all-entities-with-attr db :workflow/name))
@@ -25,7 +24,7 @@
   find-by-id! (ex/wrap-not-found find-by-id))
 
 
-(s/defn create :- m/Workflow
+(s/defn create :- s/Int
   "Creates a new workflow."
   [{:keys [db publisher] :as res} workflow :- m/Workflow user-id :- s/Int]
   (let [temp-id (d/tempid :db.part/jsk)
@@ -34,15 +33,14 @@
         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
         workflow-id (d/resolve-tempid db-after tempids temp-id)]
     (mq/publish publisher [:jsk.workflow/created workflow-id])
-    (find-by-id res workflow-id)))
+    workflow-id))
 
-(s/defn modify :- m/Workflow
+(s/defn modify
   "Updates and returns the new record."
   [{:keys [db publisher] :as res} workflow-id :- s/Int workflow :- m/Workflow user-id :- s/Int]
   @(d/transact (:cn db) [(-> workflow
                              (assoc :db/id workflow-id))])
-  (mq/publish publisher [:jsk.workflow/modified workflow-id])
-  (find-by-id! res workflow-id))
+  (mq/publish publisher [:jsk.workflow/modified workflow-id]))
 
 (s/defn rm
   "Delete an workflow."

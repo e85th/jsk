@@ -13,7 +13,7 @@
             [jsk.views :as v]
             [jsk.login.views :as login-views]
             [jsk.login.events :as login-events]
-            [jsk.routes]
+            [jsk.routes :as routes]
             [e85th.ui.rf.fx]
             [e85th.ui.util :as u]
             [e85th.ui.edn-io]
@@ -52,7 +52,7 @@
   (s/set-fn-validation! true)
   (data/set-api-host! (u/element-value "api-host"))
   (data/set-login-url! (u/element-value "login-url"))
-
+  (routes/init!)
   (when ^boolean js/goog.DEBUG
     (enable-dev-settings))
 

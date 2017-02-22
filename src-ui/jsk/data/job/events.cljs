@@ -59,3 +59,8 @@
 (def-event-fx fetch-job-types
   [_ _]
   {:http-xhrio (api/fetch-job-types fetch-job-types-ok [rpc-err :rpc/fetch-job-types-err])})
+
+
+(def-event-db new-job
+  [db _]
+  (assoc-in db m/current m/new-job))

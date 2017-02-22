@@ -8,6 +8,9 @@
             [jsk.data.agent.subs :as subs]
             [jsk.routes :as routes]))
 
+(defsnippet agent-actions* "templates/ui/data/agent/list.html" [:.jsk-agent-action-bar]
+  []
+  {[:.jsk-new-agent-action] (k/listen :on-click #(rf/dispatch [e/new-agent]))})
 
 (defsnippet agent-item* "templates/ui/data/agent/list.html" [:.jsk-agent-list [:.jsk-agent-item first-child]]
   [{:keys [db/id agent/name]}]
@@ -27,6 +30,11 @@
     (fn []
       [agent-list* @agents])))
 
+(defn agent-list-with-actions
+  []
+  [:div
+   [agent-actions*]
+   [agent-list]])
 
 (defsnippet agent-view* "templates/ui/data/agent/edit.html" [:.jsk-agent-edit]
   []

@@ -10,3 +10,8 @@
             [re-frame.core :as rf]))
 
 (def-db-change set-main-view m/main-view)
+
+(def-event-db autocomplete
+  [db [_ x]]
+  (log/info x)
+  db)

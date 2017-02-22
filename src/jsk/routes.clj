@@ -99,6 +99,7 @@
        #'data/job-type-routes
        #'data/workflow-routes
        #'data/user-routes
+       #'data/search-routes
        (compojure-api/undocumented
         (ANY "/echo" []
           :summary "Echo current request."

@@ -77,11 +77,23 @@
 (s/defschema Alert
   {(s/optional-key :db/id) s/Int
    :alert/name s/Str
-   (s/optional-key :alert/desc) s/Str})
+   (s/optional-key :alert/desc) s/Str
+   (s/optional-key :alert/channels) [s/Int]})
 
 (s/defschema AlertChannels
   {:alert/id s/Int
    :channel/ids [s/Int]})
+
+(s/defschema ChannelInfo
+  {:channel/id s/Int
+   :channel/identifier s/Str
+   :user/first-name s/Str
+   :user/last-name s/Str})
+
+(s/defschema AlertInfo
+  (-> Alert
+      (dissoc :alert/channels)
+      (assoc :alert/channels-info [ChannelInfo])))
 
 ;; -- Schedule
 (s/defschema Schedule
@@ -189,3 +201,8 @@
    :setting.site/name s/Str
    :setting.site/url s/Str
    :setting.site/admin-email s/Str})
+
+(s/defschema SuggestParams
+  {:token s/Str
+   (s/optional-key :max_matches) s/Int
+   s/Keyword s/Any})

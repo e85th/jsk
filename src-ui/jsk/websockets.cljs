@@ -3,22 +3,33 @@
             [schema.core :as s]
             [e85th.ui.net.websockets :as websockets]
             [jsk.common.data :as data]
+            [jsk.data.job.events :as job-events]
+            ;[jsk.data.workflow.events :as workflow-events]
+            ;[jsk.data.alert.events :as alert-events]
+            [jsk.data.agent.events :as agent-events]
+            [jsk.data.schedule.events :as schedule-events]
             [re-frame.core :as rf]))
+
+;(def refresh-workflows (partial rf/dispatch [workflow-events/fetch-workflow-list]))
+;(def refresh-alerts (partial rf/dispatch [alert-events/fetch-alert-list]))
+(def refresh-jobs (partial rf/dispatch [job-events/fetch-job-list]))
+(def refresh-schedules (partial rf/dispatch [schedule-events/fetch-schedule-list]))
+(def refresh-agents (partial rf/dispatch [agent-events/fetch-agent-list]))
 
 (defmulti on-event first)
 
 ;; -- Job
 (defmethod on-event :jsk.job/created
   [msg]
-  (log/infof "Job created: %s" msg))
+  (refresh-jobs))
 
 (defmethod on-event :jsk.job/modified
   [msg]
-  (log/infof "Job modified: %s" msg))
+  (refresh-jobs))
 
 (defmethod on-event :jsk.job/deleted
   [msg]
-  (log/infof "Job deleted: %s" msg))
+  (refresh-jobs))
 
 ;; -- Workflow
 (defmethod on-event :jsk.workflow/created
@@ -37,15 +48,15 @@
 
 (defmethod on-event :jsk.schedule/created
   [msg]
-  (log/infof "Schedule created: %s" msg))
+  (refresh-schedules))
 
 (defmethod on-event :jsk.schedule/modified
   [msg]
-  (log/infof "Schedule modified: %s" msg))
+  (refresh-schedules))
 
 (defmethod on-event :jsk.schedule/deleted
   [msg]
-  (log/infof "Schedule deleted: %s" msg))
+  (refresh-schedules))
 
 ;; -- Alerts
 (defmethod on-event :jsk.alert/created
@@ -63,15 +74,15 @@
 ;; -- Agents
 (defmethod on-event :jsk.agent/created
   [msg]
-  (log/infof "Agent created: %s" msg))
+  (refresh-agents))
 
 (defmethod on-event :jsk.agent/modified
   [msg]
-  (log/infof "Agent modified: %s" msg))
+  (refresh-agents))
 
 (defmethod on-event :jsk.agent/deleted
   [msg]
-  (log/infof "Agent deleted: %s" msg))
+  (refresh-agents))
 
 (defmethod on-event :default
   [msg]

@@ -10,6 +10,9 @@
   [url-path]
   (str (data/api-host) "/api" url-path))
 
+(defn suggest-url
+  []
+  (full-url "/v1/search/suggest"))
 
 (s/defn new-request
   ([method url ok err]
@@ -71,6 +74,19 @@
 (s/defn fetch-agent
   [agent-id ok err]
   (new-request :get  (str "/v1/agents/" agent-id) ok err))
+
+;; -- Alerts
+(s/defn fetch-alert-list
+  [ok err]
+  (new-request :get "/v1/alerts" ok err))
+
+(s/defn save-alert
+  [alert ok err]
+  (save* "/v1/alerts" :db/id alert ok err))
+
+(s/defn fetch-alert
+  [alert-id ok err]
+  (new-request :get  (str "/v1/alerts/" alert-id) ok err))
 
 
 ;; -- Schedules

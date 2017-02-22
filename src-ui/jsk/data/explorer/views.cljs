@@ -6,10 +6,12 @@
             [e85th.ui.rf.inputs :as inputs]
             [jsk.data.explorer.subs :as subs]
             [jsk.data.agent.views :as agent-views]
+            [jsk.data.alert.views :as alert-views]
             [jsk.data.schedule.views :as schedule-views]
             [jsk.data.job.views :as job-views]
             [jsk.data.job.events :as job-events]
             [jsk.routes :as routes]))
+
 
 ;; FIXME: this should be done with a event
 (defn update-history
@@ -22,9 +24,10 @@
 (defsnippet explorer* "templates/ui/data/explorer/explorer.html" [:.jsk-explorer]
   [main-content]
   {;[:#jsk-explorer-executables-tab] (k/listen :on-click #(update-history :jsk.explorer/job-list))
-   [:#jsk-explorer-executables] (k/content [job-views/job-list])
+   [:#jsk-explorer-executables] (k/content [job-views/job-list-with-actions])
    [:#jsk-explorer-schedules] (k/content [schedule-views/schedule-list-with-actions])
-   [:#jsk-explorer-agents] (k/content [agent-views/agent-list])
+   [:#jsk-explorer-alerts] (k/content [alert-views/alert-list-with-actions])
+   [:#jsk-explorer-agents] (k/content [agent-views/agent-list-with-actions])
    [:.jsk-explorer-main] (k/content main-content)})
 
 (defn route->id
@@ -50,6 +53,9 @@
 
 (defmethod explorer-panels :jsk.explorer/agent [route]
   [agent-views/agent-editor (route->id route)])
+
+(defmethod explorer-panels :jsk.explorer/alert [route]
+  [alert-views/alert-editor (route->id route)])
 
 (defmethod explorer-panels :jsk.explorer/job [route]
   [job-views/job-editor (route->id route)])

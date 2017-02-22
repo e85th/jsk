@@ -72,3 +72,17 @@
          :where [?job-id :job/tags ?tags]]
        (-> db :cn d/db)
        job-id))
+
+
+(s/defn find-alert-channel-info :- [m/ChannelInfo]
+  [db alert-id :- s/Int]
+  (let [rs (d/q '[:find ?chan-id ?identifier ?first-name ?last-name
+                  :in $ ?alert-id
+                  :where [?alert-id :alert/channels ?chan-id]
+                  [?chan-id :channel/identifier ?identifier]
+                  [?user-id :user/channels ?chan-id]
+                  [?user-id :user/first-name ?first-name]
+                  [?user-id :user/last-name ?last-name]]
+                (-> db :cn d/db)
+                alert-id)]
+    (map (partial zipmap [:channel/id :channel/identifier :user/first-name :user/last-name]) rs)))

@@ -20,7 +20,7 @@
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such tag."}
   find-by-id! (ex/wrap-not-found find-by-id))
 
-(s/defn create :- m/Tag
+(s/defn create :- s/Int
   "Creates a new tag."
   [{:keys [db publisher] :as res} tag :- m/Tag user-id :- s/Int]
   (let [temp-id (d/tempid :db.part/jsk)
@@ -28,14 +28,13 @@
         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
         tag-id (d/resolve-tempid db-after tempids temp-id)]
     (mq/publish publisher [:jsk.tag/created tag-id])
-    (find-by-id res tag-id)))
+    tag-id))
 
-(s/defn modify :- m/Tag
-  "Updates and returns the new record."
+(s/defn modify
+  "Updates the record."
   [{:keys [db publisher] :as res} tag-id :- s/Int tag :- m/Tag user-id :- s/Int]
   @(d/transact (:cn db) [(assoc tag :db/id tag-id)])
-  (mq/publish publisher [:jsk.tag/modified tag-id])
-  (find-by-id! res tag-id))
+  (mq/publish publisher [:jsk.tag/modified tag-id]))
 
 (s/defn rm
   "Delete an tag."

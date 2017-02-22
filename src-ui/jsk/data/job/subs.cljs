@@ -31,12 +31,14 @@
          (map str)
          sort)))
 
+;; FIXME: subs seem to run anytime the db changes when this sub is in play
+;; no reaction on return on any subs to prevent the signal graph from executing
 (def-sub current-job-type-schema
   [db _]
   (let [current-type (rf/subscribe [current-type])
         job-types (rf/subscribe [job-types])]
-    (log/infof "job-types: %s" @job-types)
-    (log/infof "current-type: %s" @current-type)
+    #_(log/infof "job-types: %s" @job-types)
+    #_(log/infof "current-type: %s" @current-type)
     (get @job-types @current-type [])))
 
 ;; -- Handles dynamic subscription inside of props map

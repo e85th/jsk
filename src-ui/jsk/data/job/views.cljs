@@ -9,6 +9,9 @@
             [jsk.data.job.props :as props]
             [jsk.routes :as routes]))
 
+(defsnippet job-actions* "templates/ui/data/job/list.html" [:.jsk-job-action-bar]
+  []
+  {[:.jsk-new-job-action] (k/listen :on-click #(rf/dispatch [e/new-job]))})
 
 (defsnippet job-item* "templates/ui/data/job/list.html" [:.jsk-job-list [:.jsk-job-item first-child]]
   [{:keys [db/id job/name]}]
@@ -27,6 +30,12 @@
   (let [jobs (rf/subscribe [subs/job-list])]
     (fn []
       [job-list* @jobs])))
+
+(defn job-list-with-actions
+  []
+  [:div
+   [job-actions*]
+   [job-list]])
 
 (defsnippet job-view* "templates/ui/data/job/edit.html" [:.jsk-job-edit]
   [job-type-schema]

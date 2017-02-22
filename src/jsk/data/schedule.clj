@@ -47,7 +47,7 @@
   find-by-id! (ex/wrap-not-found find-by-id))
 
 ;; -- create, update, delete
-(s/defn create :- m/Schedule
+(s/defn create :- s/Int
   "Creates a new schedule."
   [{:keys [db publisher] :as res} schedule :- m/Schedule user-id :- s/Int]
   (validate-create schedule)
@@ -56,15 +56,14 @@
         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
         schedule-id (d/resolve-tempid db-after tempids temp-id)]
     (mq/publish publisher [:jsk.schedule/created schedule-id])
-    (find-by-id res schedule-id)))
+    schedule-id))
 
-(s/defn modify :- m/Schedule
+(s/defn modify
   "Updates and returns the new record."
   [{:keys [db publisher] :as res} schedule-id :- s/Int schedule :- m/Schedule user-id :- s/Int]
   (validate-modify schedule)
   @(d/transact (:cn db) [(assoc schedule :db/id schedule-id)])
-  (mq/publish publisher [:jsk.schedule/modified schedule-id])
-  (find-by-id! res schedule-id))
+  (mq/publish publisher [:jsk.schedule/modified schedule-id]))
 
 (s/defn rm
   "Delete an schedule."

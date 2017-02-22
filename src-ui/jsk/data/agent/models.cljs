@@ -4,3 +4,6 @@
 (def current-name [::current :agent/name])
 (def agent-list [::agent-list])
 (def busy? [::busy?])
+
+(def new-agent
+  {:agent/name ""})

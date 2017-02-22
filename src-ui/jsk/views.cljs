@@ -3,12 +3,15 @@
             [jsk.subs :as subs]
             [jsk.events :as e]
             [jsk.routes :as routes]
+            [e85th.ui.rf.inputs :as inputs]
             [taoensso.timbre :as log]
             [jsk.login.views :as login-views]
             [jsk.login.events :as login-events]
             [jsk.data.agent.views :as agent-views]
+            [jsk.data.alert.views :as alert-views]
             [jsk.data.schedule.views :as schedule-views]
             [jsk.data.explorer.views :as explorer-views]
+            [jsk.common.data :as data]
             [kioo.reagent :as k :refer-macros [defsnippet deftemplate]]))
 
 
@@ -27,7 +30,8 @@
 
 (defn welcome-page
   []
-  [:h1 "Hello JSK!"])
+  [:div
+   [:h1 "Hello JSK!"]])
 
 (defmulti panels :handler)
 

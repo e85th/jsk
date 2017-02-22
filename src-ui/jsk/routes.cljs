@@ -26,7 +26,7 @@
 
 (defn- parse-url
   [url]
-  (log/infof "input url: %s" url)
+  ;(log/debugf "input url: %s" url)
   (or (parse-url* url)
       (parse-url* (str url "/"))
       (parse-url* (str/replace url #"/$" ""))))
@@ -40,11 +40,15 @@
 
 (defn- dispatch-route
   [matched-route]
-  (log/infof "matched route: %s" matched-route)
+  ;(log/debugf "matched route: %s" matched-route)
   (let [le-event (matched-route->event matched-route)]
-    (log/infof "le-event: %s" le-event)
+    ;(log/debugf "le-event: %s" le-event)
     (rf/dispatch [le-event matched-route])))
 
 (def url-for (partial bidi/path-for routes))
 
-(pushy/start! (pushy/pushy dispatch-route parse-url))
+
+(defn init!
+  "Putting in function to avoid multiple dispatches during dev when code is reloaded"
+  []
+  (pushy/start! (pushy/pushy #'dispatch-route #'parse-url)))

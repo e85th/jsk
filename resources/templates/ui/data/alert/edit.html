@@ -1,0 +1,54 @@
+<html>
+  <body>
+
+    <div class="jsk-alert-edit-layout">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#jsk-alert-details-section" role="tab" data-toggle="tab">Alert</a></li>
+        <li role="presentation"><a href="#jsk-alert-channels-section" role="tab" data-toggle="tab">Channels</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="jsk-alert-details-section" class="tab-pane active" role="tabpanel"> </div>
+        <div id="jsk-alert-channels-section" class="tab-pane" role="tabpanel"></div>
+      </div> <!-- tab-content -->
+    </div>
+
+    <div class="jsk-alert-edit">
+      <div class="form-group">
+        <label>Alert Name</label>
+        <input type="text" class="alert-name">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="alert-desc">
+      </div>
+      <button class="alert-save-btn">Save</button>
+    </div>
+
+
+    <div class="jsk-alert-channel-list">
+      <div>
+        <span class="jsk-alert-channel-suggest"></span>&nbsp;&nbsp;<button class="add-channel-btn">Add Channel</button>
+      </div>
+      <table class="table table-condensed table-striped">
+        <caption>
+          Associated Channels
+        </caption>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Channel</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="jsk-alert-channel-items">
+          <tr class="jsk-alert-channel-item">
+            <td class="jsk-alert-user">A User</td>
+            <td class="jsk-alert-channel-identifier">user@example.com</td>
+            <td><a href="#" class="button jsk-alert-channel-delete" role="button"><span class="glyphicon glyphicon-trash"></span></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div> <!-- jsk-alert-channel-list -->
+
+  </body>
+</html>

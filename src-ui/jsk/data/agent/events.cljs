@@ -50,3 +50,7 @@
   (let [agent (get-in db m/current)]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-agent agent save-agent-ok [rpc-err :rpc/save-agent-err])}))
+
+(def-event-db new-agent
+  [db _]
+  (assoc-in db m/current m/new-agent))
