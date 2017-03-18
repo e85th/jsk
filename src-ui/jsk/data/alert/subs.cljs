@@ -11,6 +11,4 @@
 (def-sub-db current-channels m/current-channels)
 
 (def-sub-db selected-channel m/selected-channel)
-(def-sub ac
-  [db _]
-  "it")
+(def-sub-db channel-suggestions m/channel-suggestions)

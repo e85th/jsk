@@ -206,3 +206,9 @@
   {:token s/Str
    (s/optional-key :max_matches) s/Int
    s/Keyword s/Any})
+
+
+(s/defschema ExecutableInfo
+  {:exe/id s/Int
+   :exe/type s/Keyword
+   :exe/name s/Str})

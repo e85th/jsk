@@ -75,6 +75,7 @@
                                            :pretty-print true
                                            :parallel-build true
                                            :closure-defines {goog.DEBUG true}}}}}
+  :figwheel {:css-dirs ["resources/public/css"]}
   :plugins [[com.jakemccrary/lein-test-refresh "0.10.0"]
             [codox "0.8.13"]
             [lein-cljsbuild "1.1.4"]

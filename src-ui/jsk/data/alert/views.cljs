@@ -12,36 +12,9 @@
             [jsk.net.api :as api]
             [jsk.routes :as routes]))
 
-(defn new-channel-typeahead-config
-  "Creates dataset and typeahead opts for user search."
-  []
-  (let [remote-url (api/suggest-url)
-        wildcard "%QUERY"
-        prep-fn (fn [search settings]
-                  ;; jquery xhr settings that bloodhound works with
-                  (clj->js (-> {:url remote-url
-                                :contentType "application/json"
-                                :data #js {:q search}
-                                :type "GET"
-                                :dataType "json"}
-                               (rpc/with-bearer-auth (data/jsk-token)))))
-        bloodhound (inputs/new-bloodhound remote-url wildcard prep-fn)
-        display-fn (fn [[chan-id identifier first-name last-name :as suggestion]]
-                     (log/infof "chan-id %s, first-name: %s" chan-id first-name)
-                     (str "<div>" first-name " " last-name "(" identifier ")</div>"))]
-    {:dataset #js {:name "channels-dataset"
-                   :source bloodhound
-                   :templates #js {:suggestion display-fn}}
-     :typeahead-opts {:minLength 1 :highlight true}}))
-
-(defn new-channel-typeahead
-  []
-  (let [{:keys [dataset typeahead-opts]} (new-channel-typeahead-config)]
-    [inputs/typeahead nil e/channel-selected {:placeholder "Channel Search"} typeahead-opts dataset]))
-
-(defn ac
-  []
-  [inputs/autocomplete (api/suggest-url) {"Authorization" (str "Bearer " (data/jsk-token))} subs/ac e/channel-selected])
+(defn format-channel-suggestion
+  [[id identifier fname lname]]
+  (str fname " " lname " (" identifier ")"))
 
 (defsnippet alert-actions* "templates/ui/data/alert/list.html" [:.jsk-alert-action-bar]
   []
@@ -79,22 +52,23 @@
 
 ;; -- Alert Channels
 (defsnippet alert-channel-item "templates/ui/data/alert/edit.html" [:.jsk-alert-channel-list [:.jsk-alert-channel-item first-child]]
-  [alert-id [chan-id identifier first-name last-name]]
-  {[:.jsk-alert-channel-item] (k/set-attr :key chan-id)
-   [:.jsk-alert-user] (k/content (str first-name last-name))
+  [{:keys [:channel/id :channel/identifier :user/first-name :user/last-name]}]
+  {[:.jsk-alert-channel-item] (k/set-attr :key id)
+   [:.jsk-alert-user] (k/content (str first-name " " last-name))
    [:.jsk-alert-channel-identifier] (k/content identifier)
-   [:.jsk-alert-channel-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-channel chan-id]))})
+   [:.jsk-alert-channel-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-alert-channel id]))})
 
 (defsnippet alert-channel-list* "templates/ui/data/alert/edit.html" [:.jsk-alert-channel-list]
   [channels]
-  {[:.jsk-alert-channel-suggest] (k/substitute (new-channel-typeahead))
-   [:.add-channel-btn] (k/substitute [inputs/button e/assoc-channel "Add"])
+  {[:.jsk-alert-channel-suggest] (k/substitute [inputs/awesomplete subs/channel-suggestions e/channel-suggestion-text-changed e/channel-suggestion-selected
+                                                {:format-fn format-channel-suggestion :placeholder "Search channels ..." :clear-input-on-select? true}])
    [:.jsk-alert-channel-items] (k/content (map alert-channel-item channels))})
+
 
 (defn alert-channel-list
   []
-  (let [addresses (rf/subscribe [subs/current-channels])]
-    [alert-channel-list* @addresses]))
+  (let [channels (rf/subscribe [subs/current-channels])]
+    [alert-channel-list* @channels]))
 
 (defsnippet alert-editor-layout* "templates/ui/data/alert/edit.html" [:.jsk-alert-edit-layout]
   []

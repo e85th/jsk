@@ -19,9 +19,15 @@
                    :rpc/save-alert-err [db "Error saving alert."]
                    :rpc/delete-alert-err [db "Error deleting alert."]
                    :rpc/fetch-alert-list-err [db "Error fetching alert list."]
+                   :rpc/fetch-channel-suggestions-err [db "Error fetching channel suggestions."]
+                   :rpc/assoc-alert-channel-err [db "Error associating channel to alert."]
+                   :rpc/dissoc-alert-channel-err [db "Error dissociating channel from alert."]
                    :else [db "Encountered unhandled RPC error."])]
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
+
+(def-event-db no-op-event
+  [db _] db)
 
 (def-event-db fetch-alert-list-ok
   [db [_ alert-list]]
@@ -33,7 +39,7 @@
 
 (def-event-db fetch-alert-ok
   [db [_ alert :as v]]
-  (log/infof "current-alert will be: %s" alert)
+  ;(log/infof "current-alert will be: %s" alert)
   (assoc-in db m/current alert))
 
 (def-event-fx fetch-alert
@@ -57,15 +63,36 @@
   [db _]
   (assoc-in db m/current m/new-alert))
 
-(def-event-fx channel-selected
-  [db [_ selected-channel]]
-  (log/infof "selected-channel: %s" selected-channel)
-  {:db db})
+(def-event-fx dissoc-alert-channel
+  [{:keys [db]} [_ channel-id]]
+  (let [alert-id (get-in db m/current-id)]
+    {:http-xhrio (api/dissoc-alert-channels alert-id
+                                            [channel-id]
+                                            no-op-event
+                                            [rpc-err :rpc/dissoc-alert-channel-err])}))
 
-(def-event-fx assoc-channel
-  [db [_ alert-id chan-id]]
-  {:db db})
 
-(def-event-fx dissoc-channel
-  [db [_ alert-id chan-id]]
-  {:db db})
+(def-event-db channel-suggestions-fetch-ok
+  [db [_ items]]
+  (assoc-in db m/channel-suggestions items))
+
+(def-event-fx channel-suggestion-text-changed
+  [_ [_ text]]
+  {:http-xhrio (api/suggest-channels text channel-suggestions-fetch-ok [rpc-err :rpc/fetch-channel-suggestions-err])})
+
+
+
+(def-event-fx channel-suggestion-selected
+  [{:keys [db]} [_ [channel-id :as selected-channel]]]
+  ;(log/infof "selected-channel: %s, current-alert: %s" selected-channel (get-in db m/current))
+  (let [alert-id (get-in db m/current-id)]
+    {:http-xhrio (api/assoc-alert-channels alert-id
+                                           [channel-id]
+                                           no-op-event
+                                           [rpc-err :rpc/assoc-alert-channel-err])}))
+
+
+(def-event-fx refresh-alert
+  [{:keys [db]} [_ alert-id]]
+  (when (= (get-in db m/current-id) alert-id)
+    {:dispatch [fetch-alert alert-id]}))

@@ -119,3 +119,19 @@
 (s/defn fetch-job-types
   [ok err]
   (new-request :get "/v1/job-types" ok err))
+
+(s/defn suggest-channels
+  [text ok err]
+  (new-request :get "/v1/search/suggest" {:q text} ok err))
+
+(s/defn assoc-alert-channels
+  [alert-id :- s/Int channel-ids :- [s/Int] ok err]
+  (new-request :post "/v1/alerts/actions/assoc-channels"
+               {:alert/id alert-id :channel/ids channel-ids}
+               ok err))
+
+(s/defn dissoc-alert-channels
+  [alert-id :- s/Int channel-ids :- [s/Int] ok err]
+  (new-request :post "/v1/alerts/actions/dissoc-channels"
+               {:alert/id alert-id :channel/ids channel-ids}
+               ok err))

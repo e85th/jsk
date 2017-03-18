@@ -12,6 +12,8 @@
             [jsk.data.schedule.views :as schedule-views]
             [jsk.data.explorer.views :as explorer-views]
             [jsk.common.data :as data]
+            [jsk.net.api :as api]
+            [e85th.ui.net.rpc :as rpc]
             [kioo.reagent :as k :refer-macros [defsnippet deftemplate]]))
 
 
