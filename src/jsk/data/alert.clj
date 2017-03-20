@@ -35,13 +35,15 @@
 
 (s/defn create :- s/Int
   "Creates a new alert."
-  [{:keys [db publisher] :as res} alert :- m/Alert user-id :- s/Int]
-  (let [temp-id (d/tempid :db.part/jsk)
-        facts [(assoc alert :db/id temp-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
-        alert-id (d/resolve-tempid db-after tempids temp-id)]
-    (mq/publish publisher [:jsk.alert/created alert-id])
-    alert-id))
+  ([res user-id]
+   (create res (m/new-alert) user-id))
+  ([{:keys [db publisher] :as res} alert :- m/Alert user-id :- s/Int]
+   (let [temp-id (d/tempid :db.part/jsk)
+         facts [(assoc alert :db/id temp-id)]
+         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+         alert-id (d/resolve-tempid db-after tempids temp-id)]
+     (mq/publish publisher [:jsk.alert/created alert-id])
+     alert-id)))
 
 (s/defn modify
   "Updates the record."

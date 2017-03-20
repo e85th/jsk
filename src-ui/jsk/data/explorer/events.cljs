@@ -3,7 +3,6 @@
             [schema.core :as s]
             [jsk.common.data :as data]
             [jsk.net.api :as api]
-            [jsk.websockets :as websockets]
             [jsk.data.explorer.models :as m]
             [e85th.ui.rf.sweet :refer-macros [def-event-db def-event-fx def-db-change]]
             [e85th.ui.util :as u]
@@ -48,6 +47,8 @@
   (log/warnf "rpc err: %s" event-v)
   (let [[db msg] (condp = (second event-v)
                    :rpc/fetch-children-err [db "Error fetching explorer children."]
+                   :rpc/create-explorer-node-err [db "Error adding explorer node."]
+                   :rpc/rm-explorer-node-err [db "Error removing explorer node."]
                    :else [db "Encountered unhandled RPC error."])]
     {:db db
      :notify [:alert {:message msg}]}))
@@ -90,3 +91,29 @@
       (tree/refresh m/tree-sel)
       {:notify [:alert {:message "Sorry. That's not supported."}]})
     {}))
+
+(def-event-db no-op-ok
+  [db _]
+  db)
+
+(def-event-fx create-explorer-node
+  [_ [_ type]]
+  {:http-xhrio (api/create-explorer-node (name type) no-op-ok [rpc-err :rpc/create-explorer-node-err])})
+
+
+(def-event-fx rm-explorer-node
+  [_ [_ type id]]
+  {:http-xhrio (api/rm-explorer-node (name type) id no-op-ok [rpc-err :rpc/rm-explorer-node-err])})
+
+(def-event-fx trigger-job
+  [_ _]
+  {:notify [:alert {:message "TODO: Trigger job"}]})
+
+(def-event-fx trigger-workflow
+  [_ _]
+  {:notify [:alert {:message "TODO: Trigger workflow"}]})
+
+(def-event-fx refresh-node
+  [_ [_ node-id]]
+  (tree/trigger-load m/tree-sel node-id)
+  {})

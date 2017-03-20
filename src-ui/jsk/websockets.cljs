@@ -4,17 +4,22 @@
             [e85th.ui.net.websockets :as websockets]
             [jsk.common.data :as data]
             [jsk.data.job.events :as job-events]
-            ;[jsk.data.workflow.events :as workflow-events]
+            [jsk.data.explorer.events :as explorer-events]
             [jsk.data.alert.events :as alert-events]
             [jsk.data.agent.events :as agent-events]
             [jsk.data.schedule.events :as schedule-events]
             [re-frame.core :as rf]))
 
-;(def refresh-workflows (partial rf/dispatch [workflow-events/fetch-workflow-list]))
-(def refresh-jobs (partial rf/dispatch [job-events/fetch-job-list]))
-(def refresh-schedules (partial rf/dispatch [schedule-events/fetch-schedule-list]))
-(def refresh-agents (partial rf/dispatch [agent-events/fetch-agent-list]))
-(def refresh-alerts (partial rf/dispatch [alert-events/fetch-alert-list]))
+(defn refresh-explorer
+  [node-id]
+  (rf/dispatch [explorer-events/refresh-node node-id]))
+
+(def refresh-workflows (partial refresh-explorer explorer-events/executables-id))
+(def refresh-jobs (partial refresh-explorer explorer-events/executables-id))
+(def refresh-schedules (partial refresh-explorer explorer-events/schedules-id))
+(def refresh-agents (partial refresh-explorer explorer-events/agents-id))
+(def refresh-alerts (partial refresh-explorer explorer-events/alerts-id))
+
 
 (defmulti on-event first)
 
@@ -34,14 +39,17 @@
 ;; -- Workflow
 (defmethod on-event :jsk.workflow/created
   [msg]
+  (refresh-workflows)
   (log/infof "Workflow created: %s" msg))
 
 (defmethod on-event :jsk.workflow/modified
   [msg]
+  (refresh-workflows)
   (log/infof "Workflow modified: %s" msg))
 
 (defmethod on-event :jsk.workflow/deleted
   [msg]
+  (refresh-workflows)
   (log/infof "Workflow deleted: %s" msg))
 
 ;; -- Schedules

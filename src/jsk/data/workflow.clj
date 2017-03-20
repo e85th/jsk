@@ -26,14 +26,16 @@
 
 (s/defn create :- s/Int
   "Creates a new workflow."
-  [{:keys [db publisher] :as res} workflow :- m/Workflow user-id :- s/Int]
-  (let [temp-id (d/tempid :db.part/jsk)
-        facts [(-> workflow
-                   (assoc :db/id temp-id))]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
-        workflow-id (d/resolve-tempid db-after tempids temp-id)]
-    (mq/publish publisher [:jsk.workflow/created workflow-id])
-    workflow-id))
+  ([res user-id]
+   (create res (m/new-workflow) user-id))
+  ([{:keys [db publisher] :as res} workflow :- m/Workflow user-id :- s/Int]
+   (let [temp-id (d/tempid :db.part/jsk)
+         facts [(-> workflow
+                    (assoc :db/id temp-id))]
+         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+         workflow-id (d/resolve-tempid db-after tempids temp-id)]
+     (mq/publish publisher [:jsk.workflow/created workflow-id])
+     workflow-id)))
 
 (s/defn modify
   "Updates and returns the new record."

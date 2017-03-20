@@ -71,6 +71,10 @@
   [agent ok err]
   (save* "/v1/agents" :db/id agent ok err))
 
+(s/defn rm-agent
+  [id ok err]
+  (new-request :delete (str "/v1/agents/" id) ok err))
+
 (s/defn fetch-agent
   [agent-id ok err]
   (new-request :get  (str "/v1/agents/" agent-id) ok err))
@@ -83,6 +87,10 @@
 (s/defn save-alert
   [alert ok err]
   (save* "/v1/alerts" :db/id alert ok err))
+
+(s/defn rm-alert
+  [id ok err]
+  (new-request :delete (str "/v1/alerts/" id) ok err))
 
 (s/defn fetch-alert
   [alert-id ok err]
@@ -98,9 +106,31 @@
   [schedule ok err]
   (save* "/v1/schedules" :db/id schedule ok err))
 
+(s/defn rm-schedule
+  [id ok err]
+  (new-request :delete (str "/v1/schedules/" id) ok err))
+
 (s/defn fetch-schedule
   [schedule-id ok err]
   (new-request :get  (str "/v1/schedules/" schedule-id) ok err))
+
+
+;; -- Workflows
+(s/defn fetch-workflow-list
+  [ok err]
+  (new-request :get "/v1/workflows" ok err))
+
+(s/defn save-workflow
+  [workflow ok err]
+  (save* "/v1/workflows" :db/id workflow ok err))
+
+(s/defn rm-workflow
+  [id ok err]
+  (new-request :delete (str "/v1/workflows/" id) ok err))
+
+(s/defn fetch-workflow
+  [workflow-id ok err]
+  (new-request :get  (str "/v1/workflows/" workflow-id) ok err))
 
 ;; -- Jobs
 (s/defn fetch-job-list
@@ -110,6 +140,10 @@
 (s/defn save-job
   [job ok err]
   (save* "/v1/jobs" :db/id job ok err))
+
+(s/defn rm-job
+  [id ok err]
+  (new-request :delete (str "/v1/jobs/" id) ok err))
 
 (s/defn fetch-job
   [job-id ok err]
@@ -139,3 +173,12 @@
 (s/defn fetch-explorer-nodes
   [type :- s/Str ok err]
   (new-request :get "/v1/explorer" {:type type} ok err))
+
+(s/defn create-explorer-node
+  [type :- s/Str ok err]
+  (new-request :post "/v1/explorer/actions/create-node" {:type type} ok err))
+
+(s/defn rm-explorer-node
+  [type :- s/Str id ok err]
+  (new-request :post "/v1/explorer/actions/rm-node" {:type type
+                                                     :id id} ok err))

@@ -58,7 +58,7 @@
   (reset! pushy-inst (pushy/pushy #'dispatch-route #'parse-url))
   (pushy/start! @pushy-inst))
 
-(defn set-url
+(defn set-browser-url!
   "Programatically set the url. Primarly used in the explorer tree."
   [url]
   (pushy/set-token! @pushy-inst url))

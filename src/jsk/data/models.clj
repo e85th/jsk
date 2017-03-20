@@ -73,12 +73,21 @@
   {(s/optional-key :db/id) s/Int
    :agent/name s/Str})
 
+(defn new-agent
+  []
+  {:agent/name (u/uuid)})
+
 ;; -- Alert
 (s/defschema Alert
   {(s/optional-key :db/id) s/Int
    :alert/name s/Str
    (s/optional-key :alert/desc) s/Str
    (s/optional-key :alert/channels) [s/Int]})
+
+(defn new-alert
+  []
+  {:alert/name (u/uuid)
+   :alert/desc ""})
 
 (s/defschema AlertChannels
   {:alert/id s/Int
@@ -102,6 +111,12 @@
    (s/optional-key :schedule/desc) s/Str
    :schedule/cron-expr s/Str})
 
+(defn new-schedule
+  []
+  {:schedule/name (u/uuid)
+   :schedule/desc ""
+   :schedule/cron-expr  "1 1 1 1 1 ? 2100"})
+
 ;; -- Tag
 (s/defschema Tag
   {(s/optional-key :db/id) s/Int
@@ -124,6 +139,17 @@
    (s/optional-key :job/schedules) [s/Int]
    (s/optional-key :job/tags) [s/Int]})
 
+(defn new-job
+  []
+  {:job/name (u/uuid)
+   :job/enabled? true
+   :job/type :shell
+   :job/props {}
+   :job/behavior standard-job-behavior
+   :job/max-retries 1
+   :job/max-concurrent 1
+   :job/timeout-ms -1})
+
 (s/defschema JobField
   {:job.field/name s/Str
    :job.field/desc s/Str
@@ -142,6 +168,13 @@
    :workflow/enabled? s/Bool
    (s/optional-key :workflow/schedules) [s/Int]
    (s/optional-key :workflow/tags) [s/Str]})
+
+
+(defn new-workflow
+  []
+  {:workflow/name (u/uuid)
+   :workflow/desc ""
+   :workflow/enabled? true})
 
 (s/defschema JobSchedules
   {:job/id s/Int

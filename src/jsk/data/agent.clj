@@ -22,13 +22,15 @@
 
 (s/defn create :- s/Int
   "Creates a new agent."
-  [{:keys [db publisher] :as res} agent :- m/Agent user-id :- s/Int]
-  (let [temp-id (d/tempid :db.part/jsk)
-        facts [(assoc agent :db/id temp-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
-        agent-id (d/resolve-tempid db-after tempids temp-id)]
-    (mq/publish publisher [:jsk.agent/created agent-id])
-    agent-id))
+  ([res user-id]
+   (create res (m/new-agent) user-id))
+  ([{:keys [db publisher] :as res} agent :- m/Agent user-id :- s/Int]
+   (let [temp-id (d/tempid :db.part/jsk)
+         facts [(assoc agent :db/id temp-id)]
+         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+         agent-id (d/resolve-tempid db-after tempids temp-id)]
+     (mq/publish publisher [:jsk.agent/created agent-id])
+     agent-id)))
 
 (s/defn modify
   "Updates the record."

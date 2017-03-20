@@ -38,15 +38,17 @@
 
 (s/defn create :- s/Int
   "Creates a new job."
-  [{:keys [db publisher] :as res} job :- m/Job user-id :- s/Int]
-  (let [temp-id (d/tempid :db.part/jsk)
-        facts [(-> job
-                   (assoc :db/id temp-id)
-                   (encode-job-props))]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
-        job-id (d/resolve-tempid db-after tempids temp-id)]
-    (mq/publish publisher [:jsk.job/created job-id])
-    job-id))
+  ([res user-id]
+   (create res (m/new-job) user-id))
+  ([{:keys [db publisher] :as res} job :- m/Job user-id :- s/Int]
+   (let [temp-id (d/tempid :db.part/jsk)
+         facts [(-> job
+                    (assoc :db/id temp-id)
+                    (encode-job-props))]
+         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+         job-id (d/resolve-tempid db-after tempids temp-id)]
+     (mq/publish publisher [:jsk.job/created job-id])
+     job-id)))
 
 (s/defn modify
   "Updates the record."

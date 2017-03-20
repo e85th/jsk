@@ -352,4 +352,20 @@
       :return [m/ExplorerNode]
       :query-params [type :- s/Keyword]
       :auth [user]
-      (http-response/ok (explorer/get-nodes res type)))))
+      (http-response/ok (explorer/get-nodes res type)))
+
+    (POST "/actions/create-node" []
+      :summary "Creates a new node for the given type."
+      :return {}
+      :body-params [type :- s/Keyword]
+      :auth [user]
+      (explorer/create-node res type (:db/id user))
+      (http-response/ok {}))
+
+    (POST "/actions/rm-node" []
+      :summary "Removes a new node for the given type."
+      :return {}
+      :body-params [type :- s/Keyword id :- s/Int]
+      :auth [user]
+      (explorer/rm-node res type id (:db/id user))
+      (http-response/ok {}))))

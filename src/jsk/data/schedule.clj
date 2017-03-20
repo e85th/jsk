@@ -49,14 +49,16 @@
 ;; -- create, update, delete
 (s/defn create :- s/Int
   "Creates a new schedule."
-  [{:keys [db publisher] :as res} schedule :- m/Schedule user-id :- s/Int]
-  (validate-create schedule)
-  (let [temp-id (d/tempid :db.part/jsk)
-        facts [(assoc schedule :db/id temp-id)]
-        {:keys [db-after tempids]} @(d/transact (:cn db) facts)
-        schedule-id (d/resolve-tempid db-after tempids temp-id)]
-    (mq/publish publisher [:jsk.schedule/created schedule-id])
-    schedule-id))
+  ([res user-id]
+   (create res (m/new-schedule) user-id))
+  ([{:keys [db publisher] :as res} schedule :- m/Schedule user-id :- s/Int]
+   (validate-create schedule)
+   (let [temp-id (d/tempid :db.part/jsk)
+         facts [(assoc schedule :db/id temp-id)]
+         {:keys [db-after tempids]} @(d/transact (:cn db) facts)
+         schedule-id (d/resolve-tempid db-after tempids temp-id)]
+     (mq/publish publisher [:jsk.schedule/created schedule-id])
+     schedule-id)))
 
 (s/defn modify
   "Updates and returns the new record."
