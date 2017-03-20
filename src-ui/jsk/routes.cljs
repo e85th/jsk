@@ -13,17 +13,17 @@
 
 (def routes
   ["/jsk/" {"" :jsk/home
-            "explorer/" {"" :jsk/explorer}
-            "agents/" {"" :jsk.explorer/agent-list
-                       [:id "/"] :jsk.explorer/agent}
-            "alerts/" {"" :jsk.explorer/alert-list
-                       [:id "/"] :jsk.explorer/alert}
-            "jobs/" {"" :jsk.explorer/job-list
-                       [:id "/"] :jsk.explorer/job}
-            "workflows/" {"" :jsk.explorer/workflow-list
-                          [:id "/"] :jsk.explorer/workflow}
-            "schedules/" {"" :jsk.explorer/schedule-list
-                          [:id "/"] :jsk.explorer/schedule}}])
+            "explorer/" {"" :jsk/explorer
+                         "agents/" {"" :jsk.explorer/agent-list
+                                    [:id "/"] :jsk.explorer/agent}
+                         "alerts/" {"" :jsk.explorer/alert-list
+                                    [:id "/"] :jsk.explorer/alert}
+                         "jobs/" {"" :jsk.explorer/job-list
+                                  [:id "/"] :jsk.explorer/job}
+                         "workflows/" {"" :jsk.explorer/workflow-list
+                                       [:id "/"] :jsk.explorer/workflow}
+                         "schedules/" {"" :jsk.explorer/schedule-list
+                                       [:id "/"] :jsk.explorer/schedule}}}])
 
 
 (def parse-url* (partial bidi/match-route routes))

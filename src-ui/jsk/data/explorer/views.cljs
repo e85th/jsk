@@ -111,6 +111,7 @@
 
 (defn explorer
   []
+  (rf/dispatch [job-events/fetch-job-types])
   (let [tree-control [inputs/tree m/tree-id init-data add-tree-listeners]
         matched-panel (rf/subscribe [subs/explorer-view])]
     (fn []
