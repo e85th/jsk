@@ -135,3 +135,7 @@
   (new-request :post "/v1/alerts/actions/dissoc-channels"
                {:alert/id alert-id :channel/ids channel-ids}
                ok err))
+
+(s/defn fetch-explorer-nodes
+  [type :- s/Str ok err]
+  (new-request :get "/v1/explorer" {:type type} ok err))

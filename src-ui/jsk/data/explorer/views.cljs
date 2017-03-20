@@ -4,7 +4,10 @@
             [re-frame.core :as rf]
             [taoensso.timbre :as log]
             [e85th.ui.rf.inputs :as inputs]
+            [e85th.ui.rf.tree :as tree]
+            [jsk.data.explorer.models :as m]
             [jsk.data.explorer.subs :as subs]
+            [jsk.data.explorer.events :as e]
             [jsk.data.agent.views :as agent-views]
             [jsk.data.alert.views :as alert-views]
             [jsk.data.schedule.views :as schedule-views]
@@ -21,14 +24,6 @@
     (log/infof "update-history url: %s res: %s" url res)))
 
 
-(defsnippet explorer* "templates/ui/data/explorer/explorer.html" [:.jsk-explorer]
-  [main-content]
-  {;[:#jsk-explorer-executables-tab] (k/listen :on-click #(update-history :jsk.explorer/job-list))
-   [:#jsk-explorer-executables] (k/content [job-views/job-list-with-actions])
-   [:#jsk-explorer-schedules] (k/content [schedule-views/schedule-list-with-actions])
-   [:#jsk-explorer-alerts] (k/content [alert-views/alert-list-with-actions])
-   [:#jsk-explorer-agents] (k/content [agent-views/agent-list-with-actions])
-   [:.jsk-explorer-main] (k/content main-content)})
 
 (defn route->id
   [route]
@@ -65,11 +60,58 @@
 
 (defmethod explorer-panels :default
   [route]
-  [:h3 (str "No explorer-panel handler for: " route)])
+  [:h3 "Explorer"])
+
+(defn ls-elements
+  [node cb]
+  (rf/dispatch [e/fetch-children (tree/normalize-node node) cb]))
+
+(def init-data
+  ;; check_callback must be set to true otherwise operations like create, rename, are prevented
+  {:core {:data ls-elements :check_callback true}
+   :types {:directory {:icon "glyphicon glyphicon-folder-open"}
+           :job {:icon "glyphicon glyphicon-hdd"}
+           :workflow {:icon "glyphicon glyphicon-tasks"}
+           :schedule {:icon "glyphicon glyphicon-time"}
+           :alert {:icon "glyphicon glyphicon-bell"}
+           :agent {:icon "glyphicon glyphicon-cloud"}
+           :section {:icon "glyphicon glyphicon-home"}}
+   :plugins [:contextmenu :dnd :types :sort :unique]})
+
+(def jsk-node-type->route-name
+  {:schedule :jsk.explorer/schedule
+   :alert :jsk.explorer/alert
+   :agent :jsk.explorer/agent
+   :job :jsk.explorer/job
+   :workflow :jsk.explorer/workflow})
+
+(defn activate-handler
+  [event data]
+  (let [{:keys [id parent type jsk-node-type] :as node} (tree/original-node (tree/normalize-node (-> data .-node)))
+        route-name (jsk-node-type->route-name (keyword jsk-node-type))
+        route-url (when-not (tree/root-id? parent)
+                    (routes/url-for route-name :id id))]
+    ;(log/infof "node: %s, url: %s" node route-url)
+    (some-> route-url routes/set-url)))
+
+(defn move-handler
+  [event data]
+  (rf/dispatch [e/node-moved (tree/node-moved-data data)]))
+
+(defn add-tree-listeners
+  []
+  (log/infof "adding tree listeners")
+  (tree/register-activate-node-handler m/tree-sel activate-handler)
+  (tree/register-move-node-handler m/tree-sel move-handler))
+
+(defsnippet explorer* "templates/ui/data/explorer/explorer.html" [:.jsk-explorer]
+  [tree-control main-content]
+  {[:.jsk-explorer-tree] (k/content tree-control)
+   [:.jsk-explorer-main] (k/content main-content)})
 
 (defn explorer
   []
-  (rf/dispatch [job-events/fetch-job-types])
-  (let [matched-panel (rf/subscribe [subs/explorer-view])]
+  (let [tree-control [inputs/tree m/tree-id init-data add-tree-listeners]
+        matched-panel (rf/subscribe [subs/explorer-view])]
     (fn []
-      [explorer* (explorer-panels @matched-panel)])))
+      [explorer* tree-control (explorer-panels @matched-panel)])))

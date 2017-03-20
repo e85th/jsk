@@ -9,6 +9,8 @@
             [jsk.data.explorer.events :as explorer-events]
             [clojure.string :as str]))
 
+(defonce pushy-inst (atom nil))
+
 (def routes
   ["/jsk/" {"" :jsk/home
             "explorer/" {"" :jsk/explorer}
@@ -18,6 +20,8 @@
                        [:id "/"] :jsk.explorer/alert}
             "jobs/" {"" :jsk.explorer/job-list
                        [:id "/"] :jsk.explorer/job}
+            "workflows/" {"" :jsk.explorer/workflow-list
+                          [:id "/"] :jsk.explorer/workflow}
             "schedules/" {"" :jsk.explorer/schedule-list
                           [:id "/"] :jsk.explorer/schedule}}])
 
@@ -51,4 +55,10 @@
 (defn init!
   "Putting in function to avoid multiple dispatches during dev when code is reloaded"
   []
-  (pushy/start! (pushy/pushy #'dispatch-route #'parse-url)))
+  (reset! pushy-inst (pushy/pushy #'dispatch-route #'parse-url))
+  (pushy/start! @pushy-inst))
+
+(defn set-url
+  "Programatically set the url. Primarly used in the explorer tree."
+  [url]
+  (pushy/set-token! @pushy-inst url))

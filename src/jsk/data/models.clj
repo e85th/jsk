@@ -212,3 +212,9 @@
   {:exe/id s/Int
    :exe/type s/Keyword
    :exe/name s/Str})
+
+
+(s/defschema ExplorerNode
+  {:node/id s/Int
+   :node/name s/Str
+   :node/type s/Keyword})

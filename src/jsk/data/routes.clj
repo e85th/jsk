@@ -10,6 +10,7 @@
             [jsk.data.workflow :as workflow]
             [jsk.data.user :as user]
             [jsk.data.search :as search]
+            [jsk.data.explorer :as explorer]
             [compojure.api.sweet :refer [defroutes context POST GET PUT DELETE]]
             [e85th.backend.web]
             [e85th.backend.core.models :as cm]
@@ -341,3 +342,14 @@
       (http-response/ok (search/suggest-channels res (or (:q params)
                                                          (:token params)
                                                          ""))))))
+
+
+(defroutes explorer-routes
+  (context "/v1/explorer" [] :tags ["explorer"]
+    :components [res]
+    (GET "/" []
+      :summary "Returns data for the explorer view."
+      :return [m/ExplorerNode]
+      :query-params [type :- s/Keyword]
+      :auth [user]
+      (http-response/ok (explorer/get-nodes res type)))))

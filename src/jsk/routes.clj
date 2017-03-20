@@ -100,6 +100,7 @@
        #'data/workflow-routes
        #'data/user-routes
        #'data/search-routes
+       #'data/explorer-routes
        (compojure-api/undocumented
         (ANY "/echo" []
           :summary "Echo current request."
