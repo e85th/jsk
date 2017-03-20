@@ -17,8 +17,6 @@
   (let [[db msg] (condp = (second event-v)
                    :rpc/fetch-alert-err [db "Error fetching alert."]
                    :rpc/save-alert-err [db "Error saving alert."]
-                   :rpc/delete-alert-err [db "Error deleting alert."]
-                   :rpc/fetch-alert-list-err [db "Error fetching alert list."]
                    :rpc/fetch-channel-suggestions-err [db "Error fetching channel suggestions."]
                    :rpc/assoc-alert-channel-err [db "Error associating channel to alert."]
                    :rpc/dissoc-alert-channel-err [db "Error dissociating channel from alert."]
@@ -29,18 +27,7 @@
 (def-event-db no-op-event
   [db _] db)
 
-(def-event-db fetch-alert-list-ok
-  [db [_ alert-list]]
-  (assoc-in db m/alert-list alert-list))
-
-(def-event-fx fetch-alert-list
-  [_ _]
-  {:http-xhrio (api/fetch-alert-list fetch-alert-list-ok [rpc-err :rpc/fetch-alert-list-err])})
-
-(def-event-db fetch-alert-ok
-  [db [_ alert :as v]]
-  ;(log/infof "current-alert will be: %s" alert)
-  (assoc-in db m/current alert))
+(def-db-change fetch-alert-ok m/current)
 
 (def-event-fx fetch-alert
   [_ [_ alert-id]]
@@ -58,10 +45,6 @@
                   (dissoc :alert/channels-info))]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-alert alert save-alert-ok [rpc-err :rpc/save-alert-err])}))
-
-(def-event-db new-alert
-  [db _]
-  (assoc-in db m/current m/new-alert))
 
 (def-event-fx dissoc-alert-channel
   [{:keys [db]} [_ channel-id]]

@@ -15,28 +15,32 @@
 (def schedules-id "jsk/schedules")
 
 (def ^:private tree-sections
-  [{:id executables-id
+  [{:id agents-id
     :parent "#"
-    :text "Executables"
-    :jsk-node-type :executable
-    :type :section
-    :children true}
-   {:id schedules-id
-    :parent "#"
-    :text "Schedules"
-    :jsk-node-type :schedule
+    :text "Agents"
+    :jsk-node-type :agent
+    :jsk-id agents-id
     :type :section
     :children true}
    {:id alerts-id
     :parent "#"
     :text "Alerts"
     :jsk-node-type :alert
+    :jsk-id alerts-id
     :type :section
     :children true}
-   {:id agents-id
+   {:id executables-id
     :parent "#"
-    :text "Agents"
-    :jsk-node-type :agent
+    :text "Executables"
+    :jsk-node-type :executable
+    :jsk-id executables-id
+    :type :section
+    :children true}
+   {:id schedules-id
+    :parent "#"
+    :text "Schedules"
+    :jsk-node-type :schedule
+    :jsk-id schedules-id
     :type :section
     :children true}])
 
@@ -57,24 +61,28 @@
   [cb data]
   (cb (clj->js data)))
 
-(def ^{:doc "Takes a node and answers with the node type"}
-  jsk-node-type (comp :jsk-node-type tree/original-node))
-
 (def-event-fx fetch-children-ok
   [_ [_ parent-node cb data]]
   (let [{parent-id :id} parent-node
-        as-node (fn [{:keys [node/id node/name node/type]}]
-                  {:id (str id) :parent parent-id :text name :type type :jsk-node-type type})]
+        as-node (fn [{node-id :node/id node-name :node/name node-type :node/type}]
+                  ;; id for sql dbs may not be unique
+                  {:id (str (name node-type) "-" node-id)
+                   :parent parent-id
+                   :text node-name
+                   :type node-type
+                   :jsk-node-type node-type
+                   :jsk-id node-id})]
     (->> (map as-node data)
          (set-tree-data cb))))
 
 (def-event-fx fetch-children
   [{:keys [db]} [_ node cb]]
-  ;(log/infof "node: %s" node)
-  (if (tree/root? node)
+  (log/infof "node: %s" node)
+  ;; node will be nil if the fetch-children happened on the root node
+  (if (or (nil? node) (tree/root? node))
     (set-tree-data cb tree-sections)
     {:http-xhrio (api/fetch-explorer-nodes
-                  (jsk-node-type node)
+                  (:jsk-node-type node)
                   [fetch-children-ok node cb] [rpc-err :rpc/fetch-children-err])}))
 
 (defn move-disallowed?

@@ -3,7 +3,6 @@
             [e85th.ui.rf.sweet :refer-macros [def-sub-db def-sub]]
             [jsk.data.alert.models :as m]))
 
-(def-sub-db alert-list m/alert-list)
 (def-sub-db busy? m/busy?)
 (def-sub-db current m/current)
 (def-sub-db current-name m/current-name)

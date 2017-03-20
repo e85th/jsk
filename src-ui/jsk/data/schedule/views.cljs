@@ -8,35 +8,6 @@
             [jsk.data.schedule.subs :as subs]
             [jsk.routes :as routes]))
 
-(defsnippet schedule-actions* "templates/ui/data/schedule/list.html" [:.jsk-schedule-action-bar]
-  []
-  {[:.jsk-new-schedule-action] (k/listen :on-click #(rf/dispatch [e/new-schedule]))})
-
-
-(defsnippet schedule-item* "templates/ui/data/schedule/list.html" [:.jsk-schedule-list [:.jsk-schedule-item first-child]]
-  [{:keys [db/id schedule/name]}]
-  {[:.jsk-schedule-item] (k/do->
-                       (k/set-attr :key id :href (routes/url-for :jsk.explorer/schedule :id id))
-                       (k/content name))})
-
-(defsnippet schedule-list* "templates/ui/data/schedule/list.html" [:.jsk-schedule-list]
-  [schedules]
-  {[:.jsk-schedule-list] (k/content (map schedule-item* schedules))})
-
-
-(defn schedule-list
-  []
-  (rf/dispatch [e/fetch-schedule-list])
-  (let [schedules (rf/subscribe [subs/schedule-list])]
-    (fn []
-      [schedule-list* @schedules])))
-
-(defn schedule-list-with-actions
-  []
-  [:div
-   [schedule-actions*]
-   [schedule-list]])
-
 (defsnippet schedule-view* "templates/ui/data/schedule/edit.html" [:.jsk-schedule-edit]
   []
   {[:.schedule-name] (k/substitute [inputs/std-text subs/current-name e/current-name-changed])

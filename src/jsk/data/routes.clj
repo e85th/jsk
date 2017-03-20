@@ -363,7 +363,7 @@
       (http-response/ok {}))
 
     (POST "/actions/rm-node" []
-      :summary "Removes a new node for the given type."
+      :summary "Removes a new node for the given type and id."
       :return {}
       :body-params [type :- s/Keyword id :- s/Int]
       :auth [user]

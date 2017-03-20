@@ -15,13 +15,15 @@
             [jsk.data.schedule.views :as schedule-views]
             [jsk.data.job.views :as job-views]
             [jsk.data.job.events :as job-events]
+            [jsk.data.workflow.views :as workflow-views]
             [jsk.routes :as routes]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Tree Initialization
 (defn fetch-children
   [node cb]
-  (rf/dispatch [e/fetch-children (tree/normalize-node node) cb]))
+  ;; NB original-node will be nil when node is the root node.
+  (rf/dispatch [e/fetch-children (tree/original-node node) cb]))
 
 (def tree-init-data
   ;; check_callback must be set to true otherwise operations like create, rename, are prevented
@@ -48,11 +50,10 @@
 ;; Tree Event Handling
 (defn activate-handler
   [event data]
-  (let [{:keys [id parent type jsk-node-type] :as node} (tree/original-node (tree/normalize-node (-> data .-node)))
+  (let [{:keys [parent jsk-node-type jsk-id] :as node} (tree/original-node (-> data .-node))
         route-name (jsk-node-type->route-name (keyword jsk-node-type))
         route-url (when-not (tree/root-id? parent)
-                    (routes/url-for route-name :id id))]
-    ;(log/infof "node: %s, url: %s" node route-url)
+                    (routes/url-for route-name :id jsk-id))]
     (some-> route-url routes/set-browser-url!)))
 
 (defn move-handler
@@ -64,7 +65,7 @@
   []
   (tree/register-activate-node-handler m/tree-sel activate-handler)
   (tree/register-move-node-handler m/tree-sel move-handler)
-  ;; dnd listens on document not just the tree
+  ;; NB. dnd listens on document not just the tree
   (tree/register-dnd-move-handler dnd/element-moved)
   (tree/register-dnd-stop-handler dnd/element-dropped))
 
@@ -88,6 +89,9 @@
 
 (defmethod explorer-panels :jsk.explorer/schedule [route]
   [schedule-views/schedule-editor (route->id route)])
+
+(defmethod explorer-panels :jsk.explorer/workflow [route]
+  [workflow-views/workflow-editor (route->id route)])
 
 (defmethod explorer-panels :default
   [route]

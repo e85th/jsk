@@ -19,17 +19,9 @@
                    :rpc/fetch-job-err [db "Error fetching job."]
                    :rpc/fetch-job-types-err [db "Error fetching job types."]
                    :rpc/save-job-err [db "Error saving job."]
-                   :rpc/delete-job-err [db "Error deleting job."]
-                   :rpc/fetch-job-list-err [db "Error fetching job list."]
                    :else [db "Encountered unhandled RPC error."])]
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
-
-(def-db-change fetch-job-list-ok m/job-list)
-
-(def-event-fx fetch-job-list
-  [_ _]
-  {:http-xhrio (api/fetch-job-list fetch-job-list-ok [rpc-err :rpc/fetch-job-list-err])})
 
 (def-db-change fetch-job-ok m/current)
 
@@ -59,8 +51,3 @@
 (def-event-fx fetch-job-types
   [_ _]
   {:http-xhrio (api/fetch-job-types fetch-job-types-ok [rpc-err :rpc/fetch-job-types-err])})
-
-
-(def-event-db new-job
-  [db _]
-  (assoc-in db m/current m/new-job))

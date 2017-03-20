@@ -19,8 +19,6 @@
 
 (def-sub-db busy? m/busy?)
 
-(def-sub-db job-list m/job-list)
-
 (def-sub-db job-types m/job-types)
 
 (def-sub job-type-names

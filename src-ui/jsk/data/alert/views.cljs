@@ -12,45 +12,13 @@
             [jsk.net.api :as api]
             [jsk.routes :as routes]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; -- Alert Channels
+
 (defn format-channel-suggestion
   [[id identifier fname lname]]
   (str fname " " lname " (" identifier ")"))
 
-(defsnippet alert-actions* "templates/ui/data/alert/list.html" [:.jsk-alert-action-bar]
-  []
-  {[:.jsk-new-alert-action] (k/listen :on-click #(rf/dispatch [e/new-alert]))})
-
-(defsnippet alert-item* "templates/ui/data/alert/list.html" [:.jsk-alert-list [:.jsk-alert-item first-child]]
-  [{:keys [db/id alert/name]}]
-  {[:.jsk-alert-item] (k/do->
-                       (k/set-attr :key id :href (routes/url-for :jsk.explorer/alert :id id))
-                       (k/content name))})
-
-(defsnippet alert-list* "templates/ui/data/alert/list.html" [:.jsk-alert-list]
-  [alerts]
-  {[:.jsk-alert-list] (k/content (map alert-item* alerts))})
-
-
-(defn alert-list
-  []
-  (rf/dispatch [e/fetch-alert-list])
-  (let [alerts (rf/subscribe [subs/alert-list])]
-    (fn []
-      [alert-list* @alerts])))
-
-(defn alert-list-with-actions
-  []
-  [:div
-   [alert-actions*]
-   [alert-list]])
-
-(defsnippet alert-view* "templates/ui/data/alert/edit.html" [:.jsk-alert-edit]
-  []
-  {[:.alert-name] (k/substitute [inputs/std-text subs/current-name e/name-changed])
-   [:.alert-desc] (k/substitute [inputs/std-text subs/current-desc e/desc-changed])
-   [:.alert-save-btn] (k/substitute [inputs/button subs/busy? e/save-alert "Save"])})
-
-;; -- Alert Channels
 (defsnippet alert-channel-item "templates/ui/data/alert/edit.html" [:.jsk-alert-channel-list [:.jsk-alert-channel-item first-child]]
   [{:keys [:channel/id :channel/identifier :user/first-name :user/last-name]}]
   {[:.jsk-alert-channel-item] (k/set-attr :key id)
@@ -69,6 +37,15 @@
   []
   (let [channels (rf/subscribe [subs/current-channels])]
     [alert-channel-list* @channels]))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; -- Alert Editor
+(defsnippet alert-view* "templates/ui/data/alert/edit.html" [:.jsk-alert-edit]
+  []
+  {[:.alert-name] (k/substitute [inputs/std-text subs/current-name e/name-changed])
+   [:.alert-desc] (k/substitute [inputs/std-text subs/current-desc e/desc-changed])
+   [:.alert-save-btn] (k/substitute [inputs/button subs/busy? e/save-alert "Save"])})
 
 (defsnippet alert-editor-layout* "templates/ui/data/alert/edit.html" [:.jsk-alert-edit-layout]
   []

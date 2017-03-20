@@ -8,25 +8,25 @@
 (defmulti section-context-menu :jsk-node-type)
 
 (defmethod section-context-menu :agent
-  [{:keys [id] :as node}]
+  [{:keys [jsk-id] :as node}]
   {:make-agent {:label "Add Agent" :action #(rf/dispatch [e/create-explorer-node :agent])}
-   :refresh-agents {:label "Refresh Agent" :action #(rf/dispatch [e/refresh-node id])}})
+   :refresh-agents {:label "Refresh Agent" :action #(rf/dispatch [e/refresh-node jsk-id])}})
 
 (defmethod section-context-menu :alert
-  [{:keys [id] :as node}]
+  [{:keys [jsk-id] :as node}]
   {:make-alert {:label "Add Alert" :action #(rf/dispatch [e/create-explorer-node :alert])}
-   :refresh-alerts {:label "Refresh Alert" :action #(rf/dispatch [e/refresh-node id])}})
+   :refresh-alerts {:label "Refresh Alert" :action #(rf/dispatch [e/refresh-node jsk-id])}})
 
 (defmethod section-context-menu :executable
-  [{:keys [id] :as node}]
+  [{:keys [jsk-id] :as node}]
   {:make-job {:label "Add Job" :action #(rf/dispatch [e/create-explorer-node :job])}
    :make-workflow {:label "Add Workflow" :action #(rf/dispatch [e/create-explorer-node :workflow])}
-   :refresh-executables {:label "Refresh Executables" :action #(rf/dispatch [e/refresh-node id])}})
+   :refresh-executables {:label "Refresh Executables" :action #(rf/dispatch [e/refresh-node jsk-id])}})
 
 (defmethod section-context-menu :schedule
-  [{:keys [id] :as node}]
+  [{:keys [jsk-id] :as node}]
   {:make-schedule {:label "Add Schedule" :action #(rf/dispatch [e/create-explorer-node :schedule])}
-   :refresh-schedules {:label "Refresh Schedule" :action #(rf/dispatch [e/refresh-node id])}})
+   :refresh-schedules {:label "Refresh Schedule" :action #(rf/dispatch [e/refresh-node jsk-id])}})
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -34,30 +34,30 @@
 (defmulti context-menu :type)
 
 (defmethod context-menu :agent
-  [{:keys [id] :as node}]
-  {:rm-agent {:label "Delete Agent" :action #(rf/dispatch [e/rm-explorer-node :agent id])}})
+  [{:keys [jsk-id] :as node}]
+  {:rm-agent {:label "Delete Agent" :action #(rf/dispatch [e/rm-explorer-node :agent jsk-id])}})
 
 (defmethod context-menu :alert
-  [{:keys [id] :as node}]
-  {:rm-alert {:label "Delete Alert" :action #(rf/dispatch [e/rm-explorer-node :alert id])}})
+  [{:keys [jsk-id] :as node}]
+  {:rm-alert {:label "Delete Alert" :action #(rf/dispatch [e/rm-explorer-node :alert jsk-id])}})
 
 (defmethod context-menu :job
-  [{:keys [id] :as node}]
-  {:trigger-job {:label "Trigger Job" :action #(rf/dispatch [e/trigger-job id])}
-   :rm-job {:label "Delete Job" :action #(rf/dispatch [e/rm-explorer-node :job id])}})
+  [{:keys [jsk-id] :as node}]
+  {:trigger-job {:label "Trigger Job" :action #(rf/dispatch [e/trigger-job jsk-id])}
+   :rm-job {:label "Delete Job" :action #(rf/dispatch [e/rm-explorer-node :job jsk-id])}})
 
 (defmethod context-menu :schedule
-  [{:keys [id] :as node}]
-  {:rm-schedule {:label "Delete Schedule" :action #(rf/dispatch [e/rm-explorer-node :schedule id])}})
+  [{:keys [jsk-id] :as node}]
+  {:rm-schedule {:label "Delete Schedule" :action #(rf/dispatch [e/rm-explorer-node :schedule jsk-id])}})
 
 (defmethod context-menu :section
   [node]
   (section-context-menu node))
 
 (defmethod context-menu :workflow
-  [{:keys [id] :as node}]
-  {:trigger-workflow {:label "Trigger Workflow" :action #(rf/dispatch [e/trigger-workflow id])}
-   :rm-workflow {:label "Delete Workflow" :action #(rf/dispatch [e/rm-explorer-node :workflow id])}})
+  [{:keys [jsk-id] :as node}]
+  {:trigger-workflow {:label "Trigger Workflow" :action #(rf/dispatch [e/trigger-workflow jsk-id])}
+   :rm-workflow {:label "Delete Workflow" :action #(rf/dispatch [e/rm-explorer-node :workflow jsk-id])}})
 
 (defn context-menu-items
   [node cb]
