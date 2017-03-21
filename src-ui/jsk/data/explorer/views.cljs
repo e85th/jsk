@@ -66,8 +66,7 @@
   (tree/register-activate-node-handler m/tree-sel activate-handler)
   (tree/register-move-node-handler m/tree-sel move-handler)
   ;; NB. dnd listens on document not just the tree
-  (tree/register-dnd-move-handler dnd/element-moved)
-  (tree/register-dnd-stop-handler dnd/element-dropped))
+  (tree/register-dnd-start-handler dnd/started))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

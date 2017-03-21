@@ -39,3 +39,10 @@
   (let [workflow (get-in db m/current)]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-workflow workflow save-workflow-ok [rpc-err :rpc/save-workflow-err])}))
+
+
+(def-event-db designer-dnd-drop
+  [db [_ event]]
+  (let [node (get-in db [:jsk.data.explorer.models/dnd-node])]
+    (log/infof "dropped on designer: %s" node))
+  db)

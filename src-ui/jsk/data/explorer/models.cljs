@@ -7,6 +7,7 @@
 
 (def explorer-view [::explorer-view])
 
+(def dnd-node [::dnd-node])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Util Fns

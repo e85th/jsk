@@ -1,5 +1,24 @@
 <html>
   <body>
+
+
+    <!-- overall layout -->
+    <div class="jsk-job-edit-layout">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#jsk-job-details-section" role="tab" data-toggle="tab">Details</a></li>
+        <li role="presentation"><a href="#jsk-job-schedules-section" role="tab" data-toggle="tab">Schedules</a></li>
+        <li role="presentation"><a href="#jsk-job-alerts-section" role="tab" data-toggle="tab">Alerts</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="jsk-job-details-section" class="tab-pane active" role="tabpanel"> </div>
+        <div id="jsk-job-schedules-section" class="tab-pane" role="tabpanel"> </div>
+        <div id="jsk-job-alerts-section" class="tab-pane" role="tabpanel"> </div>
+      </div> <!-- tab-content -->
+    </div>
+
+
+
     <div class="jsk-job-edit">
       <div class="form-group">
         <label>Job Name</label>
@@ -21,5 +40,6 @@
       </div>
       <button class="job-save-btn">Save</button>
     </div>
+
   </body>
 </html>

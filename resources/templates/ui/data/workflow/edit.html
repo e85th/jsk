@@ -1,5 +1,34 @@
 <html>
   <body>
+    <!--
+      NB.
+      The Designer tab is made active first because then
+      jsPlumb can properly connect the source to target nodes.
+      Otherwise you have to have jsplumb repaint everything.
+      See: https://groups.google.com/forum/#!starred/jsplumb/effy8IMkfvs
+      -->
+    <!-- overall layout -->
+    <div class="jsk-workflow-edit-layout">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#jsk-workflow-designer-section" role="tab" data-toggle="tab">Designer</a></li>
+        <li role="presentation"><a href="#jsk-workflow-details-section" role="tab" data-toggle="tab">Details</a></li>
+        <li role="presentation"><a href="#jsk-workflow-schedules-section" role="tab" data-toggle="tab">Schedules</a></li>
+        <li role="presentation"><a href="#jsk-workflow-alerts-section" role="tab" data-toggle="tab">Alerts</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="jsk-workflow-designer-section" class="tab-pane active" role="tabpanel"> </div>
+        <div id="jsk-workflow-details-section" class="tab-pane" role="tabpanel"> </div>
+        <div id="jsk-workflow-schedules-section" class="tab-pane" role="tabpanel"> </div>
+        <div id="jsk-workflow-alerts-section" class="tab-pane" role="tabpanel"> </div>
+      </div> <!-- tab-content -->
+    </div>
+
+
+    <!-- Designer -->
+    <div class="jsk-workflow-designer"></div>
+
+    <!-- Details Editor -->
     <div class="jsk-workflow-edit">
       <div class="form-group">
         <label>Workflow Name</label>
@@ -14,6 +43,9 @@
         <input type="text" class="workflow-enabled">
       </div>
       <button class="workflow-save-btn">Save</button>
-    </div>
+    </div> <!-- jsk-workflow-edit -->
+
+
+
   </body>
 </html>

@@ -18,11 +18,18 @@
    [:.job-enabled] (k/substitute [inputs/checkbox subs/current-enabled? e/current-enabled?-changed])
    [:.job-save-btn] (k/substitute [inputs/button subs/busy? e/save-job "Save"])})
 
+
+(defsnippet job-editor-layout* "templates/ui/data/job/edit.html" [:.jsk-job-edit-layout]
+  [job-details-view]
+  {[:#jsk-job-details-section] (k/content job-details-view)
+   [:#jsk-job-schedules-section] (k/content [:h3 "Schedules here"])
+   [:#jsk-job-alerts-section] (k/content [:h3 "Alerts here"])})
+
 (defn job-editor
   ([id]
    (rf/dispatch [e/fetch-job id])
    [job-editor])
   ([]
    (let [job-type-schema (rf/subscribe [subs/current-job-type-schema])]
-     (log/infof "job-type-schema: %s" @job-type-schema)
-     [job-view* @job-type-schema])))
+     ;(log/infof "job-type-schema: %s" @job-type-schema)
+     [job-editor-layout* [job-view* @job-type-schema]])))

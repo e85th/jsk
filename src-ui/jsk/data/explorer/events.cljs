@@ -45,6 +45,7 @@
     :children true}])
 
 (def-db-change set-explorer-view m/explorer-view)
+(def-db-change set-dnd-node m/dnd-node)
 
 (def-event-fx rpc-err
   [{:keys [db] :as cofx} event-v]
@@ -77,7 +78,7 @@
 
 (def-event-fx fetch-children
   [{:keys [db]} [_ node cb]]
-  (log/infof "node: %s" node)
+  ;(log/infof "node: %s" node)
   ;; node will be nil if the fetch-children happened on the root node
   (if (or (nil? node) (tree/root? node))
     (set-tree-data cb tree-sections)
