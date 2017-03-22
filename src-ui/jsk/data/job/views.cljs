@@ -9,6 +9,60 @@
             [jsk.data.job.props :as props]
             [jsk.routes :as routes]))
 
+(defn prevent-default
+  [e]
+  (.preventDefault e))
+
+(defn schedule-drop
+  [e]
+  (prevent-default e)
+  (rf/dispatch [e/schedule-dnd-drop]))
+
+(defn alert-drop
+  [e]
+  (prevent-default e)
+  (rf/dispatch [e/alert-dnd-drop]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Job Alert
+(defsnippet job-alert-item "templates/ui/data/job/edit.html" [:.jsk-job-alert-list [:.jsk-job-alert-item first-child]]
+  [{:keys [:db/id :alert/name]}]
+  {[:.jsk-job-alert-item] (k/set-attr :key id)
+   [:.jsk-job-alert-name] (k/content name)
+   [:.jsk-job-alert-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-job-alert id]))})
+
+(defsnippet alert-list* "templates/ui/data/job/edit.html" [:.jsk-job-alert-list]
+  [alerts]
+  {[:.jsk-job-alert-list] (k/set-attr :on-drop alert-drop
+                                      :on-drag-enter prevent-default
+                                      :on-drag-over prevent-default)
+   [:.jsk-job-alert-items] (k/content (map job-alert-item alerts))})
+
+(defn job-alert-list
+  []
+  (let [alerts (rf/subscribe [subs/current-alerts])]
+    [alert-list* @alerts]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Job Schedule
+(defsnippet job-schedule-item "templates/ui/data/job/edit.html" [:.jsk-job-schedule-list [:.jsk-job-schedule-item first-child]]
+  [{:keys [:db/id :schedule/name]}]
+  {[:.jsk-job-schedule-item] (k/set-attr :key id)
+   [:.jsk-job-schedule-name] (k/content name)
+   [:.jsk-job-schedule-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-job-schedule id]))})
+
+(defsnippet schedule-list* "templates/ui/data/job/edit.html" [:.jsk-job-schedule-list]
+  [schedules]
+  {[:.jsk-job-schedule-list] (k/set-attr :on-drop schedule-drop
+                                         :on-drag-enter prevent-default
+                                         :on-drag-over prevent-default)
+   [:.jsk-job-schedule-items] (k/content (map job-schedule-item schedules))})
+
+(defn job-schedule-list
+  []
+  (let [schedules (rf/subscribe [subs/current-schedules])]
+    [schedule-list* @schedules]))
+
 (defsnippet job-view* "templates/ui/data/job/edit.html" [:.jsk-job-edit]
   [job-type-schema]
   {[:.job-name] (k/substitute [inputs/std-text subs/current-name e/current-name-changed])
@@ -22,8 +76,8 @@
 (defsnippet job-editor-layout* "templates/ui/data/job/edit.html" [:.jsk-job-edit-layout]
   [job-details-view]
   {[:#jsk-job-details-section] (k/content job-details-view)
-   [:#jsk-job-schedules-section] (k/content [:h3 "Schedules here"])
-   [:#jsk-job-alerts-section] (k/content [:h3 "Alerts here"])})
+   [:#jsk-job-schedules-section] (k/content [job-schedule-list])
+   [:#jsk-job-alerts-section] (k/content [job-alert-list])})
 
 (defn job-editor
   ([id]

@@ -25,11 +25,3 @@
       (is (every? :job/name jobs)))
 
     (crud/delete-job job-id)))
-
-(deftest ^:integration job-schedule-test
-  (let [{schedule-id :db/id} (crud/create-schedule)
-        {job-id :db/id} (crud/create-job)]
-    (testing "job schedule assoc"
-      (crud/assoc-job-schedule job-id schedule-id))
-    (testing "job schedule dissoc"
-      (crud/dissoc-job-schedule job-id schedule-id))))

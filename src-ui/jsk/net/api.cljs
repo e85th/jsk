@@ -182,3 +182,53 @@
   [type :- s/Str id ok err]
   (new-request :post "/v1/explorer/actions/rm-node" {:type type
                                                      :id id} ok err))
+
+
+(s/defn assoc-job-schedules
+  [job-id :- s/Int schedule-ids :- [s/Int] ok err]
+  (new-request :post "/v1/jobs/actions/assoc-schedules"
+               {:job/id job-id :schedule/ids schedule-ids}
+               ok err))
+
+(s/defn dissoc-job-schedules
+  [job-id :- s/Int schedule-ids :- [s/Int] ok err]
+  (new-request :post "/v1/jobs/actions/dissoc-schedules"
+               {:job/id job-id :schedule/ids schedule-ids}
+               ok err))
+
+(s/defn assoc-job-alerts
+  [job-id :- s/Int alert-ids :- [s/Int] ok err]
+  (new-request :post "/v1/jobs/actions/assoc-alerts"
+               {:job/id job-id :alert/ids alert-ids}
+               ok err))
+
+(s/defn dissoc-job-alerts
+  [job-id :- s/Int alert-ids :- [s/Int] ok err]
+  (new-request :post "/v1/jobs/actions/dissoc-alerts"
+               {:job/id job-id :alert/ids alert-ids}
+               ok err))
+
+
+(s/defn assoc-workflow-schedules
+  [workflow-id :- s/Int schedule-ids :- [s/Int] ok err]
+  (new-request :post "/v1/workflows/actions/assoc-schedules"
+               {:workflow/id workflow-id :schedule/ids schedule-ids}
+               ok err))
+
+(s/defn dissoc-workflow-schedules
+  [workflow-id :- s/Int schedule-ids :- [s/Int] ok err]
+  (new-request :post "/v1/workflows/actions/dissoc-schedules"
+               {:workflow/id workflow-id :schedule/ids schedule-ids}
+               ok err))
+
+(s/defn assoc-workflow-alerts
+  [workflow-id :- s/Int alert-ids :- [s/Int] ok err]
+  (new-request :post "/v1/workflows/actions/assoc-alerts"
+               {:workflow/id workflow-id :alert/ids alert-ids}
+               ok err))
+
+(s/defn dissoc-workflow-alerts
+  [workflow-id :- s/Int alert-ids :- [s/Int] ok err]
+  (new-request :post "/v1/workflows/actions/dissoc-alerts"
+               {:workflow/id workflow-id :alert/ids alert-ids}
+               ok err))

@@ -20,6 +20,17 @@
                :client-y (.-clientY e)}]
     (rf/dispatch [e/designer-dnd-drop event])))
 
+(defn schedule-drop
+  [e]
+  (prevent-default e)
+  (rf/dispatch [e/schedule-dnd-drop]))
+
+(defn alert-drop
+  [e]
+  (prevent-default e)
+  (rf/dispatch [e/alert-dnd-drop]))
+
+
 (defsnippet workflow-view* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-edit]
   []
   {[:.workflow-name] (k/substitute [inputs/std-text subs/current-name e/current-name-changed])

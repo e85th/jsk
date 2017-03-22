@@ -206,11 +206,10 @@
       (http-response/ok (job/find-all res)))
 
     (GET "/:id" []
-      :return m/Job
+      :return m/JobInfo
       :path-params [id :- s/Int]
       :auth [user]
-      :exists [found (job/find-by-id res id)]
-      (http-response/ok found))
+      (http-response/ok (job/find-info-by-id! res id)))
 
     (POST "/" []
       :return m/Job
@@ -235,6 +234,38 @@
       :auth [user]
       (http-response/ok
        (job/dissoc-schedules res (:job/id data) (:schedule/ids data) (:db/id user))))
+
+    (POST "/actions/assoc-alerts" []
+      :summary "Associates alerts to a job. Returns the new set of associated alerts ."
+      :return m/JobAlerts
+      :body [data m/JobAlerts]
+      :auth [user]
+      (http-response/ok
+       (job/assoc-alerts res (:job/id data) (:alert/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-alerts" []
+      :summary "Dissociates alerts from a job. Returns the new set of associated alerts."
+      :return m/JobAlerts
+      :body [data m/JobAlerts]
+      :auth [user]
+      (http-response/ok
+       (job/dissoc-alerts res (:job/id data) (:alert/ids data) (:db/id user))))
+
+    (POST "/actions/assoc-tags" []
+      :summary "Associates tags to a job. Returns the new set of associated tags ."
+      :return m/JobTags
+      :body [data m/JobTags]
+      :auth [user]
+      (http-response/ok
+       (job/assoc-tags res (:job/id data) (:tag/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-tags" []
+      :summary "Dissociates tags from a job. Returns the new set of associated tags."
+      :return m/JobTags
+      :body [data m/JobTags]
+      :auth [user]
+      (http-response/ok
+       (job/dissoc-tags res (:job/id data) (:tag/ids data) (:db/id user))))
 
     (PUT "/:id" []
       :return m/Job
@@ -271,10 +302,9 @@
       (http-response/ok (workflow/find-all res)))
 
     (GET "/:id" []
-      :return m/Workflow
+      :return m/WorkflowInfo
       :path-params [id :- s/Int]
-      :exists [found (workflow/find-by-id res id)]
-      (http-response/ok found))
+      (http-response/ok (workflow/find-info-by-id! res id)))
 
     (POST "/" []
       :return m/Workflow
@@ -299,6 +329,38 @@
       :auth [user]
       (http-response/ok
        (workflow/dissoc-schedules res (:workflow/id data) (:schedule/ids data) (:db/id user))))
+
+    (POST "/actions/assoc-alerts" []
+      :summary "Associates alerts to a workflow. Returns the new set of associated alerts ."
+      :return m/WorkflowAlerts
+      :body [data m/WorkflowAlerts]
+      :auth [user]
+      (http-response/ok
+       (workflow/assoc-alerts res (:workflow/id data) (:alert/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-alerts" []
+      :summary "Dissociates alerts from a workflow. Returns the new set of associated alerts."
+      :return m/WorkflowAlerts
+      :body [data m/WorkflowAlerts]
+      :auth [user]
+      (http-response/ok
+       (workflow/dissoc-alerts res (:workflow/id data) (:alert/ids data) (:db/id user))))
+
+    (POST "/actions/assoc-tags" []
+      :summary "Associates tags to a workflow. Returns the new set of associated tags ."
+      :return m/WorkflowTags
+      :body [data m/WorkflowTags]
+      :auth [user]
+      (http-response/ok
+       (workflow/assoc-tags res (:workflow/id data) (:tag/ids data) (:db/id user))))
+
+    (POST "/actions/dissoc-tags" []
+      :summary "Dissociates tags from a workflow. Returns the new set of associated tags."
+      :return m/WorkflowTags
+      :body [data m/WorkflowTags]
+      :auth [user]
+      (http-response/ok
+       (workflow/dissoc-tags res (:workflow/id data) (:tag/ids data) (:db/id user))))
 
     (PUT "/:id" []
       :return m/Workflow
@@ -337,11 +399,9 @@
     :components [res]
     (GET "/suggest" {:keys [params]}
       :summary "Returns channel suggestions"
-      ;:query-params [q :- s/Str]
+      :query-params [q :- s/Str]
       :auth [user]
-      (http-response/ok (search/suggest-channels res (or (:q params)
-                                                         (:token params)
-                                                         ""))))))
+      (http-response/ok (search/suggest-channels res q)))))
 
 
 (defroutes explorer-routes

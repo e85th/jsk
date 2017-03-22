@@ -25,3 +25,27 @@
       (is (every? :workflow/name workflows)))
 
     (crud/delete-workflow workflow-id)))
+
+(deftest ^:integration workflow-schedule-test
+  (let [{schedule-id :db/id} (crud/create-schedule)
+        {workflow-id :db/id} (crud/create-workflow)]
+    (testing "workflow schedule assoc"
+      (crud/assoc-workflow-schedule workflow-id schedule-id))
+    (testing "workflow schedule dissoc"
+      (crud/dissoc-workflow-schedule workflow-id schedule-id))))
+
+(deftest ^:integration workflow-alert-test
+  (let [{alert-id :db/id} (crud/create-alert)
+        {workflow-id :db/id} (crud/create-workflow)]
+    (testing "workflow alert assoc"
+      (crud/assoc-workflow-alert workflow-id alert-id))
+    (testing "workflow alert dissoc"
+      (crud/dissoc-workflow-alert workflow-id alert-id))))
+
+(deftest ^:integration workflow-tag-test
+  (let [{tag-id :db/id} (crud/create-tag)
+        {workflow-id :db/id} (crud/create-workflow)]
+    (testing "workflow tag assoc"
+      (crud/assoc-workflow-tag workflow-id tag-id))
+    (testing "workflow tag dissoc"
+      (crud/dissoc-workflow-tag workflow-id tag-id))))

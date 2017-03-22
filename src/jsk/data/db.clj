@@ -86,3 +86,11 @@
                 (-> db :cn d/db)
                 alert-id)]
     (map (partial zipmap [:channel/id :channel/identifier :user/first-name :user/last-name]) rs)))
+
+
+(s/defn find-id-name
+  [db field :- s/Keyword ids :- s/Int]
+  (d/q '[:find ?id ?name
+         :in $ ?field [?id ...]
+         :where [?id ?field ?name]]
+       (-> db :cn d/db) field ids))

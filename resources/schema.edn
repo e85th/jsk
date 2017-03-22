@@ -301,6 +301,12 @@
   :db/doc "Job's schedules."}
 
  {:db/id #db/id[:db.part/db]
+  :db/ident :job/alerts
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Job's alerts."}
+
+ {:db/id #db/id[:db.part/db]
   :db/ident :job/tags
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
@@ -333,8 +339,19 @@
   :db/doc "Workflow's schedules."}
 
  {:db/id #db/id[:db.part/db]
+  :db/ident :workflow/schedules
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Workflow's schedules."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :workflow/alerts
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Workflow's alerts."}
+
+ {:db/id #db/id[:db.part/db]
   :db/ident :workflow/tags
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Workflow's tags."}
- ]
+  :db/doc "Workflow's tags."}]

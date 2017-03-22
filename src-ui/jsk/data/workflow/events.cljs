@@ -18,9 +18,17 @@
   (let [[db msg] (condp = (second event-v)
                    :rpc/fetch-workflow-err [db "Error fetching workflow."]
                    :rpc/save-workflow-err [db "Error saving workflow."]
+                   :rpc/assoc-workflow-alerts-err [db "Error associating alert."]
+                   :rpc/dissoc-workflow-alerts-err [db "Error dissociating alert."]
+                   :rpc/assoc-workflow-schedules-err [db "Error associating schedule."]
+                   :rpc/dissoc-workflow-schedules-err [db "Error dissociating schedule."]
                    :else [db "Encountered unhandled RPC error."])]
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
+
+(def-event-db no-op-ok
+  [db _]
+  db)
 
 (def-db-change fetch-workflow-ok m/current)
 
@@ -40,9 +48,52 @@
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-workflow workflow save-workflow-ok [rpc-err :rpc/save-workflow-err])}))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Schedule Assoc
+(def-event-fx assoc-workflow-schedule
+  [{:keys [db]} [_ schedule-id]]
+  (let [workflow-id (get-in db m/current-id)]
+    {:http-xhrio (api/assoc-workflow-schedules workflow-id [schedule-id] no-op-ok [rpc-err :rpc/assoc-workflow-schedules-err])}))
 
+(def-event-fx dissoc-workflow-schedule
+  [{:keys [db]} [_ schedule-id]]
+  (let [workflow-id (get-in db m/current-id)]
+    {:http-xhrio (api/dissoc-workflow-schedules workflow-id [schedule-id] no-op-ok [rpc-err :rpc/dissoc-workflow-schedules-err])}))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Alert Assoc
+(def-event-fx assoc-workflow-alert
+  [{:keys [db]} [_ alert-id]]
+  (let [workflow-id (get-in db m/current-id)]
+    {:http-xhrio (api/assoc-workflow-alerts workflow-id [alert-id] no-op-ok [rpc-err :rpc/assoc-workflow-alerts-err])}))
+
+(def-event-fx dissoc-workflow-alert
+  [{:keys [db]} [_ alert-id]]
+  (let [workflow-id (get-in db m/current-id)]
+    {:http-xhrio (api/dissoc-workflow-alerts workflow-id [alert-id] no-op-ok [rpc-err :rpc/dissoc-workflow-alerts-err])}))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DND
 (def-event-db designer-dnd-drop
   [db [_ event]]
   (let [node (get-in db [:jsk.data.explorer.models/dnd-node])]
     (log/infof "dropped on designer: %s" node))
   db)
+
+(def-event-fx schedule-dnd-drop
+  [{:keys [db]} [_ event]]
+  (let [node (get-in db [:jsk.data.explorer.models/dnd-node])
+        workflow-id (get-in db m/current-id)]
+      ;(log/infof "dropped on schedules area: %s" node)
+    (if (= :schedule (:type node))
+      {:dispatch [assoc-workflow-schedule (:jsk-id node)]}
+      {:notify [:alert {:message "Only schedules may be dropped here."}]})))
+
+(def-event-fx alert-dnd-drop
+  [{:keys [db]} [_ event]]
+  (let [node (get-in db [:jsk.data.explorer.models/dnd-node])
+        workflow-id (get-in db m/current-id)]
+      ;(log/infof "dropped on alerts: %s" node)
+    (if (= :alert (:type node))
+      {:dispatch [assoc-workflow-alert (:jsk-id node)]}
+      {:notify [:alert {:message "Only alerts may be dropped here."}]})))

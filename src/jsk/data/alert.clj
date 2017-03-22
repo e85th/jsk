@@ -6,7 +6,8 @@
             [datomic.api :as d]
             [e85th.commons.datomic :as datomic]
             [e85th.commons.mq :as mq]
-            [e85th.commons.ex :as ex]))
+            [e85th.commons.ex :as ex]
+            [clojure.set :as set]))
 
 (defn as-alert
   [alert-data]
@@ -32,6 +33,11 @@
   (-> (find-by-id! res alert-id)
       (dissoc :alert/channels)
       (assoc :alert/channels-info (db/find-alert-channel-info db alert-id))))
+
+(s/defn find-by-ids :- [m/Alert]
+  [{:keys [db]} alert-ids :- [s/Int]]
+  (->> (datomic/get-entities-with-attr-by-ids db :alert/name alert-ids)
+       (map as-alert)))
 
 (s/defn create :- s/Int
   "Creates a new alert."

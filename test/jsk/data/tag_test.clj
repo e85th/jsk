@@ -2,43 +2,27 @@
   (:require [jsk.core-test :as test]
             [taoensso.timbre :as log]
             [e85th.commons.util :as u]
+            [jsk.data.crud :as crud]
             [clojure.test :refer :all]))
 
 
 (use-fixtures :once test/with-system)
 
-(def base-endpoint "/api/v1/tags")
-
 (deftest ^:integration crud-test
-
-  ;; -- create
-  (let [tag-name (u/uuid)
-        [status response] (test/api-call :post base-endpoint {:tag/name tag-name})
-        tag-id (:db/id response)
-        tag-endpoint (str base-endpoint "/" tag-id)]
-    (is (= 201 status))
-    (is (= tag-name (:tag/name response)))
-
+  (let [{tag-id :db/id} (crud/create-tag)]
     ;; -- update
-    (let [new-name (u/uuid)
-          [status response] (test/api-call :put tag-endpoint {:tag/name new-name})]
-      (is (= 200 status))
-      (is (= tag-id (:db/id response)))
-      (is (= new-name (:tag/name response))))
+    (let [update-data {:tag/name (u/uuid)}
+          updated-tag (crud/update-tag update-data tag-id)]
+      (is (= (select-keys updated-tag [:db/id :tag/name])
+             (assoc update-data :db/id tag-id))))
 
-    ;; -- get
-    (let [[status response] (test/api-call :get tag-endpoint)]
-      (is (= 200 status))
-      (is (= tag-id (:db/id response))))
-
+    (crud/get-tag tag-id)
 
     ;; -- get all
-    (let [[status tags] (test/api-call :get base-endpoint)]
+    (let [[status tags] (test/api-call :get crud/tag-base-endpoint)]
       (is (= 200 status))
       (is (pos? (count tags)))
       (is (every? :tag/name tags)))
 
-    ;; -- delete
-    (let [[status response] (test/api-call :delete tag-endpoint)]
-      (is (= 200 status))
-      (is (= tag-id (:db/id response))))))
+
+    (crud/delete-tag tag-id)))

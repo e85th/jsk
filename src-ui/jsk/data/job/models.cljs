@@ -2,6 +2,8 @@
 
 (def current [::current])
 
+(def current-alerts [::current :job/alerts])
+(def current-id [::current :db/id])
 (def current-behavior [::current :job/behavior])
 (def current-context-key [::current :job/context-key])
 (def current-desc [::current :job/desc])

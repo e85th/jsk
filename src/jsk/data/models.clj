@@ -19,9 +19,6 @@
 (def behavior-id->name
   (set/map-invert job-behavior->id))
 
-(def job-node-type-id 1)
-(def workflow-node-type-id 2)
-
 (s/defschema Channel
   {:channel/identifier s/Str
    :channel/type s/Keyword
@@ -136,8 +133,26 @@
    :job/max-retries s/Int
    :job/max-concurrent s/Int
    :job/timeout-ms s/Int
+   (s/optional-key :job/alerts) [s/Int]
    (s/optional-key :job/schedules) [s/Int]
    (s/optional-key :job/tags) [s/Int]})
+
+(s/defschema JobInfo
+  (-> Job
+      (dissoc (s/optional-key :job/alerts) (s/optional-key :job/schedules) (s/optional-key :job/tags))
+      (assoc :job/schedules [Schedule] :job/alerts [Alert] :job/tags [Tag])))
+
+(s/defschema JobSchedules
+  {:job/id s/Int
+   :schedule/ids [s/Int]})
+
+(s/defschema JobAlerts
+  {:job/id s/Int
+   :alert/ids [s/Int]})
+
+(s/defschema JobTags
+  {:job/id s/Int
+   :tag/ids [s/Int]})
 
 (defn new-job
   []
@@ -166,9 +181,26 @@
    :workflow/name s/Str
    :workflow/desc (s/maybe s/Str)
    :workflow/enabled? s/Bool
+   (s/optional-key :workflow/alerts) [s/Int]
    (s/optional-key :workflow/schedules) [s/Int]
-   (s/optional-key :workflow/tags) [s/Str]})
+   (s/optional-key :workflow/tags) [s/Int]})
 
+(s/defschema WorkflowInfo
+  (-> Workflow
+      (dissoc (s/optional-key :workflow/alerts) (s/optional-key :workflow/schedules) (s/optional-key :workflow/tags))
+      (assoc :workflow/schedules [Schedule] :workflow/alerts [Alert] :workflow/tags [Tag])))
+
+(s/defschema WorkflowSchedules
+  {:workflow/id s/Int
+   :schedule/ids [s/Int]})
+
+(s/defschema WorkflowAlerts
+  {:workflow/id s/Int
+   :alert/ids [s/Int]})
+
+(s/defschema WorkflowTags
+  {:workflow/id s/Int
+   :tag/ids [s/Int]})
 
 (defn new-workflow
   []
@@ -176,13 +208,6 @@
    :workflow/desc ""
    :workflow/enabled? true})
 
-(s/defschema JobSchedules
-  {:job/id s/Int
-   :schedule/ids [s/Int]})
-
-(s/defschema WorkflowSchedules
-  {:workflow/id s/Int
-   :schedule/ids [s/Int]})
 
 (s/defschema Variable
   {:id s/Int
@@ -190,27 +215,6 @@
    :name s/Str
    :value s/Str
    :is-env s/Bool})
-
-(s/defschema JobScheduleInfo
-  {:id s/Int
-   :job-id s/Int
-   :schedule-id s/Int
-   :schedule-name s/Str})
-
-(s/defschema ScheduleWorkflowAssoc
-  {:schedule-id s/Int
-   :workflow-id s/Int})
-
-(s/defschema ScheduleWorkflowDissoc
-  {:schedule-id s/Int
-   :workflow-id s/Int})
-
-(s/defschema WorkflowScheduleInfo
-  {:id s/Int
-   :workflow-id s/Int
-   :schedule-id s/Int
-   :schedule-name s/Str})
-
 
 (s/defschema GoogleAuthSettings
   {(s/optional-key :db/id) s/Int

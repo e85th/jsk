@@ -1,6 +1,9 @@
 (ns jsk.data.workflow
   (:require [jsk.data.db :as db]
             [jsk.data.models :as m]
+            [jsk.data.alert :as alert]
+            [jsk.data.tag :as tag]
+            [jsk.data.schedule :as schedule]
             [schema.core :as s]
             [taoensso.timbre :as log]
             [datomic.api :as d]
@@ -8,21 +11,36 @@
             [e85th.commons.mq :as mq]
             [e85th.commons.ex :as ex]))
 
+(defn as-workflow
+  "Converts data retrieved from the database to fit Workflow schema."
+  [workflow-data]
+  (let [extract-ids (partial map :db/id)]
+    (some-> workflow-data
+            (update-in [:workflow/alerts] extract-ids)
+            (update-in [:workflow/schedules] extract-ids)
+            (update-in [:workflow/tags] extract-ids))))
+
 (s/defn find-all :- [m/Workflow]
   [{:keys [db]}]
-  (datomic/get-all-entities-with-attr db :workflow/name))
+  (->> (datomic/get-all-entities-with-attr db :workflow/name)
+       (map as-workflow)))
 
 (s/defn find-by-id :- (s/maybe m/Workflow)
   "Finds an workflow by id."
   [{:keys [db]} workflow-id :- s/Int]
-  (let [extract-ids (partial map :db/id)]
-    (some-> (datomic/get-entity-with-attr db workflow-id :workflow/name)
-            (update-in [:workflow/schedules] extract-ids)
-            (update-in [:workflow/tags] extract-ids))))
+  (as-workflow (datomic/get-entity-with-attr db workflow-id :workflow/name)))
 
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
   find-by-id! (ex/wrap-not-found find-by-id))
 
+
+(s/defn find-info-by-id! :- m/WorkflowInfo
+  [{:keys [db] :as res} workflow-id :- s/Int]
+  (let [workflow (find-by-id! res workflow-id)]
+    (assoc workflow
+           :workflow/alerts (alert/find-by-ids res (:workflow/alerts workflow))
+           :workflow/schedules (schedule/find-by-ids res (:workflow/schedules workflow))
+           :workflow/tags (tag/find-by-ids res (:workflow/tags workflow)))))
 
 (s/defn create :- s/Int
   "Creates a new workflow."
@@ -50,6 +68,8 @@
   @(d/transact (:cn db) [[:db/retractEntity workflow-id]])
   (mq/publish publisher [:jsk.workflow/deleted workflow-id]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Schedule Assoc
 (s/defn assoc-schedules :- m/WorkflowSchedules
   [{:keys [db publisher] :as res} workflow-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id workflow-id :workflow/schedules schedule-ids}])
@@ -66,6 +86,27 @@
     {:workflow/id workflow-id
      :schedule/ids (:workflow/schedules (find-by-id! res workflow-id))}))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Alert Assoc
+(s/defn assoc-alerts :- m/WorkflowAlerts
+  [{:keys [db publisher] :as res} workflow-id :- s/Int alert-ids :- [s/Int] user-id :- s/Int]
+  @(d/transact (:cn db) [{:db/id workflow-id :workflow/alerts alert-ids}])
+  (mq/publish publisher [:jsk.workflow/modified workflow-id])
+  {:workflow/id workflow-id
+   :alert/ids (:workflow/alerts (find-by-id! res workflow-id))})
+
+(s/defn dissoc-alerts :- m/WorkflowAlerts
+  [{:keys [db publisher] :as res} workflow-id :- s/Int alert-ids :- [s/Int] user-id :- s/Int]
+  (let [facts (for [s alert-ids]
+                [:db/retract workflow-id :workflow/alerts s])]
+    @(d/transact (:cn db) facts)
+    (mq/publish publisher [:jsk.workflow/modified workflow-id])
+    {:workflow/id workflow-id
+     :alert/ids (:workflow/alerts (find-by-id! res workflow-id))}))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Tag Assoc
 (s/defn assoc-tags
   [{:keys [db publisher] :as res} workflow-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id workflow-id :workflow/tags tag-ids}])

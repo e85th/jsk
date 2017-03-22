@@ -1,6 +1,9 @@
 (ns jsk.data.job
   (:require [jsk.data.db :as db]
             [jsk.data.models :as m]
+            [jsk.data.alert :as alert]
+            [jsk.data.tag :as tag]
+            [jsk.data.schedule :as schedule]
             [schema.core :as s]
             [taoensso.timbre :as log]
             [datomic.api :as d]
@@ -20,6 +23,7 @@
   (let [extract-ids (partial map :db/id)]
     (some-> job-data
             (update-in [:job/props] edn/read-string)
+            (update-in [:job/alerts] extract-ids)
             (update-in [:job/schedules] extract-ids)
             (update-in [:job/tags] extract-ids))))
 
@@ -35,6 +39,15 @@
 
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such job."}
   find-by-id! (ex/wrap-not-found find-by-id))
+
+(s/defn find-info-by-id! :- m/JobInfo
+  [{:keys [db] :as res} job-id :- s/Int]
+  (let [job (find-by-id! res job-id)]
+    (assoc job
+           :job/alerts (alert/find-by-ids res (:job/alerts job))
+           :job/schedules (schedule/find-by-ids res (:job/schedules job))
+           :job/tags (tag/find-by-ids res (:job/tags job)))))
+
 
 (s/defn create :- s/Int
   "Creates a new job."
@@ -64,6 +77,8 @@
   @(d/transact (:cn db) [[:db/retractEntity job-id]])
   (mq/publish publisher [:jsk.job/deleted job-id]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Schedule Assoc
 (s/defn assoc-schedules :- m/JobSchedules
   [{:keys [db publisher] :as res} job-id :- s/Int schedule-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id job-id :job/schedules schedule-ids}])
@@ -80,14 +95,35 @@
     {:job/id job-id
      :schedule/ids (:job/schedules (find-by-id! res job-id))}))
 
-(s/defn assoc-tags
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Alert Assoc
+(s/defn assoc-alerts :- m/JobAlerts
+  [{:keys [db publisher] :as res} job-id :- s/Int alert-ids :- [s/Int] user-id :- s/Int]
+  @(d/transact (:cn db) [{:db/id job-id :job/alerts alert-ids}])
+  (mq/publish publisher [:jsk.job/modified job-id])
+  {:job/id job-id
+   :alert/ids (:job/alerts (find-by-id! res job-id))})
+
+(s/defn dissoc-alerts :- m/JobAlerts
+  [{:keys [db publisher] :as res} job-id :- s/Int alert-ids :- [s/Int] user-id :- s/Int]
+  (let [facts (for [s alert-ids]
+                [:db/retract job-id :job/alerts s])]
+    @(d/transact (:cn db) facts)
+    (mq/publish publisher [:jsk.job/modified job-id])
+    {:job/id job-id
+     :alert/ids (:job/alerts (find-by-id! res job-id))}))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Tag Assoc
+(s/defn assoc-tags :- m/JobTags
   [{:keys [db publisher] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
   @(d/transact (:cn db) [{:db/id job-id :job/tags tag-ids}])
   (mq/publish publisher [:jsk.job/modified job-id])
   {:job/id job-id
    :tag/ids (:job/tags (find-by-id! res job-id))})
 
-(s/defn dissoc-tags
+(s/defn dissoc-tags :- m/JobTags
   [{:keys [db publisher] :as res} job-id :- s/Int tag-ids :- [s/Int] user-id :- s/Int]
   (let [facts (for [t tag-ids]
                 [:db/retract job-id :job/tags t])]

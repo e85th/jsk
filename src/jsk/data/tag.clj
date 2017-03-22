@@ -20,6 +20,10 @@
 (def ^{:doc "Same as find-by-id except throws NotFoundException if no such tag."}
   find-by-id! (ex/wrap-not-found find-by-id))
 
+(s/defn find-by-ids :- [m/Tag]
+  [{:keys [db]} tag-ids :- [s/Int]]
+  (datomic/get-entities-with-attr-by-ids db :tag/name tag-ids))
+
 (s/defn create :- s/Int
   "Creates a new tag."
   [{:keys [db publisher] :as res} tag :- m/Tag user-id :- s/Int]

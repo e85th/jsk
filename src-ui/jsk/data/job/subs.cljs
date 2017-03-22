@@ -4,6 +4,7 @@
             [taoensso.timbre :as log]
             [jsk.data.job.models :as m]))
 
+(def-sub-db current-alerts m/current-alerts)
 (def-sub-db current-behavior m/current-behavior)
 (def-sub-db current-context-key m/current-context-key)
 (def-sub-db current-desc m/current-desc)
