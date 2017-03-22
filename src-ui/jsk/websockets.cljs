@@ -4,12 +4,15 @@
             [e85th.ui.net.websockets :as websockets]
             [jsk.common.data :as data]
             [jsk.data.job.events :as job-events]
+            [jsk.data.workflow.events :as workflow-events]
             [jsk.data.explorer.events :as explorer-events]
             [jsk.data.alert.events :as alert-events]
             [jsk.data.agent.events :as agent-events]
             [jsk.data.schedule.events :as schedule-events]
             [re-frame.core :as rf]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Refreshses explorer
 (defn refresh-explorer
   [node-id]
   (rf/dispatch [explorer-events/refresh-node node-id]))
@@ -21,6 +24,19 @@
 (def refresh-alerts (partial refresh-explorer explorer-events/alerts-id))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Refreshses entities that are currently in app db
+(defn refresh-entity
+  [refresh-event entity-id]
+  (rf/dispatch [refresh-event entity-id]))
+
+(def refresh-alert (partial refresh-entity alert-events/refresh-alert))
+(def refresh-agent (partial refresh-entity agent-events/refresh-agent))
+(def refresh-schedule (partial refresh-entity schedule-events/refresh-schedule))
+(def refresh-job (partial refresh-entity job-events/refresh-job))
+(def refresh-workflow (partial refresh-entity workflow-events/refresh-workflow))
+
+
 (defmulti on-event first)
 
 ;; -- Job
@@ -29,7 +45,8 @@
   (refresh-jobs))
 
 (defmethod on-event :jsk.job/modified
-  [msg]
+  [[_ job-id]]
+  (refresh-job job-id)
   (refresh-jobs))
 
 (defmethod on-event :jsk.job/deleted
@@ -43,9 +60,9 @@
   (log/infof "Workflow created: %s" msg))
 
 (defmethod on-event :jsk.workflow/modified
-  [msg]
-  (refresh-workflows)
-  (log/infof "Workflow modified: %s" msg))
+  [[_ workflow-id]]
+  (refresh-workflow workflow-id)
+  (refresh-workflows))
 
 (defmethod on-event :jsk.workflow/deleted
   [msg]
@@ -59,7 +76,8 @@
   (refresh-schedules))
 
 (defmethod on-event :jsk.schedule/modified
-  [msg]
+  [[_ schedule-id]]
+  (refresh-schedule schedule-id)
   (refresh-schedules))
 
 (defmethod on-event :jsk.schedule/deleted
@@ -69,19 +87,16 @@
 ;; -- Alerts
 (defmethod on-event :jsk.alert/created
   [msg]
-  (refresh-alerts)
-  (log/infof "Alert created: %s" msg))
+  (refresh-alerts))
 
 (defmethod on-event :jsk.alert/modified
   [[_ alert-id]]
-  (refresh-alerts)
-  (rf/dispatch [alert-events/refresh-alert alert-id])
-  (log/infof "Alert modified: %s" alert-id))
+  (refresh-alert alert-id)
+  (refresh-alerts))
 
 (defmethod on-event :jsk.alert/deleted
   [msg]
-  (refresh-alerts)
-  (log/infof "Alert deleted: %s" msg))
+  (refresh-alerts))
 
 ;; -- Agents
 (defmethod on-event :jsk.agent/created
@@ -89,7 +104,8 @@
   (refresh-agents))
 
 (defmethod on-event :jsk.agent/modified
-  [msg]
+  [[_ agent-id]]
+  (refresh-agent agent-id)
   (refresh-agents))
 
 (defmethod on-event :jsk.agent/deleted
@@ -99,6 +115,7 @@
 (defmethod on-event :default
   [msg]
   (log/infof "Ignoring message: %s" msg))
+
 (defn init!
   "Call only after data/jsk-token is available."
   []

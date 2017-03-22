@@ -2,6 +2,7 @@
 
 (def current [::current])
 
+(def current-alerts [::current :workflow/alerts])
 (def current-desc [::current :workflow/desc])
 (def current-enabled? [::current :workflow/enabled?])
 (def current-id [::current :db/id])

@@ -1,6 +1,10 @@
 .jsk-workflow-designer {
-  background-color: red;
+  border: 1px solid #000;
   width: 100%;
   height: 1000px;
   overflow: hidden;
+}
+
+.jsk-dnd-dropzone-hover {
+  border: 2px dashed #000;
 }

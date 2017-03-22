@@ -97,3 +97,9 @@
     (if (= :alert (:type node))
       {:dispatch [assoc-workflow-alert (:jsk-id node)]}
       {:notify [:alert {:message "Only alerts may be dropped here."}]})))
+
+
+(def-event-fx refresh-workflow
+  [{:keys [db]} [_ workflow-id]]
+  (when (= (get-in db m/current-id) workflow-id)
+    {:dispatch [fetch-workflow workflow-id]}))

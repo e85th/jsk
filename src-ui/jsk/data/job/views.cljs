@@ -3,6 +3,7 @@
             [kioo.reagent :as k :refer-macros [defsnippet deftemplate]]
             [re-frame.core :as rf]
             [taoensso.timbre :as log]
+            [e85th.ui.util :as u]
             [e85th.ui.rf.inputs :as inputs]
             [jsk.data.job.events :as e]
             [jsk.data.job.subs :as subs]
@@ -12,6 +13,9 @@
 (defn prevent-default
   [e]
   (.preventDefault e))
+
+(def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
+(def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
 (defn schedule-drop
   [e]
@@ -25,7 +29,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Job Alert
-(defsnippet job-alert-item "templates/ui/data/job/edit.html" [:.jsk-job-alert-list [:.jsk-job-alert-item first-child]]
+(defsnippet alert-item* "templates/ui/data/job/edit.html" [:.jsk-job-alert-list [:.jsk-job-alert-item first-child]]
   [{:keys [:db/id :alert/name]}]
   {[:.jsk-job-alert-item] (k/set-attr :key id)
    [:.jsk-job-alert-name] (k/content name)
@@ -34,18 +38,19 @@
 (defsnippet alert-list* "templates/ui/data/job/edit.html" [:.jsk-job-alert-list]
   [alerts]
   {[:.jsk-job-alert-list] (k/set-attr :on-drop alert-drop
-                                      :on-drag-enter prevent-default
+                                      :on-drag-enter indicate-dropzone
+                                      :on-drag-leave conceal-dropzone
                                       :on-drag-over prevent-default)
-   [:.jsk-job-alert-items] (k/content (map job-alert-item alerts))})
+   [:.jsk-job-alert-items] (k/content (map alert-item* alerts))})
 
-(defn job-alert-list
+(defn alert-list
   []
   (let [alerts (rf/subscribe [subs/current-alerts])]
     [alert-list* @alerts]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Job Schedule
-(defsnippet job-schedule-item "templates/ui/data/job/edit.html" [:.jsk-job-schedule-list [:.jsk-job-schedule-item first-child]]
+(defsnippet schedule-item* "templates/ui/data/job/edit.html" [:.jsk-job-schedule-list [:.jsk-job-schedule-item first-child]]
   [{:keys [:db/id :schedule/name]}]
   {[:.jsk-job-schedule-item] (k/set-attr :key id)
    [:.jsk-job-schedule-name] (k/content name)
@@ -54,11 +59,12 @@
 (defsnippet schedule-list* "templates/ui/data/job/edit.html" [:.jsk-job-schedule-list]
   [schedules]
   {[:.jsk-job-schedule-list] (k/set-attr :on-drop schedule-drop
-                                         :on-drag-enter prevent-default
+                                         :on-drag-enter indicate-dropzone
+                                         :on-drag-leave conceal-dropzone
                                          :on-drag-over prevent-default)
-   [:.jsk-job-schedule-items] (k/content (map job-schedule-item schedules))})
+   [:.jsk-job-schedule-items] (k/content (map schedule-item* schedules))})
 
-(defn job-schedule-list
+(defn schedule-list
   []
   (let [schedules (rf/subscribe [subs/current-schedules])]
     [schedule-list* @schedules]))
@@ -76,8 +82,8 @@
 (defsnippet job-editor-layout* "templates/ui/data/job/edit.html" [:.jsk-job-edit-layout]
   [job-details-view]
   {[:#jsk-job-details-section] (k/content job-details-view)
-   [:#jsk-job-schedules-section] (k/content [job-schedule-list])
-   [:#jsk-job-alerts-section] (k/content [job-alert-list])})
+   [:#jsk-job-schedules-section] (k/content [schedule-list])
+   [:#jsk-job-alerts-section] (k/content [alert-list])})
 
 (defn job-editor
   ([id]

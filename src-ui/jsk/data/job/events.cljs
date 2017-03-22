@@ -45,7 +45,7 @@
 
 (def-event-fx save-job
   [{:keys [db]} _]
-  (let [job (get-in db m/current)]
+  (let [job (m/prep-for-save (get-in db m/current))]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-job job save-job-ok [rpc-err :rpc/save-job-err])}))
 
@@ -103,3 +103,8 @@
     (if (= :alert (:type node))
       {:dispatch [assoc-job-alert (:jsk-id node)]}
       {:notify [:alert {:message "Only alerts may be dropped here."}]})))
+
+(def-event-fx refresh-job
+  [{:keys [db]} [_ job-id]]
+  (when (= (get-in db m/current-id) job-id)
+    {:dispatch [fetch-job job-id]}))

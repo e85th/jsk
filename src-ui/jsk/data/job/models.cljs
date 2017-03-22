@@ -21,3 +21,8 @@
 
 ;; map of keyword to vector of maps
 (def job-types [::job-types])
+
+(defn prep-for-save
+  "Schedules, tags and alerts are saved independently."
+  [job]
+  (dissoc job :job/schedules :job/tags :job/alerts))

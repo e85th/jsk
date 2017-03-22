@@ -38,3 +38,8 @@
   (let [schedule (get-in db m/current)]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-schedule schedule save-schedule-ok [rpc-err :rpc/save-schedule-err])}))
+
+(def-event-fx refresh-schedule
+  [{:keys [db]} [_ schedule-id]]
+  (when (= (get-in db m/current-id) schedule-id)
+    {:dispatch [fetch-schedule schedule-id]}))

@@ -4,33 +4,79 @@
             [re-frame.core :as rf]
             [taoensso.timbre :as log]
             [e85th.ui.rf.inputs :as inputs]
+            [e85th.ui.util :as u]
             [jsk.data.workflow.events :as e]
             [jsk.data.workflow.subs :as subs]
             [jsk.routes :as routes]))
 
 
-(defn prevent-default
-  [e]
-  (.preventDefault e))
+(def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
+(def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
 (defn designer-drop
   [e]
-  (prevent-default e)
+  (u/event-prevent-default e)
   (let [event {:client-x (.-clientX e)
                :client-y (.-clientY e)}]
     (rf/dispatch [e/designer-dnd-drop event])))
 
 (defn schedule-drop
   [e]
-  (prevent-default e)
+  (u/event-stop-propogation e)
+  (conceal-dropzone)
   (rf/dispatch [e/schedule-dnd-drop]))
 
 (defn alert-drop
   [e]
-  (prevent-default e)
+  (u/event-stop-propogation e)
+  (conceal-dropzone)
   (rf/dispatch [e/alert-dnd-drop]))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Workflow Alert
+(defsnippet alert-item* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-alert-list [:.jsk-workflow-alert-item first-child]]
+  [{:keys [:db/id :alert/name]}]
+  {[:.jsk-workflow-alert-item] (k/set-attr :key id)
+   [:.jsk-workflow-alert-name] (k/content name)
+   [:.jsk-workflow-alert-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-workflow-alert id]))})
+
+(defsnippet alert-list* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-alert-list]
+  [alerts]
+  {[:.jsk-workflow-alert-list] (k/set-attr :on-drop alert-drop
+                                           :on-drag-enter indicate-dropzone
+                                           :on-drag-leave conceal-dropzone
+                                           :on-drag-over u/event-prevent-default)
+   [:.jsk-workflow-alert-items] (k/content (map alert-item* alerts))})
+
+(defn alert-list
+  []
+  (let [alerts (rf/subscribe [subs/current-alerts])]
+    [alert-list* @alerts]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Workflow Schedule
+(defsnippet schedule-item* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-schedule-list [:.jsk-workflow-schedule-item first-child]]
+  [{:keys [:db/id :schedule/name]}]
+  {[:.jsk-workflow-schedule-item] (k/set-attr :key id)
+   [:.jsk-workflow-schedule-name] (k/content name)
+   [:.jsk-workflow-schedule-delete] (k/listen :on-click #(rf/dispatch [e/dissoc-workflow-schedule id]))})
+
+(defsnippet schedule-list* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-schedule-list]
+  [schedules]
+  {[:.jsk-workflow-schedule-list] (k/set-attr :on-drop schedule-drop
+                                              :on-drag-enter indicate-dropzone
+                                              :on-drag-leave conceal-dropzone
+                                              :on-drag-over u/event-prevent-default)
+   [:.jsk-workflow-schedule-items] (k/content (map schedule-item* schedules))})
+
+(defn schedule-list
+  []
+  (let [schedules (rf/subscribe [subs/current-schedules])]
+    [schedule-list* @schedules]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Workflow Main Area
 (defsnippet workflow-view* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-edit]
   []
   {[:.workflow-name] (k/substitute [inputs/std-text subs/current-name e/current-name-changed])
@@ -41,15 +87,15 @@
 (defsnippet workflow-designer* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-designer]
   []
   {[:.jsk-workflow-designer] (k/set-attr :on-drop designer-drop
-                                         :on-drag-enter prevent-default
-                                         :on-drag-over prevent-default)})
+                                         :on-drag-enter u/event-prevent-default
+                                         :on-drag-over u/event-prevent-default)})
 
 (defsnippet workflow-editor-layout* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-edit-layout]
   []
   {[:#jsk-workflow-designer-section] (k/content [workflow-designer*])
    [:#jsk-workflow-details-section] (k/content [workflow-view*])
-   [:#jsk-workflow-schedules-section] (k/content [:h3 "Schedules here"])
-   [:#jsk-workflow-alerts-section] (k/content [:h3 "Alerts here"])})
+   [:#jsk-workflow-schedules-section] (k/content [schedule-list])
+   [:#jsk-workflow-alerts-section] (k/content [alert-list])})
 
 
 (defn workflow-editor

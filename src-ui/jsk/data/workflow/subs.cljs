@@ -4,6 +4,7 @@
             [taoensso.timbre :as log]
             [jsk.data.workflow.models :as m]))
 
+(def-sub-db current-alerts m/current-alerts)
 (def-sub-db current-desc m/current-desc)
 (def-sub-db current-enabled? m/current-enabled?)
 (def-sub-db current-name m/current-name)

@@ -37,3 +37,8 @@
   (let [agent (get-in db m/current)]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-agent agent save-agent-ok [rpc-err :rpc/save-agent-err])}))
+
+(def-event-fx refresh-agent
+  [{:keys [db]} [_ agent-id]]
+  (when (= (get-in db m/current-id) agent-id)
+    {:dispatch [fetch-agent agent-id]}))
