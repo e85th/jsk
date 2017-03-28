@@ -13,6 +13,8 @@
             [jsk.routes :as routes]))
 
 
+(def designer-container-id "jsk-workflow-design-container")
+
 (def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
 (def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
@@ -33,14 +35,14 @@
   (u/rm-element-by-id div-id))
 
 (defn workflow-node*
-  [pb div-id err-ep-id ok-ep-id node-name]
-  [:div {:id div-id :class "jsk-workflow-node"}
+  [pb div-id err-ep-id ok-ep-id node-name {:keys [left top]}]
+  [:div {:id div-id :class "jsk-workflow-node" :style (str "left: " left "px; top: " top "px;")}
    [:button {:type "button" :class "close" :on-click #(delete-workflow-node pb div-id err-ep-id ok-ep-id) } "x"]
    [:p]
    [:div.jsk-workflow-node-name node-name]
    [:p
-    [:div.jsk-workflow-node-err-ep {:id err-ep-id} "Err"]
-    [:div.jsk-workflow-node-ok-ep {:id ok-ep-id} "OK"]]])
+    [:div.jsk-workflow-node-err-ep {:id err-ep-id}]
+    [:div.jsk-workflow-node-ok-ep {:id ok-ep-id}]]])
 
 ;; FIXME: this should work in component-did-mount
 (defn ensure-container
@@ -51,14 +53,31 @@
       (plumb/container pb div-id)
       (plumb/container pb))))
 
+(defn bounding-rect
+  [el]
+  (let [r (.getBoundingClientRect el)]
+    {:bottom (.-bottom r)
+     :height (.-height r)
+     :left (.-left r)
+     :top (.-top r)
+     :width (.-width r)}))
+
+(defn compute-placement-coords
+  [element {:keys [client-x client-y]}]
+  (let [{:keys [top left]} (bounding-rect element)]
+    {:left (- client-x left)
+     :top (- client-y top)}))
+
 (defn node-fn
-  [pb node]
+  [pb node drop-cords]
   (log/infof "dropped on designer: %s" node)
-  (let [container (ensure-container pb "am-wfd")
+  (let [container (ensure-container pb designer-container-id)
         id (str (gensym "wf-node-"))
         err-ep-id (str (gensym "wf-node-err-ep-"))
         ok-ep-id (str (gensym "wf-node-ok-ep-"))
-        el (hipo/create (workflow-node* pb id err-ep-id ok-ep-id (:text node)))]
+        placement-coords (compute-placement-coords container drop-cords)
+        el (hipo/create (workflow-node* pb id err-ep-id ok-ep-id (:text node) placement-coords))]
+    ;(log/infof "drop cords: %s, container bounds: %s" drop-cords placement-coords)
     (.appendChild container el)
     (plumb/draggable pb id)
     (plumb/make-source pb err-ep-id m/err-endpoint-opts)
@@ -68,9 +87,9 @@
 (defn designer-drop
   [pb e]
   (u/event-prevent-default e)
-  (let [event {:client-x (.-clientX e)
-               :client-y (.-clientY e)}]
-    (rf/dispatch [e/designer-dnd-drop (fn [node] (node-fn pb node))])))
+  (let [coords {:client-x (.-clientX e)
+                :client-y (.-clientY e)}]
+    (rf/dispatch [e/designer-dnd-drop (fn [node] (node-fn pb node coords))])))
 
 (defn schedule-drop
   [e]
@@ -144,7 +163,7 @@
       :on-drag-enter u/event-prevent-default
       :on-drag-over u/event-prevent-default
       :class "jsk-workflow-designer"
-      :id "am-wfd"}
+      :id designer-container-id}
      {}
      (fn [pb]
        (plumb/register-connection-click-handler pb (partial connection-click-listener pb))

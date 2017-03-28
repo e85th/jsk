@@ -26,7 +26,6 @@
 ;;-----------------------------------------------------------------------
 (def ok-endpoint-opts
   {:cssClass "jsk-ok-endpoint"
-   :endpoint "Dot"
    :connectorStyle {:stroke :green :strokeWidth 2 :outlineStroke "transparent" :outlineWidth 4}})
 
 ;;-----------------------------------------------------------------------
@@ -35,7 +34,6 @@
 ;;-----------------------------------------------------------------------
 (def err-endpoint-opts
   {:cssClass "jsk-err-endpoint"
-   :endpoint "Rectangle"
    :connectorStyle {:stroke :red :strokeWidth 2 :dashstyle "2 2" :outlineStroke "transparent" :outlineWidth 4}})
 
 (def target-opts
