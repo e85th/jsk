@@ -34,7 +34,7 @@
   background-color: #a287f6;
 }
 
-.jsk-workflow-designer .jsk-workflow-node-ok-ep {
+.jsk-workflow-designer .jsk-workflow-node-ok-source {
 	position: absolute;
 	bottom: 10%;
 	/* right: 5px; */
@@ -51,16 +51,16 @@
   -moz-border-radius: 0.5em;
   border-radius: 0.5em;
 }
-.jsk-workflow-designer .jsk-workflow-node-ok-ep:hover {
+.jsk-workflow-designer .jsk-workflow-node-ok-source:hover {
   box-shadow: 0px 0px 6px black;
 }
 
-.jsk-workflow-designer .jsk-workflow-node-ok-ep svg circle {
+.jsk-workflow-designer .jsk-workflow-node-ok-source svg circle {
   fill: green;
   stroke: yellow;
 }
 
-.jsk-workflow-designer .jsk-workflow-node-err-ep {
+.jsk-workflow-designer .jsk-workflow-node-err-source {
 	position: absolute;
 	bottom: 10%;
 	/* right: 5px; */
@@ -76,11 +76,11 @@
 }
 
 
-.jsk-workflow-designer .jsk-workflow-node-err-ep:hover {
+.jsk-workflow-designer .jsk-workflow-node-err-source:hover {
   box-shadow: 0px 0px 6px black;
 }
 
-.jsk-workflow-designer .jsk-workflow-node-err-ep svg circle {
+.jsk-workflow-designer .jsk-workflow-node-err-source svg circle {
   fill: red;
   stroke: yellow;
 }
@@ -90,12 +90,12 @@
 }
 
 
-.jsk-ok-endpoint svg circle {
+.jsk-ok-source svg circle {
   fill: green;
   stroke: black;
 }
 
-.jsk-err-endpoint svg rect {
+.jsk-err-source svg circle {
   fill: red;
   stroke: black
 }

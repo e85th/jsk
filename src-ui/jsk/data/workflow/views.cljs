@@ -6,90 +6,24 @@
             [e85th.ui.rf.inputs :as inputs]
             [e85th.ui.util :as u]
             [e85th.ui.rf.plumb :as plumb]
-            [hipo.core :as hipo]
             [jsk.data.workflow.models :as m]
             [jsk.data.workflow.events :as e]
             [jsk.data.workflow.subs :as subs]
             [jsk.routes :as routes]))
 
 
-(def designer-container-id "jsk-workflow-design-container")
 
 (def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
 (def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
-#_(defsnippet workflow-node* "templates/ui/data/workflow/designer.html" [:.jsk-workflow-node]
-  [div-id node-name]
-  {[:.jsk-workflow-node] (k/set-attr :id div-id)
-   [:.jsk-workflow-node-name] (k/content node-name)})
-
-(defn connection-click-listener
-  [pb cn]
-  (plumb/detach-connection pb cn))
-
-(defn delete-workflow-node
-  [pb div-id err-ep-id ok-ep-id]
-  (plumb/rm-endpoint pb ok-ep-id)
-  (plumb/rm-endpoint pb err-ep-id)
-  (plumb/rm-inbound-connections pb div-id)
-  (u/rm-element-by-id div-id))
-
-(defn workflow-node*
-  [pb div-id err-ep-id ok-ep-id node-name {:keys [left top]}]
-  [:div {:id div-id :class "jsk-workflow-node" :style (str "left: " left "px; top: " top "px;")}
-   [:button {:type "button" :class "close" :on-click #(delete-workflow-node pb div-id err-ep-id ok-ep-id) } "x"]
-   [:p]
-   [:div.jsk-workflow-node-name node-name]
-   [:p
-    [:div.jsk-workflow-node-err-ep {:id err-ep-id}]
-    [:div.jsk-workflow-node-ok-ep {:id ok-ep-id}]]])
-
-;; FIXME: this should work in component-did-mount
-(defn ensure-container
-  [pb div-id]
-  (if-let [c (plumb/container pb)]
-    c
-    (do
-      (plumb/container pb div-id)
-      (plumb/container pb))))
-
-(defn bounding-rect
-  [el]
-  (let [r (.getBoundingClientRect el)]
-    {:bottom (.-bottom r)
-     :height (.-height r)
-     :left (.-left r)
-     :top (.-top r)
-     :width (.-width r)}))
-
-(defn compute-placement-coords
-  [element {:keys [client-x client-y]}]
-  (let [{:keys [top left]} (bounding-rect element)]
-    {:left (- client-x left)
-     :top (- client-y top)}))
-
-(defn node-fn
-  [pb node drop-cords]
-  (log/infof "dropped on designer: %s" node)
-  (let [container (ensure-container pb designer-container-id)
-        id (str (gensym "wf-node-"))
-        err-ep-id (str (gensym "wf-node-err-ep-"))
-        ok-ep-id (str (gensym "wf-node-ok-ep-"))
-        placement-coords (compute-placement-coords container drop-cords)
-        el (hipo/create (workflow-node* pb id err-ep-id ok-ep-id (:text node) placement-coords))]
-    ;(log/infof "drop cords: %s, container bounds: %s" drop-cords placement-coords)
-    (.appendChild container el)
-    (plumb/draggable pb id)
-    (plumb/make-source pb err-ep-id m/err-endpoint-opts)
-    (plumb/make-source pb ok-ep-id m/ok-endpoint-opts)
-    (plumb/make-target pb id m/target-opts)))
-
 (defn designer-drop
-  [pb e]
+  [e]
   (u/event-prevent-default e)
+  ;; e is a react event proxy, so have to access the props here otherwise
+  ;; won't be available later
   (let [coords {:client-x (.-clientX e)
                 :client-y (.-clientY e)}]
-    (rf/dispatch [e/designer-dnd-drop (fn [node] (node-fn pb node coords))])))
+    (rf/dispatch [e/designer-dnd-drop coords])))
 
 (defn schedule-drop
   [e]
@@ -157,19 +91,21 @@
 
 (defn workflow-designer*
   []
-  (let [pb (plumb/new-instance m/jsk-plumb-defaults)]
-    [plumb/control
-     {:on-drop (partial designer-drop pb)
-      :on-drag-enter u/event-prevent-default
-      :on-drag-over u/event-prevent-default
-      :class "jsk-workflow-designer"
-      :id designer-container-id}
-     {}
-     (fn [pb]
-       (plumb/register-connection-click-handler pb (partial connection-click-listener pb))
-       (log/infof "designer mounted"))
-     (fn [pb]
-       (log/infof "designer unmounted"))]))
+  [plumb/control
+   {:on-drop designer-drop
+    :on-drag-enter u/event-prevent-default
+    :on-drag-over u/event-prevent-default
+    :class "jsk-workflow-designer"
+    :id m/designer-container-id}
+   m/jsk-plumb-defaults
+   (fn [pb]
+     (plumb/container pb m/designer-container-id)
+     (plumb/register-connection-click-handler pb #(rf/dispatch [e/detach-connection %]))
+     (plumb/register-connection-created-handler pb #(rf/dispatch [e/connection-created %]))
+     (rf/dispatch [e/set-plumb-instance pb])
+     (log/infof "designer mounted"))
+   (fn [pb]
+     (rf/dispatch [e/set-plumb-instance nil]))])
 
 (defsnippet workflow-editor-layout* "templates/ui/data/workflow/edit.html" [:.jsk-workflow-edit-layout]
   []
