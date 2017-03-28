@@ -27,11 +27,11 @@
     {:left (- client-x left)
      :top (- client-y top)}))
 
-(defn create-source-id
+(defn cons-source-id
   [wf-node-id kind]
   (str wf-node-id "|" kind))
 
-(defn source-id->components
+(defn decons-source-id
   [source-id]
   (let [[wf-node-id kind] (str/split source-id "|")]
     {:node-id wf-node-id
@@ -42,8 +42,8 @@
   [pb node drop-cords node-removed-event]
   (let [container (plumb/container pb)
         dom-id (str (gensym "wf-node-"))
-        err-source-id (create-source-id dom-id "err")
-        ok-source-id (create-source-id dom-id "ok")
+        err-source-id (cons-source-id dom-id "err")
+        ok-source-id (cons-source-id dom-id "ok")
         placement-coords (compute-placement-coords container drop-cords)
         el (hipo/create (workflow-node* dom-id err-source-id ok-source-id (:text node) placement-coords node-removed-event))]
     (.appendChild container el)

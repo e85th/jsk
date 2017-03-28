@@ -130,10 +130,10 @@
    Adds or removes an edge."
   [graph-mod-fn db cn]
   (let [{:keys [source-id target-id]} (plumb/connection-as-map cn) ; these are dom-ids
-        {source-node-id :node-id kind :kind} (designer/source-id->components source-id) ; source-node-id is the workflow node's dom-id
+        {:keys [node-id kind]} (designer/decons-source-id source-id) ; node-id is the workflow node's dom-id
         graph (get-in db m/graph)
         db-target-id (m/graph-dom-id->db-id graph target-id)
-        graph* (graph-mod-fn graph source-node-id db-target-id kind)]
+        graph* (graph-mod-fn graph node-id db-target-id kind)]
     ;(log/infof "graph before: %s" graph)
     ;(log/infof "graph after: %s" graph*)
     (assoc-in db m/graph graph*)))
