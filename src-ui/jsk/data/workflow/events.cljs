@@ -5,6 +5,7 @@
             [re-frame.core :as rf]
             [jsk.net.api :as api]
             [e85th.ui.util :as u]
+            [e85th.ui.rf.plumb :as plumb]
             [e85th.ui.rf.sweet :refer-macros [def-event-db def-event-fx def-db-change]]
             [clojure.string :as str]))
 
@@ -75,9 +76,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DND
 (def-event-db designer-dnd-drop
-  [db [_ event]]
-  (let [node (get-in db [:jsk.data.explorer.models/dnd-node])]
-    (log/infof "dropped on designer: %s" node))
+  [db [_ node-fn]]
+  (node-fn (get-in db [:jsk.data.explorer.models/dnd-node]))
   db)
 
 (def-event-fx schedule-dnd-drop

@@ -42,6 +42,7 @@
                  [kibu/pushy "0.3.6"] ;; clean url using html5 pushState
                  [bidi "2.0.16"] ;; client site routing
                  [cljs-ajax "0.5.8"]
+                 [hipo "0.5.2"] ;; hiccup -> dom modifiable item (for working with other js libs)
                  ;; required to control logging from java libs
                  [org.slf4j/slf4j-log4j12 "1.7.21"]]
 

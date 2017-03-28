@@ -1,10 +1,101 @@
+.jtk-connector { z-index:4; }
+.jtk-endpoint { z-index:5; }
+.jtk-overlay { z-index:6; }
+
 .jsk-workflow-designer {
   border: 1px solid #000;
   width: 100%;
-  height: 1000px;
+  height: 100vh;
   overflow: hidden;
+  position: relative; /* required for jsPlumb */
+}
+
+.jsk-workflow-designer .jsk-workflow-node {
+  position: absolute; /* required for jsPlumb to allow dragging */
+	width: 7em;
+	padding: 1em;
+	border: 1px solid black;
+	z-index: 4;
+	border-radius: 1em;
+	border: 1px solid #2e6f9a;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+	cursor: move;
+  background-color: #d3d3d3;
+	font-size: 11px;
+	-webkit-transition: background-color 0.25s ease-in;
+	-moz-transition: background-color 0.25s ease-in;
+	transition: background-color 0.25s ease-in;
+}
+
+.jsk-workflow-node:hover {
+  background-color: #a287f6;
+}
+
+.jsk-workflow-node-designer .jsk-workflow-node-ok-ep {
+	position: absolute;
+	bottom: 10%;
+	/* right: 5px; */
+	right: 25%;
+	width: 1em;
+	height: 1em;
+	background-color: green;
+	cursor: pointer;
+	box-shadow: 0px 0px 2px black;
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  border-radius: 0.5em;
+}
+.jsk-workflow-node-designer .jsk-workflow-node-ok-ep:hover {
+  box-shadow: 0px 0px 6px black;
+}
+
+.jsk-workflow-node-designer .jsk-workflow-node-ok-ep svg circle {
+  fill: green;
+  stroke: yellow;
+}
+
+.jsk-workflow-node-designer .jsk-workflow-node-err-ep {
+	position: absolute;
+	bottom: 10%;
+	/* right: 5px; */
+	left: 25%;
+	width: 1em;
+	height: 1em;
+	background-color: red;
+	cursor: pointer;
+	box-shadow: 0px 0px 2px black;
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+}
+
+
+.jsk-workflow-node-designer .jsk-workflow-node-err-ep:hover {
+  box-shadow: 0px 0px 6px black;
+}
+
+.jsk-workflow-node-designer .jsk-workflow-node-err-ep svg circle {
+  fill: red;
+  stroke: yellow;
 }
 
 .jsk-dnd-dropzone-hover {
   border: 2px dashed #000;
+}
+
+
+.jsk-ok-endpoint svg circle {
+  fill: green;
+  stroke: black;
+}
+
+.jsk-err-endpoint svg rect {
+  fill: red;
+  stroke: black
 }
