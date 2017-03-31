@@ -22,10 +22,13 @@
     [:div.jsk-workflow-node-ok-source {:id ok-source-id}]]])
 
 (defn compute-placement-coords
-  [element {:keys [client-x client-y]}]
+  [element {:keys [client-x client-y] :as drop-coords}]
   (let [{:keys [top left]} (u/bounding-rect element)]
-    {:left (- client-x left)
-     :top (- client-y top)}))
+    (if drop-coords
+      {:left (- client-x left)
+       :top (- client-y top)}
+      {:left 0
+       :top 0})))
 
 (defn cons-source-id
   [wf-node-id kind]
@@ -39,16 +42,42 @@
 
 (defn add-workflow-node
   "Adds a new workflow node to the designer and returns the dom-id"
-  [pb node drop-cords node-removed-event]
+  [pb node-name drop-cords node-removed-event]
   (let [container (plumb/container pb)
         dom-id (str (gensym "wf-node-"))
         err-source-id (cons-source-id dom-id "err")
         ok-source-id (cons-source-id dom-id "ok")
         placement-coords (compute-placement-coords container drop-cords)
-        el (hipo/create (workflow-node* dom-id err-source-id ok-source-id (:text node) placement-coords node-removed-event))]
+        el (hipo/create (workflow-node* dom-id err-source-id ok-source-id node-name placement-coords node-removed-event))]
     (.appendChild container el)
     (plumb/draggable pb dom-id)
     (plumb/make-source pb err-source-id m/err-source-opts)
     (plumb/make-source pb ok-source-id m/ok-source-opts)
     (plumb/make-target pb dom-id m/target-opts)
-    dom-id))
+    {:dom-id dom-id
+     :ok-source-id ok-source-id
+     :err-source-id err-source-id}))
+
+
+(defn populate
+  [pb nodes node-removed-event]
+  ;; node has keys :workflow.node/successors :workflow.node/successors-err
+  ;; if wf node then :workflow/name and :workflow/id
+  ;; if job node then :job/name and :job/id
+  (let [dom-infos (reduce (fn [m {:keys [db/id] :as n}]
+                            (let [node-name (or (:job/name n) (:workflow/name n))]
+                              (assoc m id (add-workflow-node pb node-name nil node-removed-event))))
+                          {}
+                          nodes)]
+    (log/infof "dom-infos: %s" dom-infos)
+    ;; make-connections
+    (mapv (fn [node]
+            (let [{:keys [workflow.node/successors workflow.node/successors-err]} node
+                  {:keys [ok-source-id err-source-id]} (dom-infos (:db/id node))]
+              (doseq [successor successors
+                      :let [{:keys [dom-id]} (dom-infos successor)]]
+                (plumb/connect pb ok-source-id dom-id))
+              (doseq [successor successors-err
+                      :let [{:keys [dom-id]} (dom-infos successor)]]
+                (plumb/connect pb err-source-id dom-id))))
+          nodes)))

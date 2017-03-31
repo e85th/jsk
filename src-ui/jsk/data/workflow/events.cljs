@@ -29,16 +29,7 @@
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
 
-(def-event-db no-op-ok
-  [db _]
-  db)
-
-(def-db-change fetch-workflow-ok m/current)
-
-(def-event-fx fetch-workflow
-  [_ [_ workflow-id]]
-  {:http-xhrio (api/fetch-workflow workflow-id fetch-workflow-ok [rpc-err :rpc/fetch-workflow-err])})
-
+(def-event-db no-op-ok [db _] db)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Schedule Assoc
@@ -65,12 +56,6 @@
     {:http-xhrio (api/dissoc-workflow-alerts workflow-id [alert-id] no-op-ok [rpc-err :rpc/dissoc-workflow-alerts-err])}))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Refresh
-(def-event-fx refresh-workflow
-  [{:keys [db]} [_ workflow-id]]
-  (when (= (get-in db m/current-id) workflow-id)
-    {:dispatch [fetch-workflow workflow-id]}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DND
@@ -116,7 +101,7 @@
   (if-let [node (dnd-node db)]
     (if (#{:job :workflow} (:type node))
       (let [pb (get-in db m/plumb-instance)
-            dom-id (designer/add-workflow-node pb node coords workflow-node-removed)]
+            {:keys [dom-id]} (designer/add-workflow-node pb (:text node) coords workflow-node-removed)]
         (dnd-node db nil)
         {:db (update-in db m/graph assoc dom-id (m/graph-node (:jsk-id node)))})
       {:db (dnd-node db nil)
@@ -148,6 +133,24 @@
   [{:keys [db]} [_ cn]]
   {:db (update-graph m/graph-add-edge db cn)})
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Workflow Fetch
+(defn build-graph
+  [nodes]
+  )
+(def-event-fx fetch-workflow-ok
+  [{:keys [db]} [_ workflow]]
+  (let [pb (get-in db m/plumb-instance)
+        {:keys [workflow/nodes]} workflow]
+    (designer/populate pb nodes workflow-node-removed))
+  {:db (-> (assoc-in db m/current workflow)
+           (assoc-in db m/graph (build-graph nodes)))})
+
+(def-event-fx fetch-workflow
+  [_ [_ workflow-id]]
+  {:http-xhrio (api/fetch-workflow workflow-id fetch-workflow-ok [rpc-err :rpc/fetch-workflow-err])})
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Workflow Save
 (def-event-db save-workflow-ok
@@ -156,8 +159,27 @@
       (assoc-in m/current workflow)
       (assoc-in m/busy? false)))
 
+(defn graph->workflow-nodes
+  [g]
+  (map (fn [{:keys [id ok err]}]
+         {:workflow.node/item id
+          :workflow.node/successors (vec ok)
+          :workflow.node/successors-err (vec err)})
+       (vals g)))
+
 (def-event-fx save-workflow
   [{:keys [db]} _]
-  (let [workflow (get-in db m/current)]
+  (let [workflow (get-in db m/current)
+        graph (get-in db m/graph)
+        workflow (assoc workflow :workflow/nodes (graph->workflow-nodes graph))]
+    (log/infof "graph: %s" graph)
+    ;(log/infof "workflow: %s" workflow)
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-workflow workflow save-workflow-ok [rpc-err :rpc/save-workflow-err])}))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Refresh
+(def-event-fx refresh-workflow
+  [{:keys [db]} [_ workflow-id]]
+  (when (= (get-in db m/current-id) workflow-id)
+    {:dispatch [fetch-workflow workflow-id]}))

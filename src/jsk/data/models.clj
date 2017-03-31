@@ -175,6 +175,20 @@
 (s/defschema JobTypeSchema
   {s/Keyword [JobField]})
 
+(s/defschema WorkflowNode
+  {(s/optional-key :db/id) s/Int
+   :workflow.node/item s/Int
+   (s/optional-key :workflow.node/successors) [s/Int]
+   (s/optional-key :workflow.node/successors-err) [s/Int]})
+
+(s/defschema WorkflowNodeInfo
+  (assoc WorkflowNode
+         (s/optional-key :job/id) s/Int
+         (s/optional-key :job/name) s/Str
+         (s/optional-key :workflow/id) s/Int
+         (s/optional-key :workflow/name) s/Str))
+
+
 ;; -- Workflow
 (s/defschema Workflow
   {(s/optional-key :db/id) s/Int
@@ -182,13 +196,14 @@
    :workflow/desc (s/maybe s/Str)
    :workflow/enabled? s/Bool
    (s/optional-key :workflow/alerts) [s/Int]
+   (s/optional-key :workflow/nodes) [WorkflowNode]
    (s/optional-key :workflow/schedules) [s/Int]
    (s/optional-key :workflow/tags) [s/Int]})
 
 (s/defschema WorkflowInfo
   (-> Workflow
-      (dissoc (s/optional-key :workflow/alerts) (s/optional-key :workflow/schedules) (s/optional-key :workflow/tags))
-      (assoc :workflow/schedules [Schedule] :workflow/alerts [Alert] :workflow/tags [Tag])))
+      (dissoc (s/optional-key :workflow/alerts) (s/optional-key :workflow/nodes) (s/optional-key :workflow/schedules) (s/optional-key :workflow/tags))
+      (assoc :workflow/alerts [Alert] :workflow/nodes [WorkflowNodeInfo] :workflow/schedules [Schedule]  :workflow/tags [Tag])))
 
 (s/defschema WorkflowSchedules
   {:workflow/id s/Int

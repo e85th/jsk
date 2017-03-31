@@ -333,6 +333,13 @@
   :db/doc "Workflow enabled?"}
 
  {:db/id #db/id[:db.part/db]
+  :db/ident :workflow/nodes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true ;; retracting a workflow retracts all its nodes
+  :db/doc "Workflow Nodes"}
+
+ {:db/id #db/id[:db.part/db]
   :db/ident :workflow/schedules
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
@@ -354,4 +361,23 @@
   :db/ident :workflow/tags
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Workflow's tags."}]
+  :db/doc "Workflow's tags."}
+
+ ;; Workflow Node
+ {:db/id #db/id[:db.part/db]
+  :db/ident :workflow.node/item
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Workflow Node item"}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :workflow.node/successors
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Workflow Node successors for success state."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :workflow.node/successors-err
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Workflow Node successors for error state."}]
