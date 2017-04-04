@@ -384,7 +384,7 @@
     :components [res]
     (GET "/" []
       :summary "Return information about the current user."
-      :return [m/User]
+      :return m/User
       :auth [user]
       (http-response/ok (user/find-user-by-id! res (:db/id user))))
 

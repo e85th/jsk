@@ -232,3 +232,7 @@
   (new-request :post "/v1/workflows/actions/dissoc-alerts"
                {:workflow/id workflow-id :alert/ids alert-ids}
                ok err))
+
+(s/defn fetch-current-user
+  [ok err]
+  (new-request :get "/v1/users" ok err))

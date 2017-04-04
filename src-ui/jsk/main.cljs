@@ -16,6 +16,8 @@
             [jsk.routes :as routes]
             [e85th.ui.rf.fx]
             [e85th.ui.util :as u]
+            [e85th.ui.dom :as dom]
+            [e85th.ui.browser :as browser]
             [e85th.ui.edn-io]
             [e85th.ui.google-oauth :as google-oauth]))
 
@@ -28,7 +30,7 @@
   []
   (log/info "verify-login " (data/jsk-token-set?))
   (when-not (data/jsk-token-set?)
-    (u/set-window-location! (data/login-url))
+    (browser/location (data/login-url))
     (rf/dispatch [e/set-main-view :jsk/login])))
 
 
@@ -39,7 +41,7 @@
 (defn mount-root!
   [nm]
   (reagent/render (get name->component nm [:h2 "JSK: Unknown component"])
-                  (u/element-by-id "app")))
+                  (dom/element-by-id "app")))
 
 (defn enable-dev-settings
   []
@@ -49,16 +51,23 @@
 (defn init
   []
   ;; FIXME: need a configurable way to set this
-  (s/set-fn-validation! true)
-  (data/set-api-host! (u/element-value "api-host"))
-  (data/set-login-url! (u/element-value "login-url"))
-  (routes/init!)
-  (when ^boolean js/goog.DEBUG
-    (enable-dev-settings))
+  (let [comp-nm (dom/element-value "init-component")
+        login? (= "login" comp-nm)]
 
-  (let [nm (u/element-value "init-component")]
-    (mount-root! nm)
-    (when-not (= "login" nm)
+    (s/set-fn-validation! true)
+    (data/set-api-host! (dom/element-value "api-host"))
+    (data/set-login-url! (dom/element-value "login-url"))
+    (routes/init!)
+
+    (when (and (not login?) (data/jsk-token-set?))
+      (rf/dispatch [e/fetch-user]))
+
+    (when ^boolean js/goog.DEBUG
+      (enable-dev-settings))
+
+    (mount-root! comp-nm)
+
+    (when-not login?
       (websockets/init!)
       (verify-login))))
 

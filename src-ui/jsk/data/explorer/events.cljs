@@ -4,7 +4,7 @@
             [jsk.common.data :as data]
             [jsk.net.api :as api]
             [jsk.data.explorer.models :as m]
-            [e85th.ui.rf.sweet :refer-macros [def-event-db def-event-fx def-db-change]]
+            [e85th.ui.rf.macros :refer-macros [defevent-db defevent-fx defevent]]
             [e85th.ui.util :as u]
             [e85th.ui.rf.tree :as tree]
             [re-frame.core :as rf]))
@@ -44,10 +44,10 @@
     :type :section
     :children true}])
 
-(def-db-change set-explorer-view m/explorer-view)
-(def-db-change set-dnd-node m/dnd-node)
+(defevent set-explorer-view m/explorer-view)
+(defevent set-dnd-node m/dnd-node)
 
-(def-event-fx rpc-err
+(defevent-fx rpc-err
   [{:keys [db] :as cofx} event-v]
   (log/warnf "rpc err: %s" event-v)
   (let [[db msg] (condp = (second event-v)
@@ -62,7 +62,7 @@
   [cb data]
   (cb (clj->js data)))
 
-(def-event-fx fetch-children-ok
+(defevent-fx fetch-children-ok
   [_ [_ parent-node cb data]]
   (let [{parent-id :id} parent-node
         as-node (fn [{node-id :node/id node-name :node/name node-type :node/type}]
@@ -76,7 +76,7 @@
     (->> (map as-node data)
          (set-tree-data cb))))
 
-(def-event-fx fetch-children
+(defevent-fx fetch-children
   [{:keys [db]} [_ node cb]]
   ;(log/infof "node: %s" node)
   ;; node will be nil if the fetch-children happened on the root node
@@ -93,7 +93,7 @@
       (not= (jsk-node-type (tree/node m/tree-sel parent))
             (jsk-node-type (tree/node m/tree-sel old-parent)))))
 
-(def-event-fx node-moved
+(defevent-fx node-moved
   [_ [_ {:keys [parent old-parent node] :as data}]]
   (if (move-disallowed? data)
     (do
@@ -101,28 +101,28 @@
       {:notify [:alert {:message "Sorry. That's not supported."}]})
     {}))
 
-(def-event-db no-op-ok
+(defevent-db no-op-ok
   [db _]
   db)
 
-(def-event-fx create-explorer-node
+(defevent-fx create-explorer-node
   [_ [_ type]]
   {:http-xhrio (api/create-explorer-node (name type) no-op-ok [rpc-err :rpc/create-explorer-node-err])})
 
 
-(def-event-fx rm-explorer-node
+(defevent-fx rm-explorer-node
   [_ [_ type id]]
   {:http-xhrio (api/rm-explorer-node (name type) id no-op-ok [rpc-err :rpc/rm-explorer-node-err])})
 
-(def-event-fx trigger-job
+(defevent-fx trigger-job
   [_ _]
   {:notify [:alert {:message "TODO: Trigger job"}]})
 
-(def-event-fx trigger-workflow
+(defevent-fx trigger-workflow
   [_ _]
   {:notify [:alert {:message "TODO: Trigger workflow"}]})
 
-(def-event-fx refresh-node
+(defevent-fx refresh-node
   [_ [_ node-id]]
   (tree/trigger-load m/tree-sel node-id)
   {})

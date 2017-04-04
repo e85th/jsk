@@ -2,8 +2,6 @@
   (:require [com.stuartsierra.component :as component]
             [e85th.backend.components :as backend-comp]
             [e85th.commons.components :as commons-comp]
-            [e85th.commons.aws.ses :as ses]
-            [e85th.commons.aws.sns :as sns]
             [e85th.commons.email :as email]
             [e85th.commons.token :as token]
             [e85th.commons.datomic :as datomic]
@@ -38,11 +36,9 @@
    Starts with a base set of components and adds in other components based on the operation mode."
   [sys-config operation-mode :- s/Keyword]
   (let [base [:sys-config sys-config
-              :mailer (ses/new-ses-email-sender)
               :version "FIXME";(util/build-version)
               :token-factory (token/new-sha256-token-factory (conf/auth-secret sys-config)
                                                              (conf/auth-token-ttl-minutes sys-config))
-              :sms (sns/new-sms-sender)
               :db (datomic/new-datomic-db (conf/datomic-uri sys-config))]
         f (get {:server add-server-components
                 :standalone add-server-components}

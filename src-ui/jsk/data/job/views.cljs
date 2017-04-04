@@ -4,6 +4,8 @@
             [re-frame.core :as rf]
             [taoensso.timbre :as log]
             [e85th.ui.util :as u]
+            [e85th.ui.dom :as dom]
+            [e85th.ui.browser :as browser]
             [e85th.ui.rf.inputs :as inputs]
             [jsk.data.job.events :as e]
             [jsk.data.job.subs :as subs]
@@ -14,8 +16,8 @@
   [e]
   (.preventDefault e))
 
-(def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
-(def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
+(def indicate-dropzone (partial dom/event-target-add-class "jsk-dnd-dropzone-hover"))
+(def conceal-dropzone (partial dom/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
 (defn schedule-drop
   [e]

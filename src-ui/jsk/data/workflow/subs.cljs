@@ -1,14 +1,14 @@
 (ns jsk.data.workflow.subs
   (:require [re-frame.core :as rf]
-            [e85th.ui.rf.sweet :refer-macros [def-sub-db def-sub]]
+            [e85th.ui.rf.macros :refer-macros [defsub defsub-db]]
             [taoensso.timbre :as log]
             [jsk.data.workflow.models :as m]))
 
-(def-sub-db current-alerts m/current-alerts)
-(def-sub-db current-desc m/current-desc)
-(def-sub-db current-enabled? m/current-enabled?)
-(def-sub-db current-name m/current-name)
-(def-sub-db current-schedules m/current-schedules)
-(def-sub-db current-tags m/current-tags)
+(defsub current-alerts m/current-alerts)
+(defsub current-desc m/current-desc)
+(defsub current-enabled? m/current-enabled?)
+(defsub current-name m/current-name)
+(defsub current-schedules m/current-schedules)
+(defsub current-tags m/current-tags)
 
-(def-sub-db busy? m/busy?)
+(defsub busy? m/busy?)

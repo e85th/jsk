@@ -1,7 +1,7 @@
 (ns jsk.common.data
   "Data with local-storage as backing store."
   (:require [schema.core :as s]
-            [clojure.string :as string]
+            [clojure.string :as str]
             [hodgepodge.core :as hp :refer [local-storage]]))
 
 (s/defn api-host :- (s/maybe s/Str)
@@ -10,7 +10,7 @@
 
 (s/defn ws-host
   []
-  (some-> (api-host) (string/split "://") second))
+  (some-> (api-host) (str/split "://") second))
 
 (s/defn set-api-host!
   [api-host :- s/Str]

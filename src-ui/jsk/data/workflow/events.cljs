@@ -7,15 +7,15 @@
             [jsk.data.workflow.designer :as designer]
             [e85th.ui.util :as u]
             [e85th.ui.rf.plumb :as plumb]
-            [e85th.ui.rf.sweet :refer-macros [def-event-db def-event-fx def-db-change]]
+            [e85th.ui.rf.macros :refer-macros [defevent-db defevent-fx defevent]]
             [clojure.string :as str]))
 
-(def-db-change current-name-changed m/current-name)
-(def-db-change current-desc-changed m/current-desc)
-(def-db-change current-enabled?-changed m/current-enabled?)
-(def-db-change set-plumb-instance m/plumb-instance)
+(defevent current-name-changed m/current-name)
+(defevent current-desc-changed m/current-desc)
+(defevent current-enabled?-changed m/current-enabled?)
+(defevent set-plumb-instance m/plumb-instance)
 
-(def-event-fx rpc-err
+(defevent-fx rpc-err
   [{:keys [db] :as cofx} event-v]
   (log/warnf "rpc err: %s" event-v)
   (let [[db msg] (condp = (second event-v)
@@ -29,28 +29,28 @@
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
 
-(def-event-db no-op-ok [db _] db)
+(defevent-db no-op-ok [db _] db)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Schedule Assoc
-(def-event-fx assoc-workflow-schedule
+(defevent-fx assoc-workflow-schedule
   [{:keys [db]} [_ schedule-id]]
   (let [workflow-id (get-in db m/current-id)]
     {:http-xhrio (api/assoc-workflow-schedules workflow-id [schedule-id] no-op-ok [rpc-err :rpc/assoc-workflow-schedules-err])}))
 
-(def-event-fx dissoc-workflow-schedule
+(defevent-fx dissoc-workflow-schedule
   [{:keys [db]} [_ schedule-id]]
   (let [workflow-id (get-in db m/current-id)]
     {:http-xhrio (api/dissoc-workflow-schedules workflow-id [schedule-id] no-op-ok [rpc-err :rpc/dissoc-workflow-schedules-err])}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Alert Assoc
-(def-event-fx assoc-workflow-alert
+(defevent-fx assoc-workflow-alert
   [{:keys [db]} [_ alert-id]]
   (let [workflow-id (get-in db m/current-id)]
     {:http-xhrio (api/assoc-workflow-alerts workflow-id [alert-id] no-op-ok [rpc-err :rpc/assoc-workflow-alerts-err])}))
 
-(def-event-fx dissoc-workflow-alert
+(defevent-fx dissoc-workflow-alert
   [{:keys [db]} [_ alert-id]]
   (let [workflow-id (get-in db m/current-id)]
     {:http-xhrio (api/dissoc-workflow-alerts workflow-id [alert-id] no-op-ok [rpc-err :rpc/dissoc-workflow-alerts-err])}))
@@ -65,7 +65,7 @@
   ([db new-node]
    (assoc-in db [:jsk.data.explorer.models/dnd-node] new-node)))
 
-(def-event-fx schedule-dnd-drop
+(defevent-fx schedule-dnd-drop
   [{:keys [db]} [_ event]]
   (if-let [node (dnd-node db)]
     (let [workflow-id (get-in db m/current-id)]
@@ -76,7 +76,7 @@
          :notify [:alert {:message "Only schedules may be dropped here."}]}))
     {}))
 
-(def-event-fx alert-dnd-drop
+(defevent-fx alert-dnd-drop
   [{:keys [db]} [_ event]]
   (if-let [node (dnd-node db)]
     (let [workflow-id (get-in db m/current-id)]
@@ -87,13 +87,13 @@
          :notify [:alert {:message "Only alerts may be dropped here."}]}))
     {}))
 
-(def-event-fx workflow-node-removed
+(defevent-fx workflow-node-removed
   [{:keys [db]} [_ dom-id]]
   (let [pb (get-in db m/plumb-instance)]
     (plumb/rm pb dom-id);; remove from dom
     {:db (update-in db m/graph dissoc dom-id)}))
 
-(def-event-fx designer-dnd-drop
+(defevent-fx designer-dnd-drop
   [{:keys [db]} [_ coords]]
   ;; check for node because random drag and drop events can originate
   ;; from the designer itself (highlight with mouse)
@@ -123,13 +123,13 @@
     ;(log/infof "graph after: %s" graph*)
     (assoc-in db m/graph graph*)))
 
-(def-event-fx detach-connection
+(defevent-fx detach-connection
   [{:keys [db]} [_ cn]]
   (let [pb (get-in db m/plumb-instance)]
     (plumb/detach-connection pb cn)
     {:db (update-graph m/graph-rm-edge db cn)}))
 
-(def-event-fx connection-created
+(defevent-fx connection-created
   [{:keys [db]} [_ cn]]
   {:db (update-graph m/graph-add-edge db cn)})
 
@@ -139,21 +139,22 @@
 (defn build-graph
   [nodes]
   )
-(def-event-fx fetch-workflow-ok
+
+(defevent-fx fetch-workflow-ok
   [{:keys [db]} [_ workflow]]
   (let [pb (get-in db m/plumb-instance)
         {:keys [workflow/nodes]} workflow]
-    (designer/populate pb nodes workflow-node-removed))
-  {:db (-> (assoc-in db m/current workflow)
-           (assoc-in db m/graph (build-graph nodes)))})
+    (designer/populate pb nodes workflow-node-removed)
+    {:db (-> (assoc-in db m/current workflow)
+             (assoc-in m/graph (build-graph nodes)))}))
 
-(def-event-fx fetch-workflow
+(defevent-fx fetch-workflow
   [_ [_ workflow-id]]
   {:http-xhrio (api/fetch-workflow workflow-id fetch-workflow-ok [rpc-err :rpc/fetch-workflow-err])})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Workflow Save
-(def-event-db save-workflow-ok
+(defevent-db save-workflow-ok
   [db [_ workflow]]
   (-> db
       (assoc-in m/current workflow)
@@ -167,7 +168,7 @@
           :workflow.node/successors-err (vec err)})
        (vals g)))
 
-(def-event-fx save-workflow
+(defevent-fx save-workflow
   [{:keys [db]} _]
   (let [workflow (get-in db m/current)
         graph (get-in db m/graph)
@@ -179,7 +180,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Refresh
-(def-event-fx refresh-workflow
+(defevent-fx refresh-workflow
   [{:keys [db]} [_ workflow-id]]
   (when (= (get-in db m/current-id) workflow-id)
     {:dispatch [fetch-workflow workflow-id]}))

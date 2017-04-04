@@ -57,7 +57,7 @@
   (let [matched-panel (rf/subscribe [subs/main-view])
         user (rf/subscribe [subs/current-user])]
     (fn []
-      (log/infof "matched-panel: %s" @matched-panel)
+      ;(log/infof "matched-panel: %s, user: %s" @matched-panel @user)
       (let [view (panels @matched-panel)
             enclosure (get panel->enclosure @matched-panel main-section)]
         [enclosure view @user]))))

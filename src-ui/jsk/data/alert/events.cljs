@@ -5,13 +5,13 @@
             [re-frame.core :as rf]
             [jsk.net.api :as api]
             [e85th.ui.util :as u]
-            [e85th.ui.rf.sweet :refer-macros [def-event-db def-event-fx def-db-change]]
+            [e85th.ui.rf.macros :refer-macros [defevent-db defevent-fx defevent]]
             [clojure.string :as str]))
 
-(def-db-change name-changed m/current-name)
-(def-db-change desc-changed m/current-desc)
+(defevent name-changed m/current-name)
+(defevent desc-changed m/current-desc)
 
-(def-event-fx rpc-err
+(defevent-fx rpc-err
   [{:keys [db] :as cofx} event-v]
   (log/warnf "rpc err: %s" event-v)
   (let [[db msg] (condp = (second event-v)
@@ -24,29 +24,29 @@
     {:db (assoc-in db m/busy? false)
      :notify [:alert {:message msg}]}))
 
-(def-event-db no-op-event
+(defevent-db no-op-event
   [db _] db)
 
-(def-db-change fetch-alert-ok m/current)
+(defevent fetch-alert-ok m/current)
 
-(def-event-fx fetch-alert
+(defevent-fx fetch-alert
   [_ [_ alert-id]]
   {:http-xhrio (api/fetch-alert alert-id fetch-alert-ok [rpc-err :rpc/fetch-alert-err])})
 
-(def-event-db save-alert-ok
+(defevent-db save-alert-ok
   [db [_ alert]]
    (-> db
        (assoc-in m/current alert)
        (assoc-in m/busy? false)))
 
-(def-event-fx save-alert
+(defevent-fx save-alert
   [{:keys [db]} _]
   (let [alert (-> (get-in db m/current)
                   (dissoc :alert/channels-info))]
     {:db (assoc-in db m/busy? true)
      :http-xhrio (api/save-alert alert save-alert-ok [rpc-err :rpc/save-alert-err])}))
 
-(def-event-fx dissoc-alert-channel
+(defevent-fx dissoc-alert-channel
   [{:keys [db]} [_ channel-id]]
   (let [alert-id (get-in db m/current-id)]
     {:http-xhrio (api/dissoc-alert-channels alert-id
@@ -55,17 +55,17 @@
                                             [rpc-err :rpc/dissoc-alert-channel-err])}))
 
 
-(def-event-db channel-suggestions-fetch-ok
+(defevent-db channel-suggestions-fetch-ok
   [db [_ items]]
   (assoc-in db m/channel-suggestions items))
 
-(def-event-fx channel-suggestion-text-changed
+(defevent-fx channel-suggestion-text-changed
   [_ [_ text]]
   {:http-xhrio (api/suggest-channels text channel-suggestions-fetch-ok [rpc-err :rpc/fetch-channel-suggestions-err])})
 
 
 
-(def-event-fx channel-suggestion-selected
+(defevent-fx channel-suggestion-selected
   [{:keys [db]} [_ [channel-id :as selected-channel]]]
   ;(log/infof "selected-channel: %s, current-alert: %s" selected-channel (get-in db m/current))
   (let [alert-id (get-in db m/current-id)]
@@ -75,7 +75,7 @@
                                            [rpc-err :rpc/assoc-alert-channel-err])}))
 
 
-(def-event-fx refresh-alert
+(defevent-fx refresh-alert
   [{:keys [db]} [_ alert-id]]
   (when (= (get-in db m/current-id) alert-id)
     {:dispatch [fetch-alert alert-id]}))

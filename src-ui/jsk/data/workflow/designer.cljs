@@ -5,6 +5,7 @@
             [taoensso.timbre :as log]
             [e85th.ui.rf.inputs :as inputs]
             [e85th.ui.util :as u]
+            [e85th.ui.dom :as dom]
             [e85th.ui.rf.plumb :as plumb]
             [hipo.core :as hipo]
             [jsk.data.workflow.models :as m]
@@ -23,7 +24,7 @@
 
 (defn compute-placement-coords
   [element {:keys [client-x client-y] :as drop-coords}]
-  (let [{:keys [top left]} (u/bounding-rect element)]
+  (let [{:keys [top left]} (dom/bounding-rect element)]
     (if drop-coords
       {:left (- client-x left)
        :top (- client-y top)}

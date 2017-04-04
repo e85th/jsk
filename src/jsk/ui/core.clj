@@ -36,11 +36,15 @@
     (when-not (roles :jsk/admin)
       (throw (ex/new-auth-exception :invalid-permission "Not an admin.")))))
 
-(defn append-redirect-url
-  [base-url redirect-url]
-  (-> (url/url base-url)
-      (assoc-in [:query "sign-in-success-url"] redirect-url)
-      str))
+(defn- page
+  [component {:keys [version] :as res}]
+  (let [site-url (:setting.site/url (settings/find-site res))
+        login-url (str site-url "/login") ;; FIXME: this is bad
+        client-id (settings/find-google-auth-client-id res)]
+    (apply str (main-page* version component site-url login-url client-id))))
+
+(def main-page (partial page "main"))
+(def login-page (partial page "login"))
 
 (defn main-page
   [{:keys [version sys-config] :as res}]
@@ -49,23 +53,6 @@
         login-url (str site-url "/login") ;; FIXME: this is bad
         client-id (settings/find-google-auth-client-id res)]
     (apply str (main-page* version "main" site-url login-url client-id))))
-
-
-(h/deftemplate login-page-view "templates/server/login.html"
-  [version component-name api-host login-url google-oauth-client-id]
-  [:#google-signin-client-id] (h/set-attr :content google-oauth-client-id)
-  [:#jsk-js] (h/replace-vars {:version version})
-  [:#api-host] (h/set-attr :value api-host)
-  [:#login-url] (h/set-attr :value login-url)
-  [:#init-component] (h/set-attr :value component-name))
-
-
-(defn login-page
-  [{:keys [version sys-config] :as res}]
-  (let [site-url (:setting.site/url (settings/find-site res))
-        login-url (str site-url "/login") ;; FIXME: this is bad
-        client-id (settings/find-google-auth-client-id res)]
-    (apply str (login-page-view version "login" site-url login-url client-id))))
 
 (s/defn authed?
   "Answers true if authenticated authorized by looking up the user in the db."

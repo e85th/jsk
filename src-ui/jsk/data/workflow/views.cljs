@@ -5,6 +5,8 @@
             [taoensso.timbre :as log]
             [e85th.ui.rf.inputs :as inputs]
             [e85th.ui.util :as u]
+            [e85th.ui.dom :as dom]
+            [e85th.ui.browser :as browser]
             [e85th.ui.rf.plumb :as plumb]
             [jsk.data.workflow.models :as m]
             [jsk.data.workflow.events :as e]
@@ -13,12 +15,12 @@
 
 
 
-(def indicate-dropzone (partial u/event-target-add-class "jsk-dnd-dropzone-hover"))
-(def conceal-dropzone (partial u/event-target-rm-class "jsk-dnd-dropzone-hover"))
+(def indicate-dropzone (partial dom/event-target-add-class "jsk-dnd-dropzone-hover"))
+(def conceal-dropzone (partial dom/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
 (defn designer-drop
   [e]
-  (u/event-prevent-default e)
+  (dom/event-prevent-default e)
   ;; e is a react event proxy, so have to access the props here otherwise
   ;; won't be available later
   (let [coords {:client-x (.-clientX e)
@@ -27,13 +29,13 @@
 
 (defn schedule-drop
   [e]
-  (u/event-stop-propogation e)
+  (dom/event-stop-propogation e)
   (conceal-dropzone)
   (rf/dispatch [e/schedule-dnd-drop]))
 
 (defn alert-drop
   [e]
-  (u/event-stop-propogation e)
+  (dom/event-stop-propogation e)
   (conceal-dropzone)
   (rf/dispatch [e/alert-dnd-drop]))
 
@@ -51,7 +53,7 @@
   {[:.jsk-workflow-alert-list] (k/set-attr :on-drop alert-drop
                                            :on-drag-enter indicate-dropzone
                                            :on-drag-leave conceal-dropzone
-                                           :on-drag-over u/event-prevent-default)
+                                           :on-drag-over dom/event-prevent-default)
    [:.jsk-workflow-alert-items] (k/content (map alert-item* alerts))})
 
 (defn alert-list
@@ -72,7 +74,7 @@
   {[:.jsk-workflow-schedule-list] (k/set-attr :on-drop schedule-drop
                                               :on-drag-enter indicate-dropzone
                                               :on-drag-leave conceal-dropzone
-                                              :on-drag-over u/event-prevent-default)
+                                              :on-drag-over dom/event-prevent-default)
    [:.jsk-workflow-schedule-items] (k/content (map schedule-item* schedules))})
 
 (defn schedule-list
@@ -93,8 +95,8 @@
   []
   [plumb/control
    {:on-drop designer-drop
-    :on-drag-enter u/event-prevent-default
-    :on-drag-over u/event-prevent-default
+    :on-drag-enter dom/event-prevent-default
+    :on-drag-over dom/event-prevent-default
     :class "jsk-workflow-designer"
     :id m/designer-container-id}
    m/jsk-plumb-defaults
