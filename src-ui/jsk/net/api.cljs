@@ -18,17 +18,13 @@
   []
   (full-url "/v1/search/suggest"))
 
-(defn handle-unauthorized
-  [])
-
-;; orig-err is the original event vector
 (defevent-fx request-err
   [_ [_ orig-err-vector {:keys [status] :as response}]]
   ;; if the response code is 401/403 then send to login
   ;; otherwise dispatch the original event
   (when (auth-err-status status)
     (browser/location (data/login-url)))
-  {:dispatch [(conj orig-err-vector response)]})
+  {:dispatch (conj orig-err-vector response)})
 
 (s/defn new-request
   ([method url ok err]
