@@ -13,6 +13,7 @@
 
 (def routes
   ["/jsk/" {"" :jsk/home
+            "login/" :jsk/login ; used by api.cljs
             "explorer/" {"" :jsk/explorer
                          "agents/" {"" :jsk.explorer/agent-list
                                     [:id "/"] :jsk.explorer/agent}

@@ -46,7 +46,8 @@
 ;; -- Agents
 
 (defmethod panels :default
-  [{:keys [handler]}]
+  [{:keys [handler] :as blah}]
+  (log/infof "pandles :default %s" blah)
   [:h3 (str "No view configured for handler: " handler)])
 
 (def panel->enclosure

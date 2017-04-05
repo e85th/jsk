@@ -4,7 +4,11 @@
             [jsk.common.data :as data]
             [re-frame.core :as rf]
             [schema.core :as s]
+            [e85th.ui.rf.macros :refer-macros [defevent-fx]]
+            [e85th.ui.browser :as browser]
             [e85th.ui.util :as u]))
+
+(def auth-err-status #{401 403})
 
 (s/defn ^:private full-url
   [url-path]
@@ -14,11 +18,23 @@
   []
   (full-url "/v1/search/suggest"))
 
+(defn handle-unauthorized
+  [])
+
+;; orig-err is the original event vector
+(defevent-fx request-err
+  [_ [_ orig-err-vector {:keys [status] :as response}]]
+  ;; if the response code is 401/403 then send to login
+  ;; otherwise dispatch the original event
+  (when (auth-err-status status)
+    (browser/location (data/login-url)))
+  {:dispatch [(conj orig-err-vector response)]})
+
 (s/defn new-request
   ([method url ok err]
    (new-request method url {} ok err))
   ([method url params ok err]
-   (-> (rpc/new-re-frame-request method (full-url url) params ok err)
+   (-> (rpc/new-re-frame-request method (full-url url) params ok [request-err err])
        rpc/with-edn-format
        (rpc/with-bearer-auth (data/jsk-token)))))
 
