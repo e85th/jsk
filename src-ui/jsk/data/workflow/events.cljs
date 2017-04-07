@@ -196,7 +196,8 @@
   [{:keys [db]} _]
   (let [workflow (get-in db m/current)
         graph (get-in db m/graph)
-        workflow (assoc workflow :workflow/nodes-input (graph->workflow-nodes graph))]
+        workflow (-> (dissoc workflow :workflow/nodes)
+                     (assoc :workflow/nodes-input (graph->workflow-nodes graph)))]
     (log/infof "graph: %s" graph)
     ;(log/infof "workflow: %s" workflow)
     {:db (assoc-in db m/busy? true)

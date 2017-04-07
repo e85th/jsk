@@ -88,4 +88,5 @@
 
 (defn populate
   [pb graph node-removed-event]
+  (plumb/empty pb)
   (plumb/batch pb #(populate* pb graph node-removed-event)))
