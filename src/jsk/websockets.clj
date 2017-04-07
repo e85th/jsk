@@ -15,7 +15,7 @@
   "Answers with the user id who this request is associated with otherwise nil"
   [req res]
   (let [{:keys [token-factory]} res
-        auth-token (get-in req [:params :token])]
+        auth-token (get-in req [:params :auth-token])]
     (when (seq auth-token)
       (when-let [identity-data (token/token->data token-factory auth-token)]
         (log/debugf "identity-data is %s" identity-data)
