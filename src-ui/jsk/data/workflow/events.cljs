@@ -7,6 +7,7 @@
             [jsk.data.workflow.designer :as designer]
             [jsk.data.workflow.graph :as g]
             [e85th.ui.util :as u]
+            [e85th.ui.dom :as dom]
             [e85th.ui.rf.plumb :as plumb]
             [e85th.ui.rf.macros :refer-macros [defevent-db defevent-fx defevent]]
             [clojure.string :as str]))
@@ -155,10 +156,10 @@
   ;; build-map of :db/id -> dom-id
   ;; for each node's successor and successors-err map the ids to dom-id
   (let [db-id->dom-id (build-db-id->dom-id-map wf-nodes)
-        f (fn [g {:keys [workflow.node/referent workflow.node/name workflow.node/type :db/id] :as n}]
+        f (fn [g {:keys [workflow.node/referent workflow.node/name workflow.node/type workflow.node/style :db/id] :as n}]
             (let [successors (set (map db-id->dom-id (:workflow.node/successors n)))
                   successors-err (set (map db-id->dom-id (:workflow.node/successors-err n)))]
-              (->> (g/node (db-id->dom-id id) name type referent successors successors-err)
+              (->> (g/node (db-id->dom-id id) name type referent successors successors-err style)
                    (g/add-node g))))]
     (reduce f (g/new-graph) wf-nodes)))
 
@@ -189,7 +190,8 @@
          {:workflow.node/id id
           :workflow.node/referent referent
           :workflow.node/successors (vec successors)
-          :workflow.node/successors-err (vec successors-err)})
+          :workflow.node/successors-err (vec successors-err)
+          :workflow.node/style (dom/element-style-css-text id)})
        (vals g)))
 
 (defevent-fx save-workflow

@@ -380,4 +380,10 @@
   :db/ident :workflow.node/successors-err
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Workflow Node successors for error state."}]
+  :db/doc "Workflow Node successors for error state."}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :workflow.node/style
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Workflow CSS Style for restoring display."}]

@@ -32,12 +32,6 @@
    :db {}
    :nav "/"})
 
-(defn clear-login-details
-  [db]
-  (-> db
-      (assoc-in m/email "")
-      (assoc-in m/password "")))
-
 (defevent-fx auth-ok
   [{:keys [db] :as cofx} [_ {:keys [user token roles] :as user-info}]]
   (let [roles (set (map keyword roles))]
@@ -48,11 +42,11 @@
 (defevent-fx google-auth
   [_ [_ token]]
   (log/infof "auth called with token: %s" token)
-  {:http-xhrio (api/authenticate-with-google token auth-ok [rpc-err auth-err])})
+  {:http-xhrio (api/auth-google token auth-ok [rpc-err auth-err])})
 
 (defevent-fx email-pass-auth
   [{:keys [db]} _]
   (let [email (get-in db m/email)
         password (get-in db m/password)]
     {:db (assoc-in db m/login-busy? true)
-     :http-xhrio (api/authenticate-with-password email password auth-ok [rpc-err auth-err])}))
+     :http-xhrio (api/auth-password email password auth-ok [rpc-err auth-err])}))

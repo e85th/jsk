@@ -66,15 +66,17 @@
 
 (defn- authenticate
   [body ok err]
+  ;; uses new-request* to make sure the general auth errors are not handled
+  ;; by the interceptor, but by the passed in err handler
   (new-request* :post "/v1/users/actions/authenticate" body ok err))
 
-(s/defn authenticate-with-google
+(s/defn auth-google
   "Generates a request map that can be executed by call!"
   [token :- s/Str ok err]
   (authenticate {:with-google {:token token}} ok err))
 
 
-(s/defn authenticate-with-password
+(s/defn auth-password
   [email :- s/Str pass :- s/Str ok err]
   (authenticate {:with-password {:email email
                                  :password pass}}

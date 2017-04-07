@@ -7,7 +7,8 @@
    :node/type s/Keyword ; :job or :workflow
    :node/referent   s/Int ;; job or wf id
    :node/successors  #{s/Str}
-   :node/successors-err #{s/Str}})
+   :node/successors-err #{s/Str}
+   :node/style s/Str})
 
 (s/defschema Graph
   ;; the string key is the dom-id for either the job or workflow
@@ -16,14 +17,15 @@
 (s/defn node :- Node
   "Creates a node."
   ([id name type referent]
-   (node id name type referent #{} #{}))
-  ([id name type referent successors successors-err]
+   (node id name type referent #{} #{} ""))
+  ([id name type referent successors successors-err style]
    {:node/id id
     :node/name name
     :node/type type
     :node/referent referent
     :node/successors successors
-    :node/successors-err successors-err}))
+    :node/successors-err successors-err
+    :node/style style}))
 
 (s/defn add-node :- Graph
   [g :- Graph node :- Node]

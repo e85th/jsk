@@ -178,6 +178,7 @@
 (s/defschema WorkflowNode
   {(s/optional-key :db/id) s/Int
    :workflow.node/referent s/Int
+   :workflow.node/style s/Str
    (s/optional-key :workflow.node/successors) [s/Int]
    (s/optional-key :workflow.node/successors-err) [s/Int]})
 
@@ -185,7 +186,8 @@
   {:workflow.node/id s/Str
    :workflow.node/referent s/Int
    :workflow.node/successors [s/Str]
-   :workflow.node/successors-err [s/Str]})
+   :workflow.node/successors-err [s/Str]
+   :workflow.node/style s/Str})
 
 (s/defschema WorkflowNodeInfo
   (assoc WorkflowNode
