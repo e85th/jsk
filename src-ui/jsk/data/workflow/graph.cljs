@@ -2,29 +2,31 @@
   (:require [schema.core :as s]))
 
 (s/defschema Node
-  {(s/optional-key :node/id) s/Str ; id for the dom and db
+  {:node/id s/Str ; id for the dom and db
    :node/name s/Str ; job or workflow name
    :node/type s/Keyword ; :job or :workflow
    :node/referent   s/Int ;; job or wf id
-   :node/successors  #{s/Int}
-   :node/successors-err #{s/Int}})
+   :node/successors  #{s/Str}
+   :node/successors-err #{s/Str}})
 
 (s/defschema Graph
   ;; the string key is the dom-id for either the job or workflow
   {s/Str Node})
 
-(defn node
+(s/defn node :- Node
   "Creates a node."
-  [id name type referent]
-  {:node/id id
-   :node/name name
-   :node/type type
-   :node/referent referent
-   :node/successors #{}
-   :node/successors-err #{}})
+  ([id name type referent]
+   (node id name type referent #{} #{}))
+  ([id name type referent successors successors-err]
+   {:node/id id
+    :node/name name
+    :node/type type
+    :node/referent referent
+    :node/successors successors
+    :node/successors-err successors-err}))
 
-(defn add-node
-  [g node]
+(s/defn add-node :- Graph
+  [g :- Graph node :- Node]
   (assoc g (:node/id node) node))
 
 (defn dom-id->db-id
@@ -44,3 +46,18 @@
 (defn node-count
   [g]
   (count g))
+
+(defn nodes
+  "Get all the nodes in the graph."
+  [g]
+  (vals g))
+
+
+(defn node-dom-id
+  "Generates the workflow dom-id"
+  []
+  (str (gensym "wf-node-")))
+
+(defn new-graph
+  []
+  {})

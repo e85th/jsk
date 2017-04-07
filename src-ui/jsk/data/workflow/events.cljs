@@ -103,10 +103,10 @@
     (if (#{:job :workflow} (:type node))
       (let [pb (get-in db m/plumb-instance)
             {node-name :text node-type :type jsk-id :jsk-id} node
-            dom-id (designer/add-workflow-node pb node-name node-type coords workflow-node-removed)
-            graph-node (g/node dom-id node-name node-type jsk-id)]
+            node-dom-id (g/node-dom-id)
+            graph-node (g/node node-dom-id node-name node-type jsk-id)]
         (dnd-node db nil)
-
+        (designer/add-dnd-workflow-node pb node-dom-id node-name node-type coords workflow-node-removed)
         (log/infof "designer dnd node: %s" node)
         {:db (update-in db m/graph g/add-node graph-node)})
       {:db (dnd-node db nil)
@@ -143,17 +143,33 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Workflow Fetch
-(defn build-graph
+(defn build-db-id->dom-id-map
   [nodes]
-  )
+  (reduce (fn [m {:keys [db/id]}]
+            (assoc m id (g/node-dom-id)))
+          {}
+          nodes))
+
+(defn build-graph
+  [wf-nodes]
+  ;; build-map of :db/id -> dom-id
+  ;; for each node's successor and successors-err map the ids to dom-id
+  (let [db-id->dom-id (build-db-id->dom-id-map wf-nodes)
+        f (fn [g {:keys [workflow.node/referent workflow.node/name workflow.node/type :db/id] :as n}]
+            (let [successors (set (map db-id->dom-id (:workflow.node/successors n)))
+                  successors-err (set (map db-id->dom-id (:workflow.node/successors-err n)))]
+              (->> (g/node (db-id->dom-id id) name type referent successors successors-err)
+                   (g/add-node g))))]
+    (reduce f (g/new-graph) wf-nodes)))
 
 (defevent-fx fetch-workflow-ok
   [{:keys [db]} [_ workflow]]
   (let [pb (get-in db m/plumb-instance)
-        {:keys [workflow/nodes]} workflow]
-    ;(designer/populate pb nodes workflow-node-removed)
+        {:keys [workflow/nodes]} workflow
+        graph (build-graph nodes)]
+    (designer/populate pb graph workflow-node-removed)
     {:db (-> (assoc-in db m/current workflow)
-             (assoc-in m/graph (build-graph nodes)))}))
+             (assoc-in m/graph graph))}))
 
 (defevent-fx fetch-workflow
   [_ [_ workflow-id]]
