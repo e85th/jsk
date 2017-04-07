@@ -14,39 +14,34 @@
             [jsk.publisher :as publisher]
             [jsk.common.conf :as conf]))
 
+(def console-port 9001)
+(def nrepl-port 9000)
 
+(defmulti new-system (fn [mode sys-config] mode))
 
-(s/defn add-server-components
-  "Adds server components "
-  [sys-config component-vector]
-  (let [publisher (publisher/new-web-server-publisher)
-        ws (backend-ws/new-sente-websocket (sente-http-kit/get-sch-adapter) websockets/req->user-id)
-        component-vector (into component-vector
-                               [:ws ws
-                                :publisher (component/using publisher [:ws])])]
-    (conj component-vector
-          ;; app will have all dependent resources
-          :app (-> component-vector commons-comp/component-keys commons-comp/new-app)
-          :http (backend-comp/new-http-kit-server {:port 9001} routes/make-handler)
+(defn console-components
+  [sys-config]
+  [:sys-config sys-config
+   :version "FIXME";(util/build-version)
+   :token-factory (token/new-sha256-token-factory (conf/auth-secret sys-config)
+                                                  (conf/auth-token-ttl-minutes sys-config))
+   :db (datomic/new-datomic-db (conf/datomic-uri sys-config))
+   :http (backend-comp/new-http-kit-server {:port console-port} routes/make-handler)
+   :ws (backend-ws/new-sente-websocket (sente-http-kit/get-sch-adapter) websockets/req->user-id)
+   :publisher (component/using (publisher/new-web-server-publisher) [:ws])
+   :repl (backend-comp/new-repl-server {:port nrepl-port})
+   :app (component/using (commons-comp/new-app) [:sys-config :version :token-factory :db :publisher :ws])])
 
-          :repl (backend-comp/new-repl-server {:port 9000}))))
+(defmethod new-system :console
+  [_ sys-config]
+  (apply component/system-map (console-components sys-config)))
 
-(s/defn all-components
-  "Answers with a seq of alternating keywords and components required for component/system-map.
-   Starts with a base set of components and adds in other components based on the operation mode."
-  [sys-config operation-mode :- s/Keyword]
-  (let [base [:sys-config sys-config
-              :version "FIXME";(util/build-version)
-              :token-factory (token/new-sha256-token-factory (conf/auth-secret sys-config)
-                                                             (conf/auth-token-ttl-minutes sys-config))
-              :db (datomic/new-datomic-db (conf/datomic-uri sys-config))]
-        f (get {:server add-server-components
-                :standalone add-server-components}
-               operation-mode
-               (constantly base))]
-    (f sys-config base)))
+(defmethod new-system :conductor
+  [_ sys-config])
 
-(s/defn new-system
-  "Creates a system."
-  [sys-config operation-mode :- s/Keyword]
-  (apply component/system-map (all-components sys-config operation-mode)))
+(defmethod new-system :agent
+  [_ sys-config])
+
+(defmethod new-system :standalone
+  [_ sys-config]
+  (apply component/system-map (console-components sys-config)))

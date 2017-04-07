@@ -30,45 +30,35 @@
   []
   (log/info "verify-login " (data/jsk-token-set?))
   (when-not (data/jsk-token-set?)
-    (browser/location (data/login-url))
-    (rf/dispatch [e/set-main-view :jsk/login])))
+    (routes/set-browser-url! (routes/url-for :jsk/login))))
 
-
-(def name->component
-  {"main" [v/main-panel]
-   "login" [login-views/login-panel]})
 
 (defn mount-root!
-  [nm]
-  (reagent/render (get name->component nm [:h2 "JSK: Unknown component"])
-                  (dom/element-by-id "app")))
+  []
+  (reagent/render [v/main-panel] (dom/element-by-id "app")))
 
 (defn enable-dev-settings
   []
   ;(re-frisk.core/enable-re-frisk!)
   )
 
+(defn auth-err-handler
+  [response]
+  (routes/set-browser-url! (routes/url-for :jsk/login))
+  {})
+
 (defn init
   []
-  ;; FIXME: need a configurable way to set this
-  (let [comp-nm (dom/element-value "init-component")
-        login? (= "login" comp-nm)]
+  (routes/init!)
+  (api/set-auth-err-handler! auth-err-handler)
+  (s/set-fn-validation! true)
+  (data/set-api-host! (dom/element-value "api-host"))
+  (rf/dispatch [e/fetch-user]) ;; if not logged in then this will trigger login
 
-    (s/set-fn-validation! true)
-    (data/set-api-host! (dom/element-value "api-host"))
-    (data/set-login-url! (dom/element-value "login-url"))
-    (routes/init!)
+  (when ^boolean js/goog.DEBUG
+    (enable-dev-settings))
 
-    (when (and (not login?) (data/jsk-token-set?))
-      (rf/dispatch [e/fetch-user]))
-
-    (when ^boolean js/goog.DEBUG
-      (enable-dev-settings))
-
-    (mount-root! comp-nm)
-
-    (when-not login?
-      (websockets/init!)
-      (verify-login))))
+  (mount-root!)
+  (websockets/init!))
 
 (set! (.-onload js/window) init)

@@ -29,7 +29,8 @@
 (defevent-fx logout
   [_ _]
   {:local-storage {:clear true}
-   :nav (data/login-url)})
+   :db {}
+   :nav "/"})
 
 (defn clear-login-details
   [db]
@@ -41,7 +42,6 @@
   [{:keys [db] :as cofx} [_ {:keys [user token roles] :as user-info}]]
   (let [roles (set (map keyword roles))]
     (data/set-jsk-token! token) ;; in local storage so will persist
-    (browser/set-cookie "jsk-token" token -1 nil)
     {:db (assoc-in db jsk-models/current-user user)
      :nav "/"}))
 

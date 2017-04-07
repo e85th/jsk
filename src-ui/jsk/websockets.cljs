@@ -122,4 +122,4 @@
   (websockets/register-listener! on-event)
   (websockets/init! "/api/v1/chsk" {:type :auto
                                     :host (data/ws-host)
-                                    :params {:token (data/jsk-token)}}))
+                                    :params {:auth-token (data/jsk-token)}}))

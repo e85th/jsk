@@ -20,18 +20,6 @@
   []
   (some? (api-host)))
 
-(s/defn login-url :- (s/maybe s/Str)
-  []
-  (:login-url local-storage))
-
-(s/defn set-login-url!
-  [login-url :- s/Str]
-  (assoc! local-storage :login-url login-url))
-
-(s/defn login-url-set? :- s/Bool
-  []
-  (some? (login-url)))
-
 (s/defn jsk-token :- (s/maybe s/Str)
   []
   (:jsk-token local-storage))

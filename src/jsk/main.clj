@@ -43,22 +43,19 @@
        (string/join \newline)))
 
 (s/defn make-system
-  ([]
-   (make-system :development :standalone ""))
+  [env-name :- s/Keyword operation-mode :- s/Keyword log-suffix :- (s/maybe s/Str)]
+  (u/set-utc-tz)
 
-  ([env-name :- s/Keyword operation-mode :- s/Keyword log-suffix :- (s/maybe s/Str)]
-   (u/set-utc-tz)
+  (printf "Reading configuration with %s profile\n" env-name)
 
-   (printf "Reading configuration with %s profile\n" env-name)
+  (let [sys-config (conf/read-config env-name)]
+    (u/init-logging (-> sys-config conf/log-file (u/log-file-with-suffix log-suffix)))
+    (log/info (util/build-properties-with-header))
+    (log/infof "Environment: %s" env-name)
+    (log/warn "Turning schema validation on globally.")
+    (s/set-fn-validation! true) ;; globally turn on all validations
 
-   (let [sys-config (conf/read-config env-name)]
-     (u/init-logging (-> sys-config conf/log-file (u/log-file-with-suffix log-suffix)))
-     (log/info (util/build-properties-with-header))
-     (log/infof "Environment: %s" env-name)
-     (log/warn "Turning schema validation on globally.")
-     (s/set-fn-validation! true) ;; globally turn on all validations
-
-     (system/new-system sys-config operation-mode))))
+    (system/new-system operation-mode sys-config)))
 
 (defn run-standalone
   [system]

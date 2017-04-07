@@ -68,16 +68,14 @@
 (defroutes ui-routes
   (context "" [] :tags ["ui"]
     :components [res]
-    (GET "/login" []
+    #_(GET "/login" []
       (web/html-response (ui/login-page res)))
 
     (GET "/" []
-       (http-response/see-other "/jsk"))
+      (http-response/see-other "/jsk"))
 
     (GET "/jsk*" []
-      (if (ui/authed? res +compojure-api-request+)
-        (web/html-response (ui/main-page res))
-        (http-response/see-other "/login")))))
+      (web/html-response (ui/main-page res)))))
 
 (defapi all-api-routes
   {:coercion (constantly backend-mw/coercion-matchers)

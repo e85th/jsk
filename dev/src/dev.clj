@@ -8,4 +8,4 @@
             [com.stuartsierra.component :as component]
             [jsk.main :as main]))
 
-(reloaded.repl/set-init! main/make-system)
+(reloaded.repl/set-init! #(main/make-system :development :standalone ""))

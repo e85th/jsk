@@ -8,6 +8,14 @@
             [e85th.ui.browser :as browser]
             [e85th.ui.util :as u]))
 
+(def auth-error-handler (atom (constantly {})))
+
+(defn set-auth-err-handler!
+  "f receives the response when there is an auth error. It should return
+   an empty map or a map that re-frame's fx event handling can process."
+  [f]
+  (reset! auth-error-handler f))
+
 (def auth-err-status #{401 403})
 
 (s/defn ^:private full-url
@@ -22,17 +30,24 @@
   [_ [_ orig-err-vector {:keys [status] :as response}]]
   ;; if the response code is 401/403 then send to login
   ;; otherwise dispatch the original event
-  (when (auth-err-status status)
-    (browser/location (data/login-url)))
-  {:dispatch (conj orig-err-vector response)})
+  (if (auth-err-status status)
+    (@auth-error-handler response)
+    {:dispatch (conj orig-err-vector response)}))
+
+(s/defn new-request*
+  ([method url ok err]
+   (new-request* method url {} ok err))
+  ([method url params ok err]
+   (-> (rpc/new-re-frame-request method (full-url url) params ok err)
+       rpc/with-edn-format
+       (rpc/with-bearer-auth (data/jsk-token)))))
 
 (s/defn new-request
+  "Same as new-request but with handling of auth errors by request-err"
   ([method url ok err]
    (new-request method url {} ok err))
   ([method url params ok err]
-   (-> (rpc/new-re-frame-request method (full-url url) params ok [request-err err])
-       rpc/with-edn-format
-       (rpc/with-bearer-auth (data/jsk-token)))))
+   (new-request* method url params ok [request-err err])))
 
 (s/defn call!
   "For testing really. Use effects to actually make calls.
@@ -51,7 +66,7 @@
 
 (defn- authenticate
   [body ok err]
-  (new-request :post "/v1/users/actions/authenticate" body ok err))
+  (new-request* :post "/v1/users/actions/authenticate" body ok err))
 
 (s/defn authenticate-with-google
   "Generates a request map that can be executed by call!"

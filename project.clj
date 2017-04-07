@@ -15,6 +15,7 @@
                  [e85th/backend "0.1.20" :exclusions [[com.google.guava/guava-jdk5]]]
                  [e85th/ui "0.1.17"]
                  [org.quartz-scheduler/quartz "2.2.3"]
+                 [clojurewerkz/quartzite "2.0.0"]    ; clojure wrapper around quartz scheduling
                  [prismatic/schema "1.1.4"]
                  [com.taoensso/timbre "4.7.4"]
                  [http-kit "2.2.0"]
