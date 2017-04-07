@@ -9,6 +9,7 @@
             [e85th.ui.rf.plumb :as plumb]
             [hipo.core :as hipo]
             [jsk.data.workflow.models :as m]
+            [jsk.data.workflow.graph :as g]
             [clojure.string :as str]))
 
 
@@ -43,24 +44,23 @@
 
 (defn add-workflow-node
   "Adds a new workflow node to the designer and returns the dom-id"
-  [pb node-name drop-cords node-removed-event]
+  [pb node-name node-type drop-cords node-removed-event]
   (let [container (plumb/container pb)
         dom-id (str (gensym "wf-node-"))
-        err-source-id (cons-source-id dom-id "err")
-        ok-source-id (cons-source-id dom-id "ok")
+        err-source-id (cons-source-id dom-id "successors-err")
+        ok-source-id (cons-source-id dom-id "successors")
         placement-coords (compute-placement-coords container drop-cords)
         el (hipo/create (workflow-node* dom-id err-source-id ok-source-id node-name placement-coords node-removed-event))]
+    (log/infof "el: %s" el)
     (.appendChild container el)
     (plumb/draggable pb dom-id)
     (plumb/make-source pb err-source-id m/err-source-opts)
     (plumb/make-source pb ok-source-id m/ok-source-opts)
     (plumb/make-target pb dom-id m/target-opts)
-    {:dom-id dom-id
-     :ok-source-id ok-source-id
-     :err-source-id err-source-id}))
+    dom-id))
 
 
-(defn populate
+#_(defn populate
   [pb nodes node-removed-event]
   ;; node has keys :workflow.node/successors :workflow.node/successors-err
   ;; if wf node then :workflow/name and :workflow/id

@@ -3,6 +3,7 @@
             [jsk.core-test :as test]
             [taoensso.timbre :as log]
             [jsk.data.crud :as crud]
+            [jsk.data.workflow :as sut]
             [e85th.commons.util :as u]))
 
 (use-fixtures :once test/with-system)
@@ -49,3 +50,17 @@
       (crud/assoc-workflow-tag workflow-id tag-id))
     (testing "workflow tag dissoc"
       (crud/dissoc-workflow-tag workflow-id tag-id))))
+
+
+(deftest normalize-node-inputs-test
+  (let [input [{:workflow.node/id "wf-node-9",
+                :workflow.node/referent 277076930200565,
+                :workflow.node/successors [],
+                :workflow.node/successors-err ["wf-node-8"]}
+               {:workflow.node/id "wf-node-8",
+                :workflow.node/referent 277076930200563,
+                :workflow.node/successors [],
+                :workflow.node/successors-err []}]
+        [n1 n2] (sut/normalize-node-inputs input)]
+    (is (= (:db/id n2)
+           (first (:workflow.node/successors-err n1))))))

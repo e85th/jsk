@@ -17,38 +17,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Graph stuff should be in a separate ns and graph should probably be a
-;; record with a protocol
-(s/defschema GraphNode
-  {:id   s/Int ;; db/id
-   ;; ok and err are the outbound edges for success
-   :ok  #{s/Int}
-   :err #{s/Int}})
-
-(s/defschema Graph
-  ;; the string key is the dom-id for either the job or workflow
-  {s/Str GraphNode})
-
-(defn graph-node
-  "Creates a node. The id is the db/id for either a job or workflow."
-  [id]
-  {:id id
-   :ok #{}
-   :err #{}})
-
-(defn graph-dom-id->db-id
-  [graph dom-id]
-  (get-in graph [dom-id :id]))
-
-(defn- update-graph-edge
-  [f graph source-dom-id target-id kind]
-  (update-in graph [source-dom-id kind] f target-id))
-
-(def graph-rm-edge (partial update-graph-edge disj))
-(def graph-add-edge (partial update-graph-edge conj))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JS Plumb related items
 (def plumb-instance [::plumb-instance])
 

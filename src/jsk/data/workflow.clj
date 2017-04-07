@@ -15,9 +15,9 @@
 
 (defn as-workflow-nodes
   [nodes]
-  (map (fn [{:keys [workflow.node/item] :as n}]
+  (map (fn [n]
          (-> ;(dissoc n :workflow.node/item :db/id)
-             (assoc n :workflow.node/item (:db/id item))
+             (assoc n :workflow.node/referent (-> n :workflow.node/referent :db/id))
              (update :workflow.node/successors extract-ids)
              (update :workflow.node/successors-err extract-ids)))
        nodes))
@@ -35,15 +35,14 @@
   "Finds all the jobs and workflow with the specified entity ids."
   [{:keys [db]} nodes]
   (let [db (-> db :cn d/db)]
-    (for [{:keys [workflow.node/item] :as node} nodes
-          :let [entity (d/entity db item)
-                item-name (or (:job/name entity) (:workflow/name entity))
-                id-key (if (:job/name entity) :job/id :workflow/id)]]
-      (cond
-        (:job/name entity) (assoc node :job/id (:db/id entity) :job/name (:job/name entity))
-        (:workflow/name entity) (assoc node :workflow/id (:db/id entity) :workflow/name (:workflow/name entity))
-        :else (throw (ex-info (str "Unexpected item type? or unknown entity id: " item)
-                              {:node node}))))))
+    (for [{:keys [workflow.node/referent] :as node} nodes
+          :let [entity (d/entity db referent)
+                info (if (contains? entity :job/name)
+                       {:workflow.node/name (:job/name entity)
+                        :workflow.node/type :job}
+                       {:workflow.node/name (:workflow/name entity)
+                        :workflow.node/type :workflow})]]
+      (merge node info))))
 
 (s/defn find-all :- [m/Workflow]
   [{:keys [db]}]
@@ -86,6 +85,17 @@
   (for [{:keys [db/id]} nodes]
     [:db/retractEntity id]))
 
+(s/defn normalize-node-inputs
+  [nodes :- [m/WorkflowNodeInput]]
+  (let [node-id->temp-id (zipmap (map :workflow.node/id nodes)
+                                 (repeatedly #(d/tempid :db.part/jsk)))
+        to-ids #(map node-id->temp-id %)]
+    (for [n nodes]
+      (-> (dissoc n :workflow.node/id)
+          (assoc :db/id (node-id->temp-id (:workflow.node/id n)))
+          (update :workflow.node/successors to-ids)
+          (update :workflow.node/successors-err to-ids)))))
+
 ;; retractEntity each current workflow nodes
 ;; add new workflow nodes
 ;; add references to current
@@ -93,8 +103,14 @@
   "Updates and returns the new record."
   [{:keys [db publisher] :as res} workflow-id :- s/Int workflow :- m/Workflow user-id :- s/Int]
   (let [cur (find-by-id! res workflow-id)
+        workflow (assoc workflow :db/id workflow-id)
+        workflow (if-let [nodes-input (-> workflow :workflow/nodes-input seq)]
+                   (assoc workflow :workflow/nodes (normalize-node-inputs nodes-input))
+                   workflow)
+        workflow (dissoc workflow :workflow/nodes-input)
         facts (conj (retract-node-facts cur)
                     (assoc workflow :db/id workflow-id))
+        _ (log/infof "workflow: %s" workflow)
         {:keys [db-after temp-ids]} @(d/transact (:cn db) facts)]
     (mq/publish publisher [:jsk.workflow/modified workflow-id])))
 

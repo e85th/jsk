@@ -5,6 +5,7 @@
             [re-frame.core :as rf]
             [jsk.net.api :as api]
             [jsk.data.workflow.designer :as designer]
+            [jsk.data.workflow.graph :as g]
             [e85th.ui.util :as u]
             [e85th.ui.rf.plumb :as plumb]
             [e85th.ui.rf.macros :refer-macros [defevent-db defevent-fx defevent]]
@@ -101,37 +102,43 @@
   (if-let [node (dnd-node db)]
     (if (#{:job :workflow} (:type node))
       (let [pb (get-in db m/plumb-instance)
-            {:keys [dom-id]} (designer/add-workflow-node pb (:text node) coords workflow-node-removed)]
+            {node-name :text node-type :type jsk-id :jsk-id} node
+            dom-id (designer/add-workflow-node pb node-name node-type coords workflow-node-removed)
+            graph-node (g/node dom-id node-name node-type jsk-id)]
         (dnd-node db nil)
-        {:db (update-in db m/graph assoc dom-id (m/graph-node (:jsk-id node)))})
+
+        (log/infof "designer dnd node: %s" node)
+        {:db (update-in db m/graph g/add-node graph-node)})
       {:db (dnd-node db nil)
        :notify [:alert {:message "Only jobs and schedules may be dropped here."}]})
     {}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Connections created and removed
+(def action+kind->modifier
+  {[:add-edge :successors] g/add-successor
+   [:add-edge :successors-err] g/add-successor-err
+   [:rm-edge :successors] g/rm-successor
+   [:rm-edge :successors-err] g/rm-successor-err})
+
 (defn- update-graph
   "Update the data in the db. cn is a jsplumb connection object.
    Adds or removes an edge."
-  [graph-mod-fn db cn]
+  [action db cn]
   (let [{:keys [source-id target-id]} (plumb/connection-as-map cn) ; these are dom-ids
         {:keys [node-id kind]} (designer/decons-source-id source-id) ; node-id is the workflow node's dom-id
-        graph (get-in db m/graph)
-        db-target-id (m/graph-dom-id->db-id graph target-id)
-        graph* (graph-mod-fn graph node-id db-target-id kind)]
-    ;(log/infof "graph before: %s" graph)
-    ;(log/infof "graph after: %s" graph*)
-    (assoc-in db m/graph graph*)))
+        modifier (action+kind->modifier [action kind])]
+    (update-in db m/graph modifier node-id target-id)))
 
 (defevent-fx detach-connection
   [{:keys [db]} [_ cn]]
   (let [pb (get-in db m/plumb-instance)]
     (plumb/detach-connection pb cn)
-    {:db (update-graph m/graph-rm-edge db cn)}))
+    {:db (update-graph :rm-edge db cn)}))
 
 (defevent-fx connection-created
   [{:keys [db]} [_ cn]]
-  {:db (update-graph m/graph-add-edge db cn)})
+  {:db (update-graph :add-edge db cn)})
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -144,7 +151,7 @@
   [{:keys [db]} [_ workflow]]
   (let [pb (get-in db m/plumb-instance)
         {:keys [workflow/nodes]} workflow]
-    (designer/populate pb nodes workflow-node-removed)
+    ;(designer/populate pb nodes workflow-node-removed)
     {:db (-> (assoc-in db m/current workflow)
              (assoc-in m/graph (build-graph nodes)))}))
 
@@ -162,17 +169,18 @@
 
 (defn graph->workflow-nodes
   [g]
-  (map (fn [{:keys [id ok err]}]
-         {:workflow.node/item id
-          :workflow.node/successors (vec ok)
-          :workflow.node/successors-err (vec err)})
+  (map (fn [{:keys [node/id node/referent node/successors node/successors-err]}]
+         {:workflow.node/id id
+          :workflow.node/referent referent
+          :workflow.node/successors (vec successors)
+          :workflow.node/successors-err (vec successors-err)})
        (vals g)))
 
 (defevent-fx save-workflow
   [{:keys [db]} _]
   (let [workflow (get-in db m/current)
         graph (get-in db m/graph)
-        workflow (assoc workflow :workflow/nodes (graph->workflow-nodes graph))]
+        workflow (assoc workflow :workflow/nodes-input (graph->workflow-nodes graph))]
     (log/infof "graph: %s" graph)
     ;(log/infof "workflow: %s" workflow)
     {:db (assoc-in db m/busy? true)

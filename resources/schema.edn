@@ -365,10 +365,10 @@
 
  ;; Workflow Node
  {:db/id #db/id[:db.part/db]
-  :db/ident :workflow.node/item
+  :db/ident :workflow.node/referent
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Workflow Node item"}
+  :db/doc "The job or workflow that is referenced."}
 
  {:db/id #db/id[:db.part/db]
   :db/ident :workflow.node/successors

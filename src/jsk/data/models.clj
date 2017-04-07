@@ -177,16 +177,20 @@
 
 (s/defschema WorkflowNode
   {(s/optional-key :db/id) s/Int
-   :workflow.node/item s/Int
+   :workflow.node/referent s/Int
    (s/optional-key :workflow.node/successors) [s/Int]
    (s/optional-key :workflow.node/successors-err) [s/Int]})
 
+(s/defschema WorkflowNodeInput
+  {:workflow.node/id s/Str
+   :workflow.node/referent s/Int
+   :workflow.node/successors [s/Str]
+   :workflow.node/successors-err [s/Str]})
+
 (s/defschema WorkflowNodeInfo
   (assoc WorkflowNode
-         (s/optional-key :job/id) s/Int
-         (s/optional-key :job/name) s/Str
-         (s/optional-key :workflow/id) s/Int
-         (s/optional-key :workflow/name) s/Str))
+         :workflow.node/name s/Str
+         :workflow.node/type s/Keyword))
 
 
 ;; -- Workflow
@@ -197,6 +201,7 @@
    :workflow/enabled? s/Bool
    (s/optional-key :workflow/alerts) [s/Int]
    (s/optional-key :workflow/nodes) [WorkflowNode]
+   (s/optional-key :workflow/nodes-input) [WorkflowNodeInput]
    (s/optional-key :workflow/schedules) [s/Int]
    (s/optional-key :workflow/tags) [s/Int]})
 
