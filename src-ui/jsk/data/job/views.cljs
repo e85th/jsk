@@ -12,21 +12,17 @@
             [jsk.data.job.props :as props]
             [jsk.routes :as routes]))
 
-(defn prevent-default
-  [e]
-  (.preventDefault e))
-
 (def indicate-dropzone (partial dom/event-target-add-class "jsk-dnd-dropzone-hover"))
 (def conceal-dropzone (partial dom/event-target-rm-class "jsk-dnd-dropzone-hover"))
 
 (defn schedule-drop
   [e]
-  (prevent-default e)
+  (dom/event-prevent-default e)
   (rf/dispatch [e/schedule-dnd-drop]))
 
 (defn alert-drop
   [e]
-  (prevent-default e)
+  (dom/event-prevent-default e)
   (rf/dispatch [e/alert-dnd-drop]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -42,7 +38,7 @@
   {[:.jsk-job-alert-list] (k/set-attr :on-drop alert-drop
                                       :on-drag-enter indicate-dropzone
                                       :on-drag-leave conceal-dropzone
-                                      :on-drag-over prevent-default)
+                                      :on-drag-over dom/event-prevent-default)
    [:.jsk-job-alert-items] (k/content (map alert-item* alerts))})
 
 (defn alert-list
@@ -63,7 +59,7 @@
   {[:.jsk-job-schedule-list] (k/set-attr :on-drop schedule-drop
                                          :on-drag-enter indicate-dropzone
                                          :on-drag-leave conceal-dropzone
-                                         :on-drag-over prevent-default)
+                                         :on-drag-over dom/event-prevent-default)
    [:.jsk-job-schedule-items] (k/content (map schedule-item* schedules))})
 
 (defn schedule-list

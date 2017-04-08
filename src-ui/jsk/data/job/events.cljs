@@ -86,14 +86,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DND
+(defn dnd-node
+  ([db]
+   (get-in db [:jsk.data.explorer.models/dnd-node]))
+  ([db new-node]
+   (assoc-in db [:jsk.data.explorer.models/dnd-node] new-node)))
+
 (defevent-fx schedule-dnd-drop
   [{:keys [db]} [_ event]]
   (let [node (get-in db [:jsk.data.explorer.models/dnd-node])
         job-id (get-in db m/current-id)]
     ;(log/infof "dropped on schedules area: %s" node)
     (if (= :schedule (:type node))
-      {:dispatch [assoc-job-schedule (:jsk-id node)]}
-      {:notify [:alert {:message "Only schedules may be dropped here."}]})))
+      {:dispatch [assoc-job-schedule (:jsk-id node)]
+       :db (dnd-node db nil)}
+      {:db (dnd-node db nil)
+       :notify [:alert {:message "Only schedules may be dropped here."}]})))
 
 (defevent-fx alert-dnd-drop
   [{:keys [db]} [_ event]]
@@ -101,8 +109,10 @@
         job-id (get-in db m/current-id)]
     ;(log/infof "dropped on alerts: %s" node)
     (if (= :alert (:type node))
-      {:dispatch [assoc-job-alert (:jsk-id node)]}
-      {:notify [:alert {:message "Only alerts may be dropped here."}]})))
+      {:dispatch [assoc-job-alert (:jsk-id node)]
+       :db (dnd-node db nil)}
+      {:db (dnd-node db nil)
+       :notify [:alert {:message "Only alerts may be dropped here."}]})))
 
 (defevent-fx refresh-job
   [{:keys [db]} [_ job-id]]

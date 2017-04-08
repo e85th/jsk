@@ -29,13 +29,13 @@
 
 (defn schedule-drop
   [e]
-  (dom/event-stop-propogation e)
+  (dom/event-prevent-default e)
   (conceal-dropzone)
   (rf/dispatch [e/schedule-dnd-drop]))
 
 (defn alert-drop
   [e]
-  (dom/event-stop-propogation e)
+  (dom/event-prevent-default e)
   (conceal-dropzone)
   (rf/dispatch [e/alert-dnd-drop]))
 
