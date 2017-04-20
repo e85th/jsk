@@ -8,6 +8,11 @@
                  [org.clojure/tools.cli "0.3.5"]
                  [com.datomic/datomic-free "0.9.5554"]
 
+                 ;; these need to be kept in sync with datomic-free's dependencies for artemis
+                 ;; otherwise noticed startup errors when using from repl
+                 [org.apache.activemq/artemis-server "1.4.0"]
+                 [org.apache.activemq/artemis-core-client "1.4.0"]
+
                  ;; https://github.com/ptaoussanis/encore/blob/master/DEP-CONFLICT.md
                  [com.taoensso/sente "1.11.0"] ; websockets, keep above e85th commons because of dependency issue with encore
                  [com.taoensso/timbre "4.7.4"]

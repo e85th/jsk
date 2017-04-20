@@ -8,6 +8,19 @@
 (def config-file "config.edn")
 (def jsk-token-name :jsk-token)
 
+;; console to director
+;; agents to director
+;; address and queue
+(def director-inbound-address "jsk.director.inbound")
+
+;; director to agents
+;; address and queue
+(def agent-inbound-address "jsk.agent.<agent-id>.inbound")
+
+;; director to console topic -- non durable
+(def console-inbound-address "jsk.console.inbound")
+;; create temporary queues with above address and unique queue name
+
 (def env-name->profile
   {:production :prd
    :staging :stg
