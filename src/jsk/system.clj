@@ -8,7 +8,9 @@
             [e85th.backend.websockets :as backend-ws]
             [taoensso.sente.server-adapters.http-kit :as sente-http-kit]
             [jsk.websockets :as websockets]
+            [clojurewerkz.quartzite.scheduler :as qs]
             [schema.core :as s]
+            [jsk.director.core :as director]
             [jsk.common.util :as util]
             [jsk.common.artemis :as artemis]
             [jsk.routes :as routes]
@@ -24,6 +26,20 @@
 (def standalone-agent-name "__jsk.agent.standalone__")
 
 (defmulti new-system (fn [mode sys-config] mode))
+
+(defrecord DirectorResources [scheduler db agent-publisher console-publisher sys-config]
+  component/Lifecycle
+  (start [this]
+    (let [this (assoc this :scheduler (-> (qs/initialize) qs/start))]
+      (director/init this)
+      this))
+  (stop [this]
+    (some-> this :scheduler qs/shutdown)
+    (dissoc this :scheduler)))
+
+(defn new-director-resources
+  []
+  (map->DirectorResources {}))
 
 ;; FIXME: refactor common component setup if possible.
 (defn console-components
@@ -62,7 +78,7 @@
    :director-subscriber (component/using (subscriber/new-director-subscriber director-inbound-address) [:mq-server :director-resources])
    :agent-subscriber (component/using (subscriber/new-agent-subscriber standalone-agent-name) [:mq-server :agent-resources])
    :agent-resources (component/using (commons-comp/new-app) [:sys-config :version :director-publisher])
-   :director-resources (component/using (commons-comp/new-app) [:sys-config :version :agent-publisher :console-publisher :db])
+   :director-resources (component/using (new-director-resources) [:sys-config :version :agent-publisher :console-publisher :db])
    :app (component/using (commons-comp/new-app) [:sys-config :version :token-factory :db :publisher :ws])
    :repl (backend-comp/new-repl-server {:port nrepl-port})])
 
