@@ -56,11 +56,13 @@
   (let [input [{:workflow.node/id "wf-node-9",
                 :workflow.node/referent 277076930200565,
                 :workflow.node/successors [],
-                :workflow.node/successors-err ["wf-node-8"]}
+                :workflow.node/successors-err ["wf-node-8"]
+                :workflow.node/style ""}
                {:workflow.node/id "wf-node-8",
                 :workflow.node/referent 277076930200563,
                 :workflow.node/successors [],
-                :workflow.node/successors-err []}]
+                :workflow.node/successors-err []
+                :workflow.node/style ""}]
         [n1 n2] (sut/normalize-node-inputs input)]
     (is (= (:db/id n2)
            (first (:workflow.node/successors-err n1))))))

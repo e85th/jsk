@@ -17,3 +17,8 @@
               (update-in m [k] (fnil conj #{}) v))
             {}
             rs)))
+
+(s/defn find-workflow-graph
+  [db e-id]
+  ;(d/q '[:find ?id])
+  )

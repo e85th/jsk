@@ -34,7 +34,7 @@
   (let [{:keys [roles] :as user-info} (fetch-user-details res)]
     (log/infof "roles are: %s" roles)
     (when-not (roles :jsk/admin)
-      (throw (ex/new-auth-exception :invalid-permission "Not an admin.")))))
+      (throw (ex/auth :invalid-permission "Not an admin.")))))
 
 (defn- page
   [component {:keys [version] :as res}]

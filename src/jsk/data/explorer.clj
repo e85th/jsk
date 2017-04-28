@@ -40,7 +40,7 @@
   (cond
     (= :executable node-type) (get-executable-nodes res)
     (contains? node-type->field node-type) (get-nodes* res node-type (node-type->field node-type))
-    :else (ex/new-validation-exception :explorer/invalid-node-type "Unknown node type.")))
+    :else (ex/validation :explorer/invalid-node-type "Unknown node type.")))
 
 
 (s/defn create-node
@@ -51,7 +51,7 @@
     :job (job/create res user-id)
     :workflow (workflow/create res user-id)
     :schedule (schedule/create res user-id)
-    (throw (ex/new-validation-exception :explorer/invalid-node-type "Invalid node type for create."))))
+    (throw (ex/validation :explorer/invalid-node-type "Invalid node type for create."))))
 
 (s/defn rm-node
   [res type :- s/Keyword id :- s/Int user-id :- s/Int]
@@ -61,4 +61,4 @@
     :job (job/rm res id user-id)
     :workflow (workflow/rm res id user-id)
     :schedule (schedule/rm res id user-id)
-    (throw (ex/new-validation-exception :explorer/invalid-node-type "Invalid node type for delete."))))
+    (throw (ex/validation :explorer/invalid-node-type "Invalid node type for delete."))))

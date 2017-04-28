@@ -16,9 +16,9 @@
                  ;; https://github.com/ptaoussanis/encore/blob/master/DEP-CONFLICT.md
                  [com.taoensso/sente "1.11.0"] ; websockets, keep above e85th commons because of dependency issue with encore
                  [com.taoensso/timbre "4.7.4"]
-                 [e85th/commons "0.1.12"]
-                 [e85th/backend "0.1.20" :exclusions [[com.google.guava/guava-jdk5]]]
-                 [e85th/ui "0.1.18"]
+                 [e85th/commons "0.1.13"]
+                 [e85th/backend "0.1.21" :exclusions [[com.google.guava/guava-jdk5]]]
+                 [e85th/ui "0.1.19"]
                  [org.quartz-scheduler/quartz "2.2.3"]
                  [clojurewerkz/quartzite "2.0.0"]    ; clojure wrapper around quartz scheduling
                  [prismatic/schema "1.1.4"]

@@ -27,4 +27,4 @@
   [res]
   (log/infof "Director initializing")
   (qz/init! (partial job-triggered res))
-  (schedule-everything res))
+  #_(schedule-everything res))

@@ -124,14 +124,14 @@
    Throws a validation exception when an identifier exists."
   [res {:keys [channels]} :- m/User]
   (when-let [identifier (first (filter-existing-identifiers res channels))]
-    (throw (ex/new-validation-exception duplicate-channel-ex (format "Identifier %s already exists." identifier)))))
+    (throw (ex/validation duplicate-channel-ex (format "Identifier %s already exists." identifier)))))
 
 (s/defn validate-new-user
   [res {:keys [user/channels user/password] :as new-user} :- m/User]
   (validate-channel-identifiers res new-user)
   (when (some #{:email} (map :channel/type channels))
     (when-not (seq password)
-      (throw (ex/new-validation-exception password-required-ex "Passowrd is required for e-mail signup.")))))
+      (throw (ex/validation password-required-ex "Passowrd is required for e-mail signup.")))))
 
 (s/defn create-new-user
   [{:keys [db] :as res} {:keys [user/password] :as user} :- m/User creator-id :- s/Int]
@@ -205,7 +205,7 @@
       @(d/transact (:cn db) [[:db/retract id :channel/token]
                              [:db/retract id :channel/token-expiration]
                              [:db/add id :channel/verified-at (t/now)]])
-      (throw (ex/new-auth-exception channel-auth-failed-ex "Auth failed.")))))
+      (throw (ex/auth channel-auth-failed-ex "Auth failed.")))))
 
 (s/defn user->auth-response :- m/AuthResponse
   [res user :- m/User]
@@ -249,14 +249,14 @@
   (let [jwt (:token with-firebase)
         auth-ex-fn (fn [ex]
                      (throw
-                      (ex/new-auth-exception :firebase/auth-failed "Firebase Auth Failed" {} ex)))
+                      (ex/auth :firebase/auth-failed "Firebase Auth Failed" {} ex)))
         {:keys [email]} (firebase/verify-id-token! jwt auth-ex-fn)]
 
     (assert email "We don't handle anonymous logins a la firebase.")
 
     (if-let [user (find-user-by-identifier res email)]
       (user->auth-response res user)
-      (throw (ex/new-auth-exception :user/no-such-user "No such user.")))))
+      (throw (ex/auth :user/no-such-user "No such user.")))))
 
 (defmethod authenticate :with-google
   [res {:keys [with-google]}]
@@ -266,7 +266,7 @@
       (assert email "We don't handle anonymous logins.")
       (if-let [user (find-user-by-identifier res email)]
         (user->auth-response res user)
-        (throw (ex/new-auth-exception :user/no-such-user "No such user."))))))
+        (throw (ex/auth :user/no-such-user "No such user."))))))
 
 (defmethod authenticate :with-token
   [res {:keys [with-token]}]
@@ -283,9 +283,9 @@
         {:keys [user/password-hash] :as user} (find-user-all-fields-by-identifier res email)]
 
     (when-not (seq password-hash)
-      (throw (ex/new-auth-exception :user/invalid-password "Invalid password.")))
+      (throw (ex/auth :user/invalid-password "Invalid password.")))
 
     (when-not (hashers/check password password-hash)
-      (throw (ex/new-auth-exception :user/invalid-password "Invalid password.")))
+      (throw (ex/auth :user/invalid-password "Invalid password.")))
 
     (user->auth-response res user)))

@@ -20,7 +20,7 @@
 (s/defn validate-cron-expr
   [cron-expr :- (s/maybe s/Str)]
   (when-not (cron-expr? cron-expr)
-    (throw (ex/new-validation-exception bad-cron-expr-ex "Invalid cron-expr."))))
+    (throw (ex/validation bad-cron-expr-ex "Invalid cron-expr."))))
 
 (s/defn validate-create
   "Validates schedule creation"
